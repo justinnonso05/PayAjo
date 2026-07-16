@@ -5,6 +5,11 @@ class GroupStatus(str, Enum):
     PAUSED = "paused"
     COMPLETED = "completed"
 
+class CycleFrequency(str, Enum):
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    YEARLY = "yearly"
+
 class ShortfallPolicy(str, Enum):
     HOLD = "hold"
     PARTIAL = "partial"

@@ -8,8 +8,7 @@ class Membership(Base, UUIDMixin, TimestampMixin):
     group_id: Mapped[str] = mapped_column(String, nullable=False, index=True)
     user_id: Mapped[str] = mapped_column(String, nullable=False, index=True)
     
-    reserved_account_number: Mapped[str] = mapped_column(String(50), nullable=True)
-    reserved_account_bank: Mapped[str] = mapped_column(String(255), nullable=True)
+    is_admin: Mapped[bool] = mapped_column(default=False, nullable=False)
     
     kyc_status: Mapped[str] = mapped_column(String(50), nullable=False) # Enum
     status: Mapped[str] = mapped_column(String(50), nullable=False) # Enum

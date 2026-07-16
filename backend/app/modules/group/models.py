@@ -9,11 +9,24 @@ class Group(Base, UUIDMixin, TimestampMixin):
     admin_user_id: Mapped[str] = mapped_column(String, nullable=False, index=True)
     
     contribution_amount: Mapped[float] = mapped_column(Float, nullable=False)
-    cycle_length_days: Mapped[int] = mapped_column(Integer, nullable=False)
-    payout_day_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    
+    cycle_frequency: Mapped[str] = mapped_column(String(50), nullable=False)
+    payout_day_of_week: Mapped[int] = mapped_column(Integer, nullable=True)
+    payout_day_of_month: Mapped[int] = mapped_column(Integer, nullable=True)
+    payout_month: Mapped[int] = mapped_column(Integer, nullable=True)
+    payout_day_override: Mapped[int] = mapped_column(Integer, nullable=True)
     
     quorum_percent: Mapped[int] = mapped_column(Integer, nullable=False)
     shortfall_policy: Mapped[str] = mapped_column(String(50), nullable=False) # Enum as string
+    
+    requires_approval_for_delegate: Mapped[bool] = mapped_column(default=True, nullable=False)
+    requires_approval_for_swap: Mapped[bool] = mapped_column(default=True, nullable=False)
+    
+    invite_code: Mapped[str] = mapped_column(String(10), unique=True, nullable=True, index=True)
+    invite_code_active: Mapped[bool] = mapped_column(default=True, nullable=False)
+    
+    pool_balance: Mapped[float] = mapped_column(Float, default=0.00, nullable=False)
+    member_cap: Mapped[int] = mapped_column(Integer, nullable=True)
     
     rotation_order: Mapped[str] = mapped_column(String, nullable=True) # JSON serialized list
     
