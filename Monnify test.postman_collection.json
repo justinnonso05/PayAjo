@@ -1,0 +1,1309 @@
+{
+  "info": {
+    "_postman_id": "95c42437-8a9c-4561-9c9c-df9860cc33be",
+    "name": "Monnify test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36406749"
+  },
+  "item": [
+    {
+      "name": "Others",
+      "item": [
+        {
+          "name": "Initialize transaction - get payment link",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{supabase_service_role_api_key_0am6}}ZxMpPMRpKkN0jyVWTud8Ra_LJw0yjQx2uOa_w54YWs1B2SVTgBHqeeUkIdFLmF6Pb7uGwDqO6PpFBSF5Tr3KhoVm6NNwUEhGWOKcx30P42selEDnLzn8Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 10000.00,\r\n  \"customerName\": \"Chidi Okafor\",\r\n  \"customerEmail\": \"chidi@example.com\",\r\n  \"paymentReference\": \"ajopay-direct-group042-cycle3-user017-{{$timestamp}}\",\r\n  \"paymentDescription\": \"AjoPay contribution — Group 042 cycle 3\",\r\n  \"currencyCode\": \"NGN\",\r\n  \"contractCode\": \"{{contract_code}}\",\r\n  \"redirectUrl\": \"https://ajopay.app/contribute/confirm\",\r\n  \"paymentMethods\": [\"ACCOUNT_TRANSFER\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://sandbox.monnify.com/api/v1/merchant/transactions/init-transaction",
+              "protocol": "https",
+              "host": [
+                "sandbox",
+                "monnify",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "merchant",
+                "transactions",
+                "init-transaction"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{supabase_service_role_api_key_0am6}}ZxMpPMRpKkN0jyVWTud8Ra_LJw0yjQx2uOa_w54YWs1B2SVTgBHqeeUkIdFLmF6Pb7uGwDqO6PpFBSF5Tr3KhoVm6NNwUEhGWOKcx30P42selEDnLzn8Q",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"amount\": 10000.00,\r\n  \"customerName\": \"Chidi Okafor\",\r\n  \"customerEmail\": \"chidi@example.com\",\r\n  \"paymentReference\": \"ajopay-direct-group042-cycle3-user017-{{$timestamp}}\",\r\n  \"paymentDescription\": \"AjoPay contribution — Group 042 cycle 3\",\r\n  \"currencyCode\": \"NGN\",\r\n  \"contractCode\": \"{{contract_code}}\",\r\n  \"redirectUrl\": \"https://ajopay.app/contribute/confirm\",\r\n  \"paymentMethods\": [\"ACCOUNT_TRANSFER\"]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://sandbox.monnify.com/api/v1/merchant/transactions/init-transaction",
+                  "protocol": "https",
+                  "host": [
+                    "sandbox",
+                    "monnify",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "merchant",
+                    "transactions",
+                    "init-transaction"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 09:56:31 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1c0232dd8657783-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"transactionReference\": \"MNFY|04|20260716105631|000071\",\n        \"paymentReference\": \"ajopay-direct-group042-cycle3-user017-1784195790\",\n        \"merchantName\": \"DuesPay\",\n        \"apiKey\": \"MK_TEST_RZUBQYC54Q\",\n        \"redirectUrl\": \"https://ajopay.app/contribute/confirm\",\n        \"enabledPaymentMethod\": [\n            \"ACCOUNT_TRANSFER\"\n        ],\n        \"checkoutUrl\": \"https://sandbox.sdk.monnify.com/checkout/MNFY|04|20260716105631|000071\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Initialize payment - Get dynamic account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{supabase_service_role_api_key_07st}}XhUKaQw5JcYjWU6AIwFLUhn1aotE28tuVt6Kh85FQKm9QQxCZpRnu59zyl93rv5iV-3w",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"transactionReference\": \"MNFY|04|20260716105631|000071\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/merchant/bank-transfer/init-payment",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "merchant",
+                "bank-transfer",
+                "init-payment"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{supabase_service_role_api_key_07st}}XhUKaQw5JcYjWU6AIwFLUhn1aotE28tuVt6Kh85FQKm9QQxCZpRnu59zyl93rv5iV-3w",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"transactionReference\": \"MNFY|04|20260716105631|000071\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/merchant/bank-transfer/init-payment",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "merchant",
+                    "bank-transfer",
+                    "init-payment"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 09:58:23 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1c025ed8c32956b-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"accountNumber\": \"1000214820\",\n        \"accountName\": \"DuesPay-Ajo\",\n        \"bankName\": \"Wema bank\",\n        \"bankCode\": \"035\",\n        \"accountDurationSeconds\": 2345,\n        \"ussdPayment\": null,\n        \"requestTime\": \"2026-07-16T10:57:30\",\n        \"expiresOn\": \"2026-07-16T11:37:29\",\n        \"transactionReference\": \"MNFY|04|20260716105631|000071\",\n        \"paymentReference\": \"ajopay-direct-group042-cycle3-user017-1784195790\",\n        \"amount\": 10000,\n        \"fee\": 0,\n        \"totalPayable\": 10000,\n        \"collectionChannel\": \"WEB_SDK\",\n        \"productInformation\": null\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Resolve account details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{bearer_token_05vf}}YvJvxoH2Tsv9AnAAFwpO5BevTXcZR0GpW3ORhUrwmqYYcBKl7g",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/disbursements/account/validate?accountNumber=9046665617&bankCode=100004",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "disbursements",
+                "account",
+                "validate"
+              ],
+              "query": [
+                {
+                  "key": "accountNumber",
+                  "value": "9046665617"
+                },
+                {
+                  "key": "bankCode",
+                  "value": "100004"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{bearer_token_05vf}}YvJvxoH2Tsv9AnAAFwpO5BevTXcZR0GpW3ORhUrwmqYYcBKl7g",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/disbursements/account/validate?accountNumber=9046665617&bankCode=100004",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "disbursements",
+                    "account",
+                    "validate"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountNumber",
+                      "value": "9046665617"
+                    },
+                    {
+                      "key": "bankCode",
+                      "value": "100004"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 06:57:14 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-trace-id",
+                  "value": ""
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1bf1c8ccb507773-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"accountNumber\": \"9046665617\",\n        \"accountName\": \"CHINONSO JUSTIN ALI\",\n        \"bankCode\": \"305\",\n        \"currencyCode\": \"NGN\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "List banks",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/banks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "banks"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/banks",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "banks"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 06:57:47 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1bf1d5d6a577773-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": [\n        {\n            \"name\": \"78 FINANCE COMPANY LIMITED\",\n            \"code\": \"110072\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"110072\"\n        },\n        {\n            \"name\": \"9 PAYMENT SOLUTIONS BANK\",\n            \"code\": \"120001\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"120001\"\n        },\n        {\n            \"name\": \"9JAPAY MICROFINANCE BANK\",\n            \"code\": \"090629\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090629\"\n        },\n        {\n            \"name\": \"AB MICROFINANCE BANK \",\n            \"code\": \"090270\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090270\"\n        },\n        {\n            \"name\": \"ABBEY MORTGAGE BANK\",\n            \"code\": \"070010\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070010\"\n        },\n        {\n            \"name\": \"ABOVE ONLY MICROFINANCE BANK \",\n            \"code\": \"090260\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090260\"\n        },\n        {\n            \"name\": \"ABU MICROFINANCE BANK \",\n            \"code\": \"090197\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090197\"\n        },\n        {\n            \"name\": \"Access bank\",\n            \"code\": \"044\",\n            \"ussdTemplate\": \"*901*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*901#\",\n            \"transferUssdTemplate\": \"*901*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000014\"\n        },\n        {\n            \"name\": \"ACCESS MONEY\",\n            \"code\": \"927\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100013\"\n        },\n        {\n            \"name\": \"ACCESS YELLO & BETA\",\n            \"code\": \"100052\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100052\"\n        },\n        {\n            \"name\": \"ACCION MICROFINANCE BANK\",\n            \"code\": \"090134\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090134\"\n        },\n        {\n            \"name\": \"ADA MICROFINANCE BANK\",\n            \"code\": \"090483\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090483\"\n        },\n        {\n            \"name\": \"ADDOSSER MICROFINANCE BANK\",\n            \"code\": \"090160\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090160\"\n        },\n        {\n            \"name\": \"ADEYEMI COLLEGE STAFF MICROFINANCE BANK\",\n            \"code\": \"090268\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090268\"\n        },\n        {\n            \"name\": \"ADVANCLY MFB\",\n            \"code\": \"50134\",\n            \"ussdTemplate\": \"*#*#\",\n            \"baseUssdCode\": \"*#*#\",\n            \"transferUssdTemplate\": \"*#**AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"50134\"\n        },\n        {\n            \"name\": \"AELLA MFB\",\n            \"code\": \"090614\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090614\"\n        },\n        {\n            \"name\": \"AFEKHAFE MICROFINANCE BANK\",\n            \"code\": \"090292\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090292\"\n        },\n        {\n            \"name\": \"AG MORTGAGE BANK\",\n            \"code\": \"100028\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100028\"\n        },\n        {\n            \"name\": \"AKALABO MFB\",\n            \"code\": \"090698\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090698\"\n        },\n        {\n            \"name\": \"AKU Microfinance Bank\",\n            \"code\": \"090531\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090531\"\n        },\n        {\n            \"name\": \"AL-BARAKAH MICROFINANCE BANK\",\n            \"code\": \"090133\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090133\"\n        },\n        {\n            \"name\": \"ALEKUN MICROFINANCE BANK\",\n            \"code\": \"090259\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090259\"\n        },\n        {\n            \"name\": \"ALERT MICROFINANCE BANK\",\n            \"code\": \"090297\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090297\"\n        },\n        {\n            \"name\": \"ALLWORKERS MICROFINANCE BANK\",\n            \"code\": \"090131\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090131\"\n        },\n        {\n            \"name\": \"ALPHA KAPITAL MICROFINANCE BANK \",\n            \"code\": \"090169\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090169\"\n        },\n        {\n            \"name\": \"AMML MICROFINANCE BANK \",\n            \"code\": \"914\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090116\"\n        },\n        {\n            \"name\": \"Amucha Microfinance Bank\",\n            \"code\": \"090645\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090645\"\n        },\n        {\n            \"name\": \"APEKS MICROFINANCE BANK\",\n            \"code\": \"090143\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090143\"\n        },\n        {\n            \"name\": \"ARISE MICROFINANCE BANK\",\n            \"code\": \"090282\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090282\"\n        },\n        {\n            \"name\": \"ASO SAVINGS\",\n            \"code\": \"905\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090001\"\n        },\n        {\n            \"name\": \"ASSETMATRIX MICROFINANCE BANK\",\n            \"code\": \"090287\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090287\"\n        },\n        {\n            \"name\": \"ASSETS MFB\",\n            \"code\": \"090473\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090473\"\n        },\n        {\n            \"name\": \"ASTRAPOLARIS MICROFINANCE BANK\",\n            \"code\": \"090172\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090172\"\n        },\n        {\n            \"name\": \"AUCHI MICROFINANCE BANK \",\n            \"code\": \"090264\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090264\"\n        },\n        {\n            \"name\": \"AVUENEGBE MICROFINANCE BANK\",\n            \"code\": \"090478\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090478\"\n        },\n        {\n            \"name\": \"AWACASH MICROFINANCE BANK\",\n            \"code\": \"51351\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090633\"\n        },\n        {\n            \"name\": \"BAINES CREDIT MICROFINANCE BANK\",\n            \"code\": \"090188\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090188\"\n        },\n        {\n            \"name\": \"BALOGUN GAMBARI MICROFINANCE BANK\",\n            \"code\": \"090326\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090326\"\n        },\n        {\n            \"name\": \"BAM MICROFINANCE BANK\",\n            \"code\": \"090651\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090651\"\n        },\n        {\n            \"name\": \"BANKLY MFB\",\n            \"code\": \"090529\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090529\"\n        },\n        {\n            \"name\": \"BAOBAB MICROFINANCE BANK\",\n            \"code\": \"090136\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090136\"\n        },\n        {\n            \"name\": \"BC KASH MICROFINANCE BANK\",\n            \"code\": \"090127\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090127\"\n        },\n        {\n            \"name\": \"Beststar MFB\",\n            \"code\": \"090615\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090615\"\n        },\n        {\n            \"name\": \"BETHEL MICROFINANCE BANK\",\n            \"code\": \"090683\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090683\"\n        },\n        {\n            \"name\": \"BIPC MICROFINANCE BANK\",\n            \"code\": \"090336\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090336\"\n        },\n        {\n            \"name\": \"BOCTRUST MICROFINANCE BANK LIMITED\",\n            \"code\": \"952\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090117\"\n        },\n        {\n            \"name\": \"BOKKOS MFB\",\n            \"code\": \"090703\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090703\"\n        },\n        {\n            \"name\": \"BOROMU MICROFINANCE BANK\",\n            \"code\": \"090501\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090501\"\n        },\n        {\n            \"name\": \"BOSAK MICROFINANCE BANK\",\n            \"code\": \"090176\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090176\"\n        },\n        {\n            \"name\": \"Bowen Microfinance Bank\",\n            \"code\": \"50931\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090148\"\n        },\n        {\n            \"name\": \"Branch International Financial Services\",\n            \"code\": \"005\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"050006\"\n        },\n        {\n            \"name\": \"BRENT MORTGAGE BANK\",\n            \"code\": \"070015\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070015\"\n        },\n        {\n            \"name\": \"BRIGHTWAY MICROFINANCE BANK\",\n            \"code\": \"090308\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090308\"\n        },\n        {\n            \"name\": \"BUILD MICROFINANCE BANK\",\n            \"code\": \"090613\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090613\"\n        },\n        {\n            \"name\": \"BUYPOWER MICROFINANCE BANK\",\n            \"code\": \"090682\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090682\"\n        },\n        {\n            \"name\": \"CAPITALMETRIQ\",\n            \"code\": \"51319\",\n            \"ussdTemplate\": \"*#**\",\n            \"baseUssdCode\": \"*#**\",\n            \"transferUssdTemplate\": \"*#**AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"51319\"\n        },\n        {\n            \"name\": \"CARBON\",\n            \"code\": \"940\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100026\"\n        },\n        {\n            \"name\": \"CASHBRIDGE MICROFINANCE BANK\",\n            \"code\": \"090634\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090634\"\n        },\n        {\n            \"name\": \"CASHCONNECT MICROFINANCE BANK\",\n            \"code\": \"090360\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090360\"\n        },\n        {\n            \"name\": \"CELLULANT\",\n            \"code\": \"919\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100005\"\n        },\n        {\n            \"name\": \"CEMCS Microfinance Bank\",\n            \"code\": \"50823\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090154\"\n        },\n        {\n            \"name\": \"CHAMS MOBILE\",\n            \"code\": \"929\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100015\"\n        },\n        {\n            \"name\": \"CHIKUM MICROFINANCE BANK\",\n            \"code\": \"090141\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090141\"\n        },\n        {\n            \"name\": \"Chikum Microfinance Bank Ltd\",\n            \"code\": \"191\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090141\"\n        },\n        {\n            \"name\": \"Citibank Nigeria\",\n            \"code\": \"023\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000009\"\n        },\n        {\n            \"name\": \"CITYCODE MORTGAGE BANK\",\n            \"code\": \"070027\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070027\"\n        },\n        {\n            \"name\": \"Clearpay Microfinance Bank\",\n            \"code\": \"090482\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090482\"\n        },\n        {\n            \"name\": \"COASTLINE MICROFINANCE BANK\",\n            \"code\": \"090374\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090374\"\n        },\n        {\n            \"name\": \"CONPRO MICROFINANCE BANK\",\n            \"code\": \"090380\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090380\"\n        },\n        {\n            \"name\": \"CONSUMER MICROFINANCE BANK\",\n            \"code\": \"090130\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090130\"\n        },\n        {\n            \"name\": \"CONTEC GLOBAL INFOTECH LIMITED(NOWNOW)\",\n            \"code\": \"100032\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100032\"\n        },\n        {\n            \"name\": \"CORESTEP MICROFINANCE BANK\",\n            \"code\": \"090365\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090365\"\n        },\n        {\n            \"name\": \"Coronation Bank\",\n            \"code\": \"946\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"060001\"\n        },\n        {\n            \"name\": \"County Finance Limited\",\n            \"code\": \"050001\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"050001\"\n        },\n        {\n            \"name\": \"COVENANT MFB\",\n            \"code\": \"949\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070006\"\n        },\n        {\n            \"name\": \"CREDIT AFRIQUE MICROFINANCE BANK\",\n            \"code\": \"090159\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090159\"\n        },\n        {\n            \"name\": \"CRUST MICROFINANCE BANK\",\n            \"code\": \"51036\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090560\"\n        },\n        {\n            \"name\": \"CRUTECH  MFB\",\n            \"code\": \"090414\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090414\"\n        },\n        {\n            \"name\": \"CSD MICROFINANCE BANK\",\n            \"code\": \"090686\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090686\"\n        },\n        {\n            \"name\": \"DAL MFB\",\n            \"code\": \"090596\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090596\"\n        },\n        {\n            \"name\": \"DAVENPORT MICROFINANCE BANK\",\n            \"code\": \"090673\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090673\"\n        },\n        {\n            \"name\": \"DAVODANI  MICROFINANCE BANK\",\n            \"code\": \"090391\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090391\"\n        },\n        {\n            \"name\": \"DAYLIGHT MICROFINANCE BANK\",\n            \"code\": \"090167\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090167\"\n        },\n        {\n            \"name\": \"DESTINY MFB\",\n            \"code\": \"090723\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090723\"\n        },\n        {\n            \"name\": \"Diamond bank\",\n            \"code\": \"063\",\n            \"ussdTemplate\": \"*710*777*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*710#\",\n            \"transferUssdTemplate\": \"*710*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000005\"\n        },\n        {\n            \"name\": \"DOJE Microfinance Bank Limited\",\n            \"code\": \"090404\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090404\"\n        },\n        {\n            \"name\": \"DW MFB\",\n            \"code\": \"090721\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090721\"\n        },\n        {\n            \"name\": \"E-BARCS MICROFINANCE BANK\",\n            \"code\": \"090156\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090156\"\n        },\n        {\n            \"name\": \"EAGLE FLIGHT MICROFINANCE BANK\",\n            \"code\": \"090294\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090294\"\n        },\n        {\n            \"name\": \"Earnwell MICROFINANCE BANK\",\n            \"code\": \"090674\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090674\"\n        },\n        {\n            \"name\": \"EARTHOLEUM\",\n            \"code\": \"935\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100021\"\n        },\n        {\n            \"name\": \"Ecobank Nigeria Plc\",\n            \"code\": \"050\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": \"*326#\",\n            \"transferUssdTemplate\": \"*326*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000010\"\n        },\n        {\n            \"name\": \"ECOBANK XPRESS ACCOUNT\",\n            \"code\": \"922\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100008\"\n        },\n        {\n            \"name\": \"ECOMOBILE\",\n            \"code\": \"307\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100030\"\n        },\n        {\n            \"name\": \"EJINDU MFB\",\n            \"code\": \"090694\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090694\"\n        },\n        {\n            \"name\": \"EK-RELIABLE MICROFINANCE BANK\",\n            \"code\": \"090389\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090389\"\n        },\n        {\n            \"name\": \"EKIMOGUN MFB\",\n            \"code\": \"090552\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090552\"\n        },\n        {\n            \"name\": \"EKONDO MICROFINANCE BANK\",\n            \"code\": \"090097\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090097\"\n        },\n        {\n            \"name\": \"EMERALD MICROFINANCE BANK\",\n            \"code\": \"090273\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090273\"\n        },\n        {\n            \"name\": \"EMPIRE TRUST MICROFINANCE BANK\",\n            \"code\": \"913\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090114\"\n        },\n        {\n            \"name\": \"ENTERPRISE BANK\",\n            \"code\": \"084\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000019\"\n        },\n        {\n            \"name\": \"ESO-E MICROFINANCE BANK\",\n            \"code\": \"090166\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090166\"\n        },\n        {\n            \"name\": \"eTRANZACT\",\n            \"code\": \"920\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100006\"\n        },\n        {\n            \"name\": \"EVANGEL MICROFINANCE BANK \",\n            \"code\": \"090304\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090304\"\n        },\n        {\n            \"name\": \"EVERGREEN MICROFINANCE BANK\",\n            \"code\": \"090332\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090332\"\n        },\n        {\n            \"name\": \"EXCEL MICROFINANCE BANK\",\n            \"code\": \"090678\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090678\"\n        },\n        {\n            \"name\": \"Eyowo\",\n            \"code\": \"50126\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090328\"\n        },\n        {\n            \"name\": \"FairMoney\",\n            \"code\": \"51318\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090551\"\n        },\n        {\n            \"name\": \"FAST MICROFINANCE BANK\",\n            \"code\": \"090179\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090179\"\n        },\n        {\n            \"name\": \"FBNQUEST MERCHANT BANK\",\n            \"code\": \"911\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"060002\"\n        },\n        {\n            \"name\": \"FCMB MOBILE\",\n            \"code\": \"100031\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100031\"\n        },\n        {\n            \"name\": \"FCT MICROFINANCE BANK\",\n            \"code\": \"090290\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090290\"\n        },\n        {\n            \"name\": \"Federal Polytechnic Nekede Microfinance Bank\",\n            \"code\": \"090398\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090398\"\n        },\n        {\n            \"name\": \"FEDPOLY NASARAWA MICROFINANCE BANK\",\n            \"code\": \"090298\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090298\"\n        },\n        {\n            \"name\": \"FETS\",\n            \"code\": \"915\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100001\"\n        },\n        {\n            \"name\": \"FEWCHORE FINANCE COMAPNY LIMITED\",\n            \"code\": \"050002\",\n            \"ussdTemplate\": \"*#\",\n            \"baseUssdCode\": \"*#\",\n            \"transferUssdTemplate\": \"**AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"050002\"\n        },\n        {\n            \"name\": \"FFS MICROFINANCE BANK\",\n            \"code\": \"090153\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090153\"\n        },\n        {\n            \"name\": \"Fidelity bank\",\n            \"code\": \"070\",\n            \"ussdTemplate\": \"*770*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*770#\",\n            \"transferUssdTemplate\": \"*770*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000007\"\n        },\n        {\n            \"name\": \"FIDELITY MOBILE\",\n            \"code\": \"933\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100019\"\n        },\n        {\n            \"name\": \"FIDFUND MICROFINANCE Bank\",\n            \"code\": \"090126\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090126\"\n        },\n        {\n            \"name\": \"FINATRUST MICROFINANCE BANK\",\n            \"code\": \"090111\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090111\"\n        },\n        {\n            \"name\": \"FINCA MICROFINANCE BANK\",\n            \"code\": \"090400\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090400\"\n        },\n        {\n            \"name\": \"FIRMUS MICROFINANCE BANK\",\n            \"code\": \"090366\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090366\"\n        },\n        {\n            \"name\": \"First bank\",\n            \"code\": \"011\",\n            \"ussdTemplate\": \"*894*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*894#\",\n            \"transferUssdTemplate\": \"*894*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000016\"\n        },\n        {\n            \"name\": \"First City Monument Bank Plc\",\n            \"code\": \"214\",\n            \"ussdTemplate\": \"*329*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*329#\",\n            \"transferUssdTemplate\": \"*329*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000003\"\n        },\n        {\n            \"name\": \"FIRST GENERATION MORTGAGE BANK\",\n            \"code\": \"070014\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070014\"\n        },\n        {\n            \"name\": \"FIRST OPTION MICROFINANCE BANK\",\n            \"code\": \"090285\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090285\"\n        },\n        {\n            \"name\": \"FIRST ROYAL MICROFINANCE BANK\",\n            \"code\": \"090164\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090164\"\n        },\n        {\n            \"name\": \"FIRST TRUST MORTGAGE BANK PLC\",\n            \"code\": \"910\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090107\"\n        },\n        {\n            \"name\": \"FIRSTMONIE WALLET\",\n            \"code\": \"928\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100014\"\n        },\n        {\n            \"name\": \"FLUTTERWAVE TECHNOLOGY SOLUTIONS LIMITED\",\n            \"code\": \"110002\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"110002\"\n        },\n        {\n            \"name\": \"FOCUS MFB\",\n            \"code\": \"090709\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": null\n        },\n        {\n            \"name\": \"FORTIS MICROFINANCE BANK\",\n            \"code\": \"948\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070002\"\n        },\n        {\n            \"name\": \"FORTIS MOBILE\",\n            \"code\": \"930\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100016\"\n        },\n        {\n            \"name\": \"FSDH\",\n            \"code\": \"400001\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"400001\"\n        },\n        {\n            \"name\": \"FULLRANGE MICROFINANCE BANK\",\n            \"code\": \"090145\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090145\"\n        },\n        {\n            \"name\": \"FUTO MICROFINANCE BANK\",\n            \"code\": \"090158\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090158\"\n        },\n        {\n            \"name\": \"Gabsyn Microfinance Bank Limited\",\n            \"code\": \"090591\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090591\"\n        },\n        {\n            \"name\": \"Garun Mallam MFB\",\n            \"code\": \"090691\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090691\"\n        },\n        {\n            \"name\": \"GATEWAY MORTGAGE BANK\",\n            \"code\": \"070009\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070009\"\n        },\n        {\n            \"name\": \"GDL FINANCE\",\n            \"code\": \"050026\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"050026\"\n        },\n        {\n            \"name\": \"Globus\",\n            \"code\": \"00103\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"103\"\n        },\n        {\n            \"name\": \"Globus Bank\",\n            \"code\": \"103\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000027\"\n        },\n        {\n            \"name\": \"GLORY MICROFINANCE BANK\",\n            \"code\": \"090278\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090278\"\n        },\n        {\n            \"name\": \"GOLDMAN MICROFINANCE BANK\",\n            \"code\": \"50356\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090574\"\n        },\n        {\n            \"name\": \"GOOD SHEPHERD MICROFINANCE BANK\",\n            \"code\": \"090664\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090664\"\n        },\n        {\n            \"name\": \"GOODNEWS MICROFINANCE BANK\",\n            \"code\": \"090495\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090495\"\n        },\n        {\n            \"name\": \"GOSIFECHUKWU MFB\",\n            \"code\": \"090687\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090687\"\n        },\n        {\n            \"name\": \"GOWANS MICROFINANCE BANK\",\n            \"code\": \"090122\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090122\"\n        },\n        {\n            \"name\": \"GRANTS MICROFINANCE BANK\",\n            \"code\": \"090335\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090335\"\n        },\n        {\n            \"name\": \"Greenacres MFB\",\n            \"code\": \"090599\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": null\n        },\n        {\n            \"name\": \"GREENBANK MICROFINANCE BANK\",\n            \"code\": \"090178\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090178\"\n        },\n        {\n            \"name\": \"Greenwich Merchant Bank\",\n            \"code\": \"060004\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"060004\"\n        },\n        {\n            \"name\": \"GROOMING MICROFINANCE BANK\",\n            \"code\": \"090195\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090195\"\n        },\n        {\n            \"name\": \"GT MOBILE\",\n            \"code\": \"923\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100009\"\n        },\n        {\n            \"name\": \"GTBank\",\n            \"code\": \"058\",\n            \"ussdTemplate\": \"*737*2*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*737#\",\n            \"transferUssdTemplate\": \"*737*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000013\"\n        },\n        {\n            \"name\": \"GTI MICROFINANCE BANK\",\n            \"code\": \"090385\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090385\"\n        },\n        {\n            \"name\": \"Hackman Microfinance Bank\",\n            \"code\": \"51251\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090147\"\n        },\n        {\n            \"name\": \"HAGGAI MORTGAGE BANK LIMITED\",\n            \"code\": \"070017\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070017\"\n        },\n        {\n            \"name\": \"HALO MICROFINANCE BANK\",\n            \"code\": \"090539\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090539\"\n        },\n        {\n            \"name\": \"Hasal Microfinance Bank\",\n            \"code\": \"50383\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090121\"\n        },\n        {\n            \"name\": \"HEADWAY MICROFINANCE BANK\",\n            \"code\": \"090363\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090363\"\n        },\n        {\n            \"name\": \"HEDONMARK\",\n            \"code\": \"931\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100017\"\n        },\n        {\n            \"name\": \"Heritage bank\",\n            \"code\": \"030\",\n            \"ussdTemplate\": \"*322*030*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*322#\",\n            \"transferUssdTemplate\": \"*322*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000020\"\n        },\n        {\n            \"name\": \"HopePSB\",\n            \"code\": \"120002\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"120002\"\n        },\n        {\n            \"name\": \"Ibile Microfinance Bank\",\n            \"code\": \"51244\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090118\"\n        },\n        {\n            \"name\": \"IHIALA MFB\",\n            \"code\": \"090725\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090725\"\n        },\n        {\n            \"name\": \"IKENNE MICROFINANCE BANK\",\n            \"code\": \"090324\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090324\"\n        },\n        {\n            \"name\": \"IKIRE MICROFINANCE BANK\",\n            \"code\": \"090275\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090275\"\n        },\n        {\n            \"name\": \"IKIRE MICROFINANCE BANK\",\n            \"code\": \"090279\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090279\"\n        },\n        {\n            \"name\": \"IKOYI ILE MICROFINANCE BANK\",\n            \"code\": \"090681\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090681\"\n        },\n        {\n            \"name\": \"ILISAN MICROFINANCE BANK\",\n            \"code\": \"090370\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090370\"\n        },\n        {\n            \"name\": \"IMO STATE MICROFINANCE BANK\",\n            \"code\": \"090258\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090258\"\n        },\n        {\n            \"name\": \"IMPERIAL HOMES MORTGAGE BANK\",\n            \"code\": \"938\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100024\"\n        },\n        {\n            \"name\": \"IMSU MICROFINANCE BANK\",\n            \"code\": \"090670\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090670\"\n        },\n        {\n            \"name\": \"Infinity MFB\",\n            \"code\": \"50457\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090157\"\n        },\n        {\n            \"name\": \"INFINITY TRUST MORTGAGE BANK\",\n            \"code\": \"070016\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070016\"\n        },\n        {\n            \"name\": \"INNOVECTIVES KESH\",\n            \"code\": \"100029\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100029\"\n        },\n        {\n            \"name\": \"INSIGHT MICROFINANCE BANK\",\n            \"code\": \"090434\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090434\"\n        },\n        {\n            \"name\": \"INTELLFIN\",\n            \"code\": \"941\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100027\"\n        },\n        {\n            \"name\": \"INTERLAND MICROFINANCE BANK\",\n            \"code\": \"090386\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090386\"\n        },\n        {\n            \"name\": \"IRL MICROFINANCE BANK\",\n            \"code\": \"090149\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090149\"\n        },\n        {\n            \"name\": \"ISALEOYO MICROFINANCE BANK\",\n            \"code\": \"090377\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090377\"\n        },\n        {\n            \"name\": \"ISUA MFB\",\n            \"code\": \"090701\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090701\"\n        },\n        {\n            \"name\": \"ISUOFIA MICROFINANCE BANK\",\n            \"code\": \"090353\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090353\"\n        },\n        {\n            \"name\": \"JAIZ BANK\",\n            \"code\": \"301\",\n            \"ussdTemplate\": \"*389*301*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*389#\",\n            \"transferUssdTemplate\": \"*389*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000006\"\n        },\n        {\n            \"name\": \"JUBILEE LIFE\",\n            \"code\": \"906\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090003\"\n        },\n        {\n            \"name\": \"KADPOLY MICROFINANCE BANK\",\n            \"code\": \"090320\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090320\"\n        },\n        {\n            \"name\": \"KADUPE MICROFINANCE BANK\",\n            \"code\": \"090669\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090669\"\n        },\n        {\n            \"name\": \"KAYI MICROFINANCE BANK\",\n            \"code\": \"090667\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090667\"\n        },\n        {\n            \"name\": \"Kayvee MICROFINANCE BANK\",\n            \"code\": \"090554\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090554\"\n        },\n        {\n            \"name\": \"Kenechukwu microfinance bank\",\n            \"code\": \"513\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090602\"\n        },\n        {\n            \"name\": \"Keystone bank\",\n            \"code\": \"082\",\n            \"ussdTemplate\": \"*7111*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*7111#\",\n            \"transferUssdTemplate\": \"*7111*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000002\"\n        },\n        {\n            \"name\": \"KONTAGORA MICROFINANCE BANK\",\n            \"code\": \"090299\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090299\"\n        },\n        {\n            \"name\": \"Kuda MFB\",\n            \"code\": \"090267\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"50211\"\n        },\n        {\n            \"name\": \"Kuda Microfinance Bank\",\n            \"code\": \"50211\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": \"*5573#\",\n            \"transferUssdTemplate\": \"*5573*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"090267\"\n        },\n        {\n            \"name\": \"LAGOS BUILDING AND INVESTMENT COMPANY\",\n            \"code\": \"070012\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070012\"\n        },\n        {\n            \"name\": \"Lagos Building Investment Company Plc.\",\n            \"code\": \"90052\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"90052\"\n        },\n        {\n            \"name\": \"LAPO MICROFINANCE BANK\",\n            \"code\": \"090177\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090177\"\n        },\n        {\n            \"name\": \"LAVENDER MICROFINANCE BANK\",\n            \"code\": \"090271\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090271\"\n        },\n        {\n            \"name\": \"LEGEND MICROFINANCE BANK\",\n            \"code\": \"090372\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090372\"\n        },\n        {\n            \"name\": \"Letshego MFB\",\n            \"code\": \"216\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090420\"\n        },\n        {\n            \"name\": \"Links Microfinance Bank\",\n            \"code\": \"090435\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090435\"\n        },\n        {\n            \"name\": \"LOMA MICROFINANCE BANK\",\n            \"code\": \"090620\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090620\"\n        },\n        {\n            \"name\": \"LOTUS Bank\",\n            \"code\": \"303\",\n            \"ussdTemplate\": \"*303#\",\n            \"baseUssdCode\": \"\",\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000029\"\n        },\n        {\n            \"name\": \"LOVONUS MICROFINANCE BANK\",\n            \"code\": \"090265\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090265\"\n        },\n        {\n            \"name\": \"M&M MICROFINANCE BANK\",\n            \"code\": \"090685\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090685\"\n        },\n        {\n            \"name\": \"M36\",\n            \"code\": \"100035\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100035\"\n        },\n        {\n            \"name\": \"Madobi MFB\",\n            \"code\": \"090605\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": null\n        },\n        {\n            \"name\": \"MAINSTREET MICROFINANCE BANK\",\n            \"code\": \"090171\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090171\"\n        },\n        {\n            \"name\": \"MANNY MICROFINANCE BANK\",\n            \"code\": \"090383\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090383\"\n        },\n        {\n            \"name\": \"MAYFAIR MICROFINANCE BANK\",\n            \"code\": \"090321\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090321\"\n        },\n        {\n            \"name\": \"MAYFRESH MORTGAGE BANK\",\n            \"code\": \"070019\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070019\"\n        },\n        {\n            \"name\": \"MEGAPRAISE MICROFINANCE BANK\",\n            \"code\": \"090280\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090280\"\n        },\n        {\n            \"name\": \"MICROVIS MICROFINANCE BANK \",\n            \"code\": \"090113\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090113\"\n        },\n        {\n            \"name\": \"Mint Microfinance Bank\",\n            \"code\": \"51406\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090763\"\n        },\n        {\n            \"name\": \"MINT-FINEX MFB\",\n            \"code\": \"090281\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090281\"\n        },\n        {\n            \"name\": \"MOLUSI MICROFINANCE BANK\",\n            \"code\": \"090362\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090362\"\n        },\n        {\n            \"name\": \"MoMo PSB\",\n            \"code\": \"120003\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"120003\"\n        },\n        {\n            \"name\": \"MONEY BOX\",\n            \"code\": \"934\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100020\"\n        },\n        {\n            \"name\": \"MONEY TRUST MICROFINANCE BANK\",\n            \"code\": \"963\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090129\"\n        },\n        {\n            \"name\": \"MONEYFIELD MICROFINANCE BANK\",\n            \"code\": \"090144\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090144\"\n        },\n        {\n            \"name\": \"Moneymaster PSB\",\n            \"code\": \"120005\",\n            \"ussdTemplate\": \"*0000#\",\n            \"baseUssdCode\": \"\",\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"120005\"\n        },\n        {\n            \"name\": \"Moniepoint Microfinance Bank\",\n            \"code\": \"50515\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090405\"\n        },\n        {\n            \"name\": \"MOZFIN MICROFINANCE BANK\",\n            \"code\": \"090392\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090392\"\n        },\n        {\n            \"name\": \"MUTUAL ALLIANCE MORTGAGE BANK\",\n            \"code\": \"070028\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070028\"\n        },\n        {\n            \"name\": \"MUTUAL BENEFITS MFB\",\n            \"code\": \"090190\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090190\"\n        },\n        {\n            \"name\": \"MUTUAL TRUST MICROFINANCE BANK\",\n            \"code\": \"090151\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090151\"\n        },\n        {\n            \"name\": \"NDDC MICROFINANCE BANK\",\n            \"code\": \"90679\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"90679\"\n        },\n        {\n            \"name\": \"NDIORAH MICROFINANCE BANK\",\n            \"code\": \"090128\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090128\"\n        },\n        {\n            \"name\": \"NEPTUNE MICROFINANCE BANK\",\n            \"code\": \"090329\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090329\"\n        },\n        {\n            \"name\": \"NET MFB\",\n            \"code\": \"90675\",\n            \"ussdTemplate\": \"0001\",\n            \"baseUssdCode\": \"\",\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"90675\"\n        },\n        {\n            \"name\": \"NET MFB\",\n            \"code\": \"090675\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090675\"\n        },\n        {\n            \"name\": \"NEW DAWN MICROFINANCE BANK\",\n            \"code\": \"090205\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090205\"\n        },\n        {\n            \"name\": \"NEW GOLDEN PASTURES MICROFINANCE BANK\",\n            \"code\": \"090378\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090378\"\n        },\n        {\n            \"name\": \"NIGERIAN NAVY MICROFINANCE BANK \",\n            \"code\": \"090263\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090263\"\n        },\n        {\n            \"name\": \"NIRSAL NATIONAL MICROFINANCE BANK\",\n            \"code\": \"090194\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090194\"\n        },\n        {\n            \"name\": \"NNEW WOMEN MICROFINANCE BANK\",\n            \"code\": \"090283\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090283\"\n        },\n        {\n            \"name\": \"NOVA MERCHANT BANK\",\n            \"code\": \"637\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"060003\"\n        },\n        {\n            \"name\": \"NOVUS MFB\",\n            \"code\": \"51371\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090734\"\n        },\n        {\n            \"name\": \"NPF MICROFINANCE BANK\",\n            \"code\": \"947\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070001\"\n        },\n        {\n            \"name\": \"NUGGETS MFB\",\n            \"code\": \"090676\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090676\"\n        },\n        {\n            \"name\": \"NUTURE MICROFINANCE BANK\",\n            \"code\": \"090364\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090364\"\n        },\n        {\n            \"name\": \"NWANNEGADI MICROFINANCE BANK\",\n            \"code\": \"090399\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090399\"\n        },\n        {\n            \"name\": \"OCHE MICROFINANCE BANK\",\n            \"code\": \"090333\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090333\"\n        },\n        {\n            \"name\": \"OCTOPUS MICROFINANCE BANK\",\n            \"code\": \"090576\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090576\"\n        },\n        {\n            \"name\": \"OHAFIA MICROFINANCE BANK\",\n            \"code\": \"090119\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090119\"\n        },\n        {\n            \"name\": \"OK MICROFINANCE BANK\",\n            \"code\": \"090567\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090567\"\n        },\n        {\n            \"name\": \"OKENGWE MICROFINANCE BANK\",\n            \"code\": \"090646\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090646\"\n        },\n        {\n            \"name\": \"OKPOGA MICROFINANCE BANK\",\n            \"code\": \"090161\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090161\"\n        },\n        {\n            \"name\": \"OLABISI ONABANJO UNIVERSITY MICROFINANCE \",\n            \"code\": \"090272\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090272\"\n        },\n        {\n            \"name\": \"OLIVE MFB\",\n            \"code\": \"090696\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090696\"\n        },\n        {\n            \"name\": \"OMIYE MICROFINANCE BANK\",\n            \"code\": \"090295\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090295\"\n        },\n        {\n            \"name\": \"OMOLUABI\",\n            \"code\": \"950\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070007\"\n        },\n        {\n            \"name\": \"OPAY 3\",\n            \"code\": \"999992\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"999992\"\n        },\n        {\n            \"name\": \"OPTIMUS BANK\",\n            \"code\": \"00107\",\n            \"ussdTemplate\": \"0000\",\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000036\"\n        },\n        {\n            \"name\": \"OSCOTECH MICROFINANCE BANK\",\n            \"code\": \"090396\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090396\"\n        },\n        {\n            \"name\": \"OTUO MICROFINANCE BANK\",\n            \"code\": \"090542\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090542\"\n        },\n        {\n            \"name\": \"PAGA\",\n            \"code\": \"327\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100002\"\n        },\n        {\n            \"name\": \"PAGA - 100002\",\n            \"code\": \"100002\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"327\"\n        },\n        {\n            \"name\": \"PAGE MFBank\",\n            \"code\": \"951\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070008\"\n        },\n        {\n            \"name\": \"PALMPAY\",\n            \"code\": \"100033\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100033\"\n        },\n        {\n            \"name\": \"PARALLEX\",\n            \"code\": \"907\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000030\"\n        },\n        {\n            \"name\": \"Parkway Microfinance Bank\",\n            \"code\": \"090390\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090390\"\n        },\n        {\n            \"name\": \"Parkway Projects\",\n            \"code\": \"311\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100003\"\n        },\n        {\n            \"name\": \"PARKWAY-READYCASH\",\n            \"code\": \"917\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100003\"\n        },\n        {\n            \"name\": \"PATHFINDER MICROFINANACE BANK LIMITED\",\n            \"code\": \"090680\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090680\"\n        },\n        {\n            \"name\": \"PATRICKGOLD MICROFINANCE BANK\",\n            \"code\": \"090317\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090317\"\n        },\n        {\n            \"name\": \"PAYATTITUDE ONLINE\",\n            \"code\": \"943\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"110001\"\n        },\n        {\n            \"name\": \"PAYCOM (OPAY)\",\n            \"code\": \"305\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100004\"\n        },\n        {\n            \"name\": \"PAYSTACK PAYMENTS LIMITED\",\n            \"code\": \"110006\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"110006\"\n        },\n        {\n            \"name\": \"PECANTRUST MICROFINANCE BANK\",\n            \"code\": \"090137\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090137\"\n        },\n        {\n            \"name\": \"PENNYWISE MICROFINANCE BANK \",\n            \"code\": \"090196\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090196\"\n        },\n        {\n            \"name\": \"PERSONAL TRUST MICROFINANCE BANK\",\n            \"code\": \"090135\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090135\"\n        },\n        {\n            \"name\": \"Petra Mircofinance Bank Plc\",\n            \"code\": \"50746\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090165\"\n        },\n        {\n            \"name\": \"PFI FINANCE COMPANY LIMITED\",\n            \"code\": \"050021\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"050021\"\n        },\n        {\n            \"name\": \"PILLAR MICROFINANCE BANK\",\n            \"code\": \"090289\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090289\"\n        },\n        {\n            \"name\": \"PLATINUM MORTGAGE BANK\",\n            \"code\": \"070013\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070013\"\n        },\n        {\n            \"name\": \"Polaris Bank\",\n            \"code\": \"076\",\n            \"ussdTemplate\": \"*833*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*833#\",\n            \"transferUssdTemplate\": \"*833*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000008\"\n        },\n        {\n            \"name\": \"POLYIBADAN MFB\",\n            \"code\": \"090534\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090534\"\n        },\n        {\n            \"name\": \"POLYUNWANA MICROFINANCE BANK\",\n            \"code\": \"090296\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090296\"\n        },\n        {\n            \"name\": \"Premier Microfinance Bank\",\n            \"code\": \"090779\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090779\"\n        },\n        {\n            \"name\": \"Premium Trust Bank\",\n            \"code\": \"105\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000031\"\n        },\n        {\n            \"name\": \"PRESTIGE MICROFINANCE BANK\",\n            \"code\": \"090274\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090274\"\n        },\n        {\n            \"name\": \"Prospa Capital Microfinance Bank\",\n            \"code\": \"50739\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090495\"\n        },\n        {\n            \"name\": \"PROSPECTS MFB\",\n            \"code\": \"090689\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090689\"\n        },\n        {\n            \"name\": \"PROSPERITY MFB\",\n            \"code\": \"090642\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090642\"\n        },\n        {\n            \"name\": \"Providus Bank\",\n            \"code\": \"101\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000023\"\n        },\n        {\n            \"name\": \"PRUDENT MICROFINANCE BANK\",\n            \"code\": \"090690\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090690\"\n        },\n        {\n            \"name\": \"PURPLEMONEY MICROFINANCE BANK\",\n            \"code\": \"090303\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090303\"\n        },\n        {\n            \"name\": \"Qube Microfinance Bank\",\n            \"code\": \"090569\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090569\"\n        },\n        {\n            \"name\": \"QUICKFUND MICROFINANCE BANK\",\n            \"code\": \"090261\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090261\"\n        },\n        {\n            \"name\": \"RAND MERCHANT BANK\",\n            \"code\": \"502\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000024\"\n        },\n        {\n            \"name\": \"RANDALPHA MICROFINANCE BANK\",\n            \"code\": \"90496\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"90496\"\n        },\n        {\n            \"name\": \"Randalpha Microfinance Bank\",\n            \"code\": \"090496\",\n            \"ussdTemplate\": \"*#*\",\n            \"baseUssdCode\": \"*#*\",\n            \"transferUssdTemplate\": \"*#*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"090496\"\n        },\n        {\n            \"name\": \"REFUGE MORTGAGE BANK\",\n            \"code\": \"070011\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"070011\"\n        },\n        {\n            \"name\": \"REGENT MICROFINANCE BANK\",\n            \"code\": \"955\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090125\"\n        },\n        {\n            \"name\": \"Rehoboth Microfinance bank\",\n            \"code\": \"090463\",\n            \"ussdTemplate\": \"*0000*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*000#\",\n            \"transferUssdTemplate\": \"*000*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"090463\"\n        },\n        {\n            \"name\": \"RENMONEY MICROFINANCE BANK \",\n            \"code\": \"090198\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090198\"\n        },\n        {\n            \"name\": \"REPHIDIM MICROFINANCE BANK\",\n            \"code\": \"090322\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090322\"\n        },\n        {\n            \"name\": \"REX Microfinance Bank\",\n            \"code\": \"090449\",\n            \"ussdTemplate\": \"090449\",\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": null\n        },\n        {\n            \"name\": \"RICHWAY MICROFINANCE BANK\",\n            \"code\": \"090132\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090132\"\n        },\n        {\n            \"name\": \"ROCKSHIELD MICROFINANCE BANK\",\n            \"code\": \"090547\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090547\"\n        },\n        {\n            \"name\": \"ROYAL EXCHANGE MICROFINANCE BANK\",\n            \"code\": \"090138\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090138\"\n        },\n        {\n            \"name\": \"RSU MICROFINANCE BANK\",\n            \"code\": \"090535\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090535\"\n        },\n        {\n            \"name\": \"Rubies Micro-finance Bank\",\n            \"code\": \"125\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090175\"\n        },\n        {\n            \"name\": \"RUBIES MICROFINANCE BANK\",\n            \"code\": \"090175\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090175\"\n        },\n        {\n            \"name\": \"SAFE HAVEN MICROFINANCE BANK\",\n            \"code\": \"090286\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090286\"\n        },\n        {\n            \"name\": \"SAFETRUST\",\n            \"code\": \"909\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090006\"\n        },\n        {\n            \"name\": \"SAGAMU MICROFINANCE BANK\",\n            \"code\": \"966\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090140\"\n        },\n        {\n            \"name\": \"SEAP Microfinance Bank\",\n            \"code\": \"090513\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090513\"\n        },\n        {\n            \"name\": \"SEED CAPITAL MICROFINANCE BANK\",\n            \"code\": \"609\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090112\"\n        },\n        {\n            \"name\": \"SEEDVEST MICROFINANCE BANK\",\n            \"code\": \"090369\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090369\"\n        },\n        {\n            \"name\": \"SHALOM MFB\",\n            \"code\": \"090502\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090502\"\n        },\n        {\n            \"name\": \"Signature Bank\",\n            \"code\": \"000034\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000034\"\n        },\n        {\n            \"name\": \"SmartCash\",\n            \"code\": \"00803\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"120004\"\n        },\n        {\n            \"name\": \"Sparkle Microfinance Bank\",\n            \"code\": \"51310\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090325\"\n        },\n        {\n            \"name\": \"STANBIC IBTC @Ease WALLET\",\n            \"code\": \"921\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100007\"\n        },\n        {\n            \"name\": \"Stanbic IBTC Bank Ltd.\",\n            \"code\": \"221\",\n            \"ussdTemplate\": \"*909*22*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*909#\",\n            \"transferUssdTemplate\": \"*909*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000012\"\n        },\n        {\n            \"name\": \"Standard Chartered Bank Nigeria Ltd.\",\n            \"code\": \"068\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000021\"\n        },\n        {\n            \"name\": \"STANFORD MICROFINANACE BANK\",\n            \"code\": \"090162\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090162\"\n        },\n        {\n            \"name\": \"STELLAS MICROFINANCE BANK \",\n            \"code\": \"090262\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090262\"\n        },\n        {\n            \"name\": \"Sterling bank\",\n            \"code\": \"232\",\n            \"ussdTemplate\": \"*822*5*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*822#\",\n            \"transferUssdTemplate\": \"*822*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000001\"\n        },\n        {\n            \"name\": \"STERLING MOBILE\",\n            \"code\": \"936\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100022\"\n        },\n        {\n            \"name\": \"SULSPAP MICROFINANCE BANK\",\n            \"code\": \"090305\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090305\"\n        },\n        {\n            \"name\": \"Suntrust Bank Nigeria Limited\",\n            \"code\": \"100\",\n            \"ussdTemplate\": \"\",\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000022\"\n        },\n        {\n            \"name\": \"TAGPAY\",\n            \"code\": \"937\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100023\"\n        },\n        {\n            \"name\": \"Taj Bank\",\n            \"code\": \"302\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": \"*898#\",\n            \"transferUssdTemplate\": \"*898*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000026\"\n        },\n        {\n            \"name\": \"Taj_Pinspay\",\n            \"code\": \"080002\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"080002\"\n        },\n        {\n            \"name\": \"TCF MFB\",\n            \"code\": \"51211\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090115\"\n        },\n        {\n            \"name\": \"TEASY INTERNATIONAL\",\n            \"code\": \"100010\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100010\"\n        },\n        {\n            \"name\": \"TEASY MOBILE\",\n            \"code\": \"924\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100010\"\n        },\n        {\n            \"name\": \"THINK FINANCE MICROFINANCE BANK\",\n            \"code\": \"090373\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090373\"\n        },\n        {\n            \"name\": \"Titan Bank\",\n            \"code\": \"102\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"000025\"\n        },\n        {\n            \"name\": \"TITAN-PAYSTACK MICROFINANCE BANK\",\n            \"code\": \"100039\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100039\"\n        },\n        {\n            \"name\": \"TREASURES MICROFINANCE BANK\",\n            \"code\": \"090663\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090663\"\n        },\n        {\n            \"name\": \"TRIDENT MICROFINANCE BANK\",\n            \"code\": \"090146\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090146\"\n        },\n        {\n            \"name\": \"TRIVES FINANCE COMPANY LTD\",\n            \"code\": \"050023\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"050023\"\n        },\n        {\n            \"name\": \"TRUST MICROFINANCE BANK\",\n            \"code\": \"090327\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090327\"\n        },\n        {\n            \"name\": \"TRUSTBANC J6 MICROFINANCE BANK LIMITED\",\n            \"code\": \"090123\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090123\"\n        },\n        {\n            \"name\": \"TRUSTFUND MICROFINANCE BANK \",\n            \"code\": \"090276\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090276\"\n        },\n        {\n            \"name\": \"TSANYAWA MICROFINANCE BANK\",\n            \"code\": \"090672\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090672\"\n        },\n        {\n            \"name\": \"U & C MICROFINANCE BANK\",\n            \"code\": \"090315\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090315\"\n        },\n        {\n            \"name\": \"UCEE MFB\",\n            \"code\": \"090706\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090706\"\n        },\n        {\n            \"name\": \"UMUCHINEMERE PROCREDIT MICROFINANCE BANK\",\n            \"code\": \"090514\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090514\"\n        },\n        {\n            \"name\": \"UNAAB MICROFINANCE BANK\",\n            \"code\": \"090331\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090331\"\n        },\n        {\n            \"name\": \"Unical Microfinance Bank\",\n            \"code\": \"50871\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090193\"\n        },\n        {\n            \"name\": \"Unilag Microfinance Bank\",\n            \"code\": \"51316\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090452\"\n        },\n        {\n            \"name\": \"Union bank\",\n            \"code\": \"032\",\n            \"ussdTemplate\": \"*826*2*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*826#\",\n            \"transferUssdTemplate\": \"*826*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000018\"\n        },\n        {\n            \"name\": \"United Bank For Africa Plc\",\n            \"code\": \"033\",\n            \"ussdTemplate\": \"*919*4*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*919#\",\n            \"transferUssdTemplate\": \"*919*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000004\"\n        },\n        {\n            \"name\": \"Unity Bank Plc\",\n            \"code\": \"215\",\n            \"ussdTemplate\": \"*7799*2*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*7799#\",\n            \"transferUssdTemplate\": \"*7799*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000011\"\n        },\n        {\n            \"name\": \"UNIUYO MICROFINANCE BANK\",\n            \"code\": \"090338\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090338\"\n        },\n        {\n            \"name\": \"UNIVERSITY OF NIGERIA, NSUKKA MICROFINANCE BANK\",\n            \"code\": \"090251\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090251\"\n        },\n        {\n            \"name\": \"URE MICROFINANCE BANK\",\n            \"code\": \"090619\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090619\"\n        },\n        {\n            \"name\": \"VENTURE GARDEN NIGERIA LIMITED\",\n            \"code\": \"110009\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"110009\"\n        },\n        {\n            \"name\": \"VFD microfinance bank\",\n            \"code\": \"566\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090110\"\n        },\n        {\n            \"name\": \"VIRTUE MICROFINANCE BANK\",\n            \"code\": \"090150\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090150\"\n        },\n        {\n            \"name\": \"VISA MICROFINANCE BANK\",\n            \"code\": \"090139\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090139\"\n        },\n        {\n            \"name\": \"VT NETWORKS\",\n            \"code\": \"926\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100012\"\n        },\n        {\n            \"name\": \"Wema bank\",\n            \"code\": \"035\",\n            \"ussdTemplate\": \"*945*AccountNumber*Amount#\",\n            \"baseUssdCode\": \"*945#\",\n            \"transferUssdTemplate\": \"*945*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000017\"\n        },\n        {\n            \"name\": \"WESLEY MFB\",\n            \"code\": \"090699\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090699\"\n        },\n        {\n            \"name\": \"WETLAND  MICROFINANCE BANK LIMITED\",\n            \"code\": \"954\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090120\"\n        },\n        {\n            \"name\": \"Wetland Microfinance Bank Limited\",\n            \"code\": \"090120\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090120\"\n        },\n        {\n            \"name\": \"WRA MFB\",\n            \"code\": \"090631\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090631\"\n        },\n        {\n            \"name\": \"WUDIL MICROFINANCE BANK\",\n            \"code\": \"090253\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090253\"\n        },\n        {\n            \"name\": \"Xpress Wallet\",\n            \"code\": \"100040\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100040\"\n        },\n        {\n            \"name\": \"XSLNCE MICROFINANCE BANK\",\n            \"code\": \"090124\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090124\"\n        },\n        {\n            \"name\": \"YES MICROFINANCE BANK\",\n            \"code\": \"090142\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090142\"\n        },\n        {\n            \"name\": \"YOBE MICROFINANCE  BANK\",\n            \"code\": \"090252\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090252\"\n        },\n        {\n            \"name\": \"Zenith bank\",\n            \"code\": \"057\",\n            \"ussdTemplate\": \"*966*Amount*AccountNumber#\",\n            \"baseUssdCode\": \"*966#\",\n            \"transferUssdTemplate\": \"*966*AccountNumber#\",\n            \"bankId\": null,\n            \"nipBankCode\": \"000015\"\n        },\n        {\n            \"name\": \"ZENITH MOBILE\",\n            \"code\": \"932\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100018\"\n        },\n        {\n            \"name\": \"ZINTERNET - KONGAPAY\",\n            \"code\": \"939\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"100025\"\n        },\n        {\n            \"name\": \"Zitra MfB\",\n            \"code\": \"090718\",\n            \"ussdTemplate\": null,\n            \"baseUssdCode\": null,\n            \"transferUssdTemplate\": null,\n            \"bankId\": null,\n            \"nipBankCode\": \"090718\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "create reserved account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"accountReference\": \"ajopay-member-002\",\r\n  \"accountName\": \"AjoPay - Chinonso\",\r\n  \"currencyCode\": \"NGN\",\r\n  \"contractCode\": \"{{contract_code}}\",\r\n  \"customerEmail\": \"chinonsoali2005@gmail.com\",\r\n  \"customerName\": \"Chinonso Ali\",\r\n  \"getAllAvailableBanks\": false,\r\n  \"preferredBanks\": [\"50515\"],\r\n  \"bvn\": \"22631975148\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v2/bank-transfer/reserved-accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "bank-transfer",
+                "reserved-accounts"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"accountReference\": \"ajopay-member-001\",\r\n  \"accountName\": \"AjoPay - Chinonso Justin Ali\",\r\n  \"currencyCode\": \"NGN\",\r\n  \"contractCode\": \"{{contract_code}}\",\r\n  \"customerEmail\": \"chinonsoali2005@gmail.com\",\r\n  \"customerName\": \"Chinonso Ali\",\r\n  \"getAllAvailableBanks\": false,\r\n  \"preferredBanks\": [\"232\"],\r\n  \"bvn\": \"22631975148\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v2/bank-transfer/reserved-accounts",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "bank-transfer",
+                    "reserved-accounts"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 07:31:23 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1bf4e96efd75eef-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"contractCode\": \"8589555909\",\n        \"accountReference\": \"ajopay-member-001\",\n        \"accountName\": \"Ajo\",\n        \"currencyCode\": \"NGN\",\n        \"customerEmail\": \"chinonsoali2005@gmail.com\",\n        \"customerName\": \"Chinonso Ali\",\n        \"accounts\": [\n            {\n                \"bankCode\": \"232\",\n                \"bankName\": \"Sterling bank\",\n                \"accountNumber\": \"2247558127\",\n                \"accountName\": \"Ajo\"\n            }\n        ],\n        \"collectionChannel\": \"RESERVED_ACCOUNT\",\n        \"reservationReference\": \"811EQEYMREFT02G00010\",\n        \"reservedAccountType\": \"GENERAL\",\n        \"status\": \"ACTIVE\",\n        \"createdOn\": \"2026-07-16 08:31:23.612335193\",\n        \"incomeSplitConfig\": [],\n        \"bvn\": \"22631975148\",\n        \"restrictPaymentSource\": false,\n        \"metaData\": {}\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get reserved account",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v2/bank-transfer/reserved-accounts/{{account_reference}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "bank-transfer",
+                "reserved-accounts",
+                "{{account_reference}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v2/bank-transfer/reserved-accounts/{{account_reference}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "bank-transfer",
+                    "reserved-accounts",
+                    "{{account_reference}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 08:23:14 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-security-policy-report-only",
+                  "value": "script-src 'unsafe-inline' 'unsafe-eval'; report-uri https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=Nga7lT.GjjaBprd29arF2SyjYBh01o.GmreIhzt9gf0-1784190194.2798576-1.0.1.1-0p.wdLO1DJdQ_xn5g29yyVduUMlakEAHgdZGM4UoVKkn9t18uohPYZtkwcMYnaaT2zo62g7vS6QpZ_sVAYVA4DbpXaqCQEWxDox2Z_ktF5hzwcy.p1hKYHIJwBhHdQgm803DhLV4wGibwZpIrfiWM08uRFAmDASaaWL2xBBv8uncwiYCc40ZFXVtJ4S__qHR; report-to cf-csp-endpoint"
+                },
+                {
+                  "key": "report-to",
+                  "value": "{\"group\":\"cf-csp-endpoint\",\"max_age\":86400,\"endpoints\":[{\"url\":\"https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=Nga7lT.GjjaBprd29arF2SyjYBh01o.GmreIhzt9gf0-1784190194.2798576-1.0.1.1-0p.wdLO1DJdQ_xn5g29yyVduUMlakEAHgdZGM4UoVKkn9t18uohPYZtkwcMYnaaT2zo62g7vS6QpZ_sVAYVA4DbpXaqCQEWxDox2Z_ktF5hzwcy.p1hKYHIJwBhHdQgm803DhLV4wGibwZpIrfiWM08uRFAmDASaaWL2xBBv8uncwiYCc40ZFXVtJ4S__qHR\"}]}"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1bf9a8a3d386427-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"contractCode\": \"8589555909\",\n        \"accountReference\": \"ajopay-member-001\",\n        \"accountName\": \"DuesPay-Ajo\",\n        \"currencyCode\": \"NGN\",\n        \"customerEmail\": \"chinonsoali2005@gmail.com\",\n        \"customerName\": \"Chinonso Ali\",\n        \"accounts\": [\n            {\n                \"bankCode\": \"232\",\n                \"bankName\": \"Sterling bank\",\n                \"accountNumber\": \"2247558127\",\n                \"accountName\": \"Ajo\"\n            }\n        ],\n        \"collectionChannel\": \"RESERVED_ACCOUNT\",\n        \"reservationReference\": \"811EQEYMREFT02G00010\",\n        \"reservedAccountType\": \"GENERAL\",\n        \"status\": \"ACTIVE\",\n        \"createdOn\": \"2026-07-16 08:31:24.0\",\n        \"contract\": {\n            \"name\": \"Default Contract\",\n            \"code\": \"8589555909\",\n            \"description\": null\n        },\n        \"transactionCount\": 0,\n        \"bvn\": \"22631975148\",\n        \"restrictPaymentSource\": false,\n        \"metaData\": {}\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get reserved account transactions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v2/bank-transfer/reserved-accounts/transactions?accountReference={{account_reference}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "bank-transfer",
+                "reserved-accounts",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "accountReference",
+                  "value": "{{account_reference}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "disburse payment to ank",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 500.00,\r\n  \"reference\": \"ajopay-payout-cycle1-{{$timestamp}}\",\r\n  \"narration\": \"AjoPay payout — Test Group — cycle 1\",\r\n  \"destinationBankCode\": \"305\",\r\n  \"destinationAccountNumber\": \"9046665617\",\r\n  \"destinationAccountName\": \"CHINONSO JUSTIN ALI\",\r\n  \"currency\": \"NGN\",\r\n  \"sourceAccountNumber\": \"6975655381\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v2/disbursements/single",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "disbursements",
+                "single"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"amount\": 500.00,\r\n  \"reference\": \"ajopay-payout-cycle1-{{$timestamp}}\",\r\n  \"narration\": \"AjoPay payout — Test Group — cycle 1\",\r\n  \"destinationBankCode\": \"305\",\r\n  \"destinationAccountNumber\": \"9046665617\",\r\n  \"destinationAccountName\": \"CHINONSO JUSTIN ALI\",\r\n  \"currency\": \"NGN\",\r\n  \"sourceAccountNumber\": \"6975655381\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v2/disbursements/single",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "disbursements",
+                    "single"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 09:34:03 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-trace-id",
+                  "value": ""
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1c00245084b4137-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"requestSuccessful\": true,\n    \"responseMessage\": \"success\",\n    \"responseCode\": \"0\",\n    \"responseBody\": {\n        \"amount\": 500,\n        \"reference\": \"ajopay-payout-cycle1-1784194442\",\n        \"status\": \"SUCCESS\",\n        \"dateCreated\": \"2026-07-16T09:34:03.117+00:00\",\n        \"totalFee\": 35,\n        \"destinationAccountName\": \"CHINONSO JUSTIN ALI\",\n        \"destinationBankName\": \"OPAY 2\",\n        \"destinationAccountNumber\": \"9046665617\",\n        \"destinationBankCode\": \"305\",\n        \"comment\": \"Transaction successful\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get transfer status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v2/disbursements/transfer-status/{{transfer_reference}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "disbursements",
+                "transfer-status",
+                "{{transfer_reference}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v2/disbursements/transfer-status/{{transfer_reference}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "disbursements",
+                    "transfer-status",
+                    "{{transfer_reference}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": ":status",
+                  "value": 200
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 16 Jul 2026 09:49:46 GMT"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+                },
+                {
+                  "key": "x-trace-id",
+                  "value": ""
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, no-store, max-age=0, must-revalidate"
+                },
+                {
+                  "key": "pragma",
+                  "value": "no-cache"
+                },
+                {
+                  "key": "expires",
+                  "value": "0"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "set-cookie",
+                  "value": "__cf_bm=JUUI2eJTQyqC8MSKBn6asbeMdZEpxkf8sUob0a0EWAA-1784195386.046008-1.0.1.1-KQa1JTQutMaylUO3virVPun9oyl1wRFhNzrTiKiYtAd4Tfn_bgVmOgr3_74IUbVjbT0SnCOf7YFVE3Sm7K8OxVFYC9loORFrD1P7769.WSBwmb_JOsae3o00e1DVnMm8; HttpOnly; SameSite=None; Secure; Path=/; Domain=monnify.com; Expires=Thu, 16 Jul 2026 10:19:46 GMT"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "cf-ray",
+                  "value": "a1c0194acd8d1ddf-LHR"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"responseMessage\": \"Transaction successful\",\n    \"responseCode\": \"00\",\n    \"responseBody\": {\n        \"amount\": 500,\n        \"reference\": \"ajopay-payout-cycle1-1784194442\",\n        \"narration\": \"AjoPay payout — Test Group — cycle 1\",\n        \"currency\": \"NGN\",\n        \"fee\": 35,\n        \"twoFaEnabled\": false,\n        \"transactionDescription\": \"Transaction successful\",\n        \"transactionReference\": \"MFDS79320260716103403000301AG5HCU\",\n        \"createdOn\": \"2026-07-16T09:34:03.000+00:00\",\n        \"sourceAccountNumber\": \"6975655381\",\n        \"destinationAccountNumber\": \"9046665617\",\n        \"destinationAccountName\": \"CHINONSO JUSTIN ALI\",\n        \"destinationBankCode\": \"305\",\n        \"destinationBankName\": \"OPAY 2\",\n        \"transactionStatus\": \"SUCCESS\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get all single transfers",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v2/disbursements/single/transactions?pageSize=5&pageNo=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "disbursements",
+                "single",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "pageSize",
+                  "value": "5"
+                },
+                {
+                  "key": "pageNo",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login - get access token",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "1H4VEPCHHP721L3HXDF4TEXBQZ6R9P89",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "MK_TEST_RZUBQYC54Q",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Basic base64(ApiKey:MK_TEST_RZUBQYC54Q)",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "https://sandbox.monnify.com/api/v1/auth/login",
+          "protocol": "https",
+          "host": [
+            "sandbox",
+            "monnify",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "contract_code",
+      "value": ""
+    },
+    {
+      "key": "bearer_token_05vf",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_1057",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_0am6",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_08v2",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_07st",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_0kgj",
+      "secret": true
+    }
+  ]
+}
