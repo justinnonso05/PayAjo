@@ -41,6 +41,7 @@ dependencies:
   http: ^1.2.1
   flutter_secure_storage: ^9.2.4
   web_socket_channel: ^3.0.3
+  qr_flutter: ^4.1.0
 
 
 dev_dependencies:

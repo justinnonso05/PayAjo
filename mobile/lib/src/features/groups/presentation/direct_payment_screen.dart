@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/success_bottom_sheet.dart';
@@ -163,6 +164,34 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                   ],
                 ),
               ),
+              if (d.checkoutUrl.isNotEmpty) ...[
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow(opacity: 0.04)),
+                  child: Column(
+                    children: [
+                      Text('Or scan to pay another way', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 4),
+                      Text('Card, USSD, or transfer via Monnify checkout', style: GoogleFonts.plusJakartaSans(fontSize: 11.5, color: AppColors.textMuted)),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(AppRadius.lg), border: Border.all(color: AppColors.border)),
+                        child: QrImageView(
+                          data: d.checkoutUrl,
+                          version: QrVersions.auto,
+                          size: 160,
+                          backgroundColor: Colors.white,
+                          eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: AppColors.darkGreen),
+                          dataModuleStyle: const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: AppColors.darkGreen),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 20),
               Text(
                 'This account is generated just for this contribution and can only be used once. Send exactly ₦${formatAmount(d.amount)} from any bank app before it expires. We\'ll confirm automatically once it lands.',
