@@ -52,3 +52,45 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
     secureStorage: ref.watch(secureStorageServiceProvider),
   );
 });
+
+class UserProfileState {
+  final UserProfile? profile;
+  final bool isLoading;
+  final String? error;
+
+  const UserProfileState({this.profile, this.isLoading = false, this.error});
+
+  UserProfileState copyWith({UserProfile? profile, bool? isLoading, String? error}) {
+    return UserProfileState(
+      profile: profile ?? this.profile,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
+}
+
+/// Shared, fetch-once-per-session source of truth for the current user's
+/// profile (wallet balance, reserved account, KYC/PIN flags). Home, Wallet
+/// and Profile tabs all watch this instead of each calling /users/me.
+class UserProfileController extends Notifier<UserProfileState> {
+  @override
+  UserProfileState build() {
+    Future.microtask(refresh);
+    return const UserProfileState(isLoading: true);
+  }
+
+  Future<void> refresh() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final profile = await ref.read(userRepositoryProvider).getMe();
+      ref.read(currentUserProvider.notifier).state = profile;
+      state = UserProfileState(profile: profile, isLoading: false);
+    } on ApiException catch (e) {
+      state = state.copyWith(isLoading: false, error: e.message);
+    }
+  }
+}
+
+final userProfileControllerProvider = NotifierProvider<UserProfileController, UserProfileState>(
+  UserProfileController.new,
+);

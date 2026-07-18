@@ -6,6 +6,7 @@ import '../../../../core/network/api_client.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../routing/app_router.dart';
 import '../../../groups/data/group_repository.dart';
+import '../../../home/data/home_controller.dart';
 import '../join_group_success_screen.dart';
 
 class JoinGroupSheet extends ConsumerStatefulWidget {
@@ -46,6 +47,7 @@ class _JoinGroupSheetState extends ConsumerState<JoinGroupSheet> {
       final memberCount = await repository.getMemberCount(group.id);
 
       if (!mounted) return;
+      ref.read(homeControllerProvider.notifier).refresh();
       Navigator.pop(context);
       context.goNamed(
         AppRoute.joinGroupSuccess.name,

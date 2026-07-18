@@ -64,6 +64,26 @@ class ApiClient {
     return _decode(response);
   }
 
+  Future<Map<String, dynamic>> patch(String path, {Map<String, dynamic>? body, Map<String, String>? headers}) async {
+    final uri = EnvConfig.uri(path);
+    late final http.Response response;
+    try {
+      response = await _client
+          .patch(
+            uri,
+            headers: {..._defaultHeaders, ...?headers},
+            body: jsonEncode(body ?? const {}),
+          )
+          .timeout(const Duration(seconds: 20));
+    } on SocketException {
+      throw ApiException('Unable to reach the server. Check your connection and try again.');
+    } on Exception {
+      throw ApiException('Unable to reach the server. Check your connection and try again.');
+    }
+
+    return _decode(response);
+  }
+
   Map<String, dynamic> _decode(http.Response response) {
     Map<String, dynamic> json = const {};
     if (response.body.isNotEmpty) {

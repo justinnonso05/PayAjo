@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
+import '../data/user_repository.dart';
 import 'widgets/fade_slide_in.dart';
 import 'widgets/group_info_card.dart';
 import 'widgets/success_illustration.dart';
@@ -21,16 +23,16 @@ class CreateGroupSuccessData {
   });
 }
 
-class CreateGroupSuccessScreen extends StatefulWidget {
+class CreateGroupSuccessScreen extends ConsumerStatefulWidget {
   final CreateGroupSuccessData data;
 
   const CreateGroupSuccessScreen({super.key, required this.data});
 
   @override
-  State<CreateGroupSuccessScreen> createState() => _CreateGroupSuccessScreenState();
+  ConsumerState<CreateGroupSuccessScreen> createState() => _CreateGroupSuccessScreenState();
 }
 
-class _CreateGroupSuccessScreenState extends State<CreateGroupSuccessScreen> with SingleTickerProviderStateMixin {
+class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -46,6 +48,19 @@ class _CreateGroupSuccessScreenState extends State<CreateGroupSuccessScreen> wit
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  // Onboarding hasn't happened yet the first time through (no PIN set), but
+  // this screen is also reached later when creating an *additional* group —
+  // in that case the user already has a PIN and shouldn't be sent through
+  // PIN setup again.
+  void _handleContinue(BuildContext context) {
+    final hasPin = ref.read(currentUserProvider)?.hasPin ?? false;
+    if (hasPin) {
+      context.goNamed(AppRoute.home.name);
+    } else {
+      context.goNamed(AppRoute.pinSetup.name);
+    }
   }
 
   void _handleInviteMembers(BuildContext context) {
@@ -136,7 +151,7 @@ class _CreateGroupSuccessScreenState extends State<CreateGroupSuccessScreen> wit
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () => context.goNamed(AppRoute.pinSetup.name),
+                            onPressed: () => _handleContinue(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFACEC87),
                               foregroundColor: const Color(0xFF1D3108),

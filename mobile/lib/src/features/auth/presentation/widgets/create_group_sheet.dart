@@ -7,6 +7,7 @@ import '../../../../core/utils/currency_formatter.dart';
 import '../../../../routing/app_router.dart';
 import '../../../groups/data/group_models.dart';
 import '../../../groups/data/group_repository.dart';
+import '../../../home/data/home_controller.dart';
 import '../create_group_success_screen.dart';
 
 const _kFieldDecoration = InputDecoration(
@@ -46,8 +47,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
   int? _payoutDayOfWeek;
   int _payoutDayOfMonth = 1;
   int _payoutMonth = 1;
-  int _quorumPercent = 70;
-  ShortfallPolicy _shortfallPolicy = ShortfallPolicy.hold;
+  TimeOfDay? _payoutTime;
   bool _isSubmitting = false;
   String? _payoutDayError;
 
@@ -57,6 +57,22 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
     _amountController.dispose();
     _memberCapController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickPayoutTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _payoutTime ?? const TimeOfDay(hour: 9, minute: 0),
+    );
+    if (picked != null) setState(() => _payoutTime = picked);
+  }
+
+  /// The backend's `payout_time` field expects "HH:MM:SSZ".
+  String? _formatPayoutTime(TimeOfDay? time) {
+    if (time == null) return null;
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    return '$hh:$mm:00Z';
   }
 
   void _showError(String message) {
@@ -87,17 +103,22 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               name: _groupNameController.text.trim(),
               contributionAmount: amount,
               cycleFrequency: _frequency,
-              quorumPercent: _quorumPercent,
-              shortfallPolicy: _shortfallPolicy,
+              // No UI for this — the backend still requires a value, so every
+              // group is created with the safest default (pause until fully funded).
+              shortfallPolicy: ShortfallPolicy.hold,
               payoutDayOfWeek: _frequency == CycleFrequency.weekly ? _payoutDayOfWeek : null,
               payoutDayOfMonth:
                   _frequency == CycleFrequency.monthly || _frequency == CycleFrequency.yearly ? _payoutDayOfMonth : null,
               payoutMonth: _frequency == CycleFrequency.yearly ? _payoutMonth : null,
               memberCap: memberCapText.isEmpty ? null : int.tryParse(memberCapText),
+              payoutTime: _formatPayoutTime(_payoutTime),
             ),
           );
 
       if (!mounted) return;
+      // So Home already shows the new group by the time the user gets back
+      // there — no need to rely on them remembering to pull-to-refresh.
+      ref.read(homeControllerProvider.notifier).refresh();
       Navigator.pop(context);
       context.goNamed(
         AppRoute.createGroupSuccess.name,
@@ -180,16 +201,16 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               _label('Contribution Frequency'),
               const SizedBox(height: 8),
               Row(
-                children: CycleFrequency.values.map((freq) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: freq != CycleFrequency.values.last ? 12 : 0),
-                    child: _ChoiceChipOption(
+                children: [
+                  for (final freq in CycleFrequency.values) ...[
+                    _ChoiceChipOption(
                       title: freq.label,
                       isSelected: _frequency == freq,
                       onTap: () => setState(() => _frequency = freq),
                     ),
-                  );
-                }).toList(),
+                    if (freq != CycleFrequency.values.last) const SizedBox(width: 12),
+                  ],
+                ],
               ),
               const SizedBox(height: 20),
 
@@ -241,69 +262,34 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
                 const SizedBox(height: 20),
               ],
 
-              _label('Quorum: $_quorumPercent% of members must contribute'),
-              const SizedBox(height: 4),
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: const Color(0xFF5BA72D),
-                  thumbColor: const Color(0xFF1D3108),
-                  inactiveTrackColor: const Color(0xFFE0E0E0),
-                ),
-                child: Slider(
-                  value: _quorumPercent.toDouble(),
-                  min: 50,
-                  max: 100,
-                  divisions: 50,
-                  label: '$_quorumPercent%',
-                  onChanged: (v) => setState(() => _quorumPercent = v.round()),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              _label('If Someone Falls Short'),
+              _label('Payout Time (optional)'),
               const SizedBox(height: 8),
-              Column(
-                children: ShortfallPolicy.values.map((policy) {
-                  final isSelected = _shortfallPolicy == policy;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: GestureDetector(
-                      onTap: () => setState(() => _shortfallPolicy = policy),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: isSelected ? const Color(0xFFE8F6E0) : Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected ? const Color(0xFF5BA72D) : const Color(0xFFE0E0E0),
-                            width: isSelected ? 1.8 : 1.2,
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              policy.label,
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF1D3108),
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              policy.description,
-                              style: GoogleFonts.plusJakartaSans(fontSize: 12, color: Colors.grey[500]),
-                            ),
-                          ],
+              GestureDetector(
+                onTap: _pickPayoutTime,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _payoutTime != null ? _payoutTime!.format(context) : 'Not set',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14,
+                          color: _payoutTime != null ? const Color(0xFF1D3108) : const Color(0xFF9CA3AF),
+                          fontWeight: _payoutTime != null ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                      const Icon(Icons.access_time_rounded, color: Color(0xFF9CA3AF), size: 20),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
 
               _label('Maximum Members (optional)'),
               const SizedBox(height: 8),

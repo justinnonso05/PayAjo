@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
+import '../data/user_repository.dart';
 import 'widgets/fade_slide_in.dart';
 import 'widgets/group_info_card.dart';
 import 'widgets/success_illustration.dart';
@@ -20,16 +22,16 @@ class JoinGroupSuccessData {
   });
 }
 
-class JoinGroupSuccessScreen extends StatefulWidget {
+class JoinGroupSuccessScreen extends ConsumerStatefulWidget {
   final JoinGroupSuccessData data;
 
   const JoinGroupSuccessScreen({super.key, required this.data});
 
   @override
-  State<JoinGroupSuccessScreen> createState() => _JoinGroupSuccessScreenState();
+  ConsumerState<JoinGroupSuccessScreen> createState() => _JoinGroupSuccessScreenState();
 }
 
-class _JoinGroupSuccessScreenState extends State<JoinGroupSuccessScreen> with SingleTickerProviderStateMixin {
+class _JoinGroupSuccessScreenState extends ConsumerState<JoinGroupSuccessScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -45,6 +47,18 @@ class _JoinGroupSuccessScreenState extends State<JoinGroupSuccessScreen> with Si
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  // See CreateGroupSuccessScreen._handleContinue — same reasoning: this
+  // screen is also reached when joining an *additional* group after
+  // onboarding, where the user already has a PIN.
+  void _handleContinue(BuildContext context) {
+    final hasPin = ref.read(currentUserProvider)?.hasPin ?? false;
+    if (hasPin) {
+      context.goNamed(AppRoute.home.name);
+    } else {
+      context.goNamed(AppRoute.pinSetup.name);
+    }
   }
 
   @override
@@ -125,7 +139,7 @@ class _JoinGroupSuccessScreenState extends State<JoinGroupSuccessScreen> with Si
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () => context.goNamed(AppRoute.pinSetup.name),
+                            onPressed: () => _handleContinue(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFACEC87),
                               foregroundColor: const Color(0xFF1D3108),

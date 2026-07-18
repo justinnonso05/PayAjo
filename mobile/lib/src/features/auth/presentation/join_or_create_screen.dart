@@ -19,6 +19,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -31,6 +32,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -315,13 +317,18 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                       // Action Button Row (CashApp Style)
                       Row(
                         children: [
-                          // Skip Button (Left, Pill shape, light background)
+                          // Left button: "Back" when there's somewhere to return to
+                          // (in-app entry point), "Skip" for true onboarding (no back stack).
                           Expanded(
                             child: SizedBox(
                               height: 50,
                               child: TextButton(
                                 onPressed: () {
-                                  context.goNamed(AppRoute.home.name);
+                                  if (context.canPop()) {
+                                    context.pop();
+                                  } else {
+                                    context.goNamed(AppRoute.home.name);
+                                  }
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color(0xFFF3F4F6),
@@ -330,7 +337,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  'Skip',
+                                  context.canPop() ? 'Back' : 'Skip',
                                   style: GoogleFonts.spaceGrotesk(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,

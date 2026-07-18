@@ -67,6 +67,20 @@ class AuthRepository {
     );
   }
 
+  /// Sends a PIN-reset OTP to the user's registered email.
+  Future<void> requestPinReset() async {
+    await _apiClient.post(ApiConstants.requestPinReset, headers: await _secureStorage.authHeaders());
+  }
+
+  /// Resets the PIN using the OTP emailed to the user.
+  Future<void> resetPin({required String otpCode, required String newPin}) async {
+    await _apiClient.post(
+      ApiConstants.resetPin,
+      body: {'otp_code': otpCode, 'new_pin': newPin},
+      headers: await _secureStorage.authHeaders(),
+    );
+  }
+
   Future<void> _saveToken(Map<String, dynamic> response) async {
     final data = response['data'];
     if (data is! Map<String, dynamic>) {
