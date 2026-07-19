@@ -1,5 +1,6 @@
 "use client";
 
+import { Lock } from "lucide-react";
 import { useState } from "react";
 import { Modal } from "@/components/app/modal";
 import { api, ApiError, endpoints } from "@/lib/api";
@@ -7,6 +8,12 @@ import { authHeaders } from "@/lib/auth";
 import type { Group } from "@/lib/types";
 
 export function EditGroupModal({ group, onClose, onSaved }: { group: Group; onClose: () => void; onSaved: (group: Group) => void }) {
+  // Once a group is active, the backend locks anything that would break the
+  // math or scheduling for members already mid-rotation — contribution
+  // amount, cycle frequency, payout day/month, and payout time. Name and
+  // member cap stay editable throughout.
+  const isFinancialsLocked = group.status === "active";
+
   const [name, setName] = useState(group.name);
   const [amount, setAmount] = useState(String(group.contribution_amount));
   const [payoutTime, setPayoutTime] = useState("");
@@ -16,7 +23,7 @@ export function EditGroupModal({ group, onClose, onSaved }: { group: Group; onCl
 
   const handleSubmit = async () => {
     const parsedAmount = parseFloat(amount);
-    if (!name.trim() || !parsedAmount || parsedAmount <= 0) {
+    if (!name.trim() || (!isFinancialsLocked && (!parsedAmount || parsedAmount <= 0))) {
       setError("Enter a valid group name and amount");
       return;
     }
@@ -28,9 +35,12 @@ export function EditGroupModal({ group, onClose, onSaved }: { group: Group; onCl
         endpoints.group(group.id),
         {
           name: name.trim(),
-          contribution_amount: parsedAmount,
           member_cap: memberCap.trim() ? parseInt(memberCap, 10) : null,
-          ...(payoutTime ? { payout_time: `${payoutTime}:00Z` } : {}),
+          // Once active, the backend rejects any change to these — so
+          // they're just never sent rather than surfacing a confusing
+          // "silent" failure.
+          ...(isFinancialsLocked ? {} : { contribution_amount: parsedAmount }),
+          ...(!isFinancialsLocked && payoutTime ? { payout_time: `${payoutTime}:00Z` } : {}),
         },
         authHeaders(),
       );
@@ -45,22 +55,42 @@ export function EditGroupModal({ group, onClose, onSaved }: { group: Group; onCl
   return (
     <Modal title="Edit Group" onClose={onClose}>
       <div className="space-y-4">
+        {isFinancialsLocked && (
+          <div className="flex items-start gap-2.5 rounded-2xl bg-brand-pale p-3.5">
+            <Lock size={15} className="mt-0.5 shrink-0 text-brand-accent" />
+            <p className="text-xs leading-relaxed text-brand-dark/70">
+              This group is active, so the contribution amount and payout time are locked to keep payouts fair for everyone already in the rotation. Finish
+              this round, then start a new group to change them.
+            </p>
+          </div>
+        )}
         <Field label="Group Name">
           <input value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-brand-dark/15 px-4 py-3 text-sm outline-none focus:border-brand-dark" />
         </Field>
         <Field label="Contribution Amount">
-          <div className="flex items-center rounded-xl border border-brand-dark/15 px-4 py-3">
+          <div className={`flex items-center rounded-xl border border-brand-dark/15 px-4 py-3 ${isFinancialsLocked ? "bg-soft-gray" : ""}`}>
             <span className="mr-1 text-sm text-brand-dark/50">₦</span>
             <input
               type="number"
               value={amount}
+              disabled={isFinancialsLocked}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full text-sm outline-none"
+              className="w-full text-sm outline-none disabled:text-brand-dark/40"
             />
+            {isFinancialsLocked && <Lock size={14} className="text-brand-dark/30" />}
           </div>
         </Field>
         <Field label="Payout Time (optional)">
-          <input type="time" value={payoutTime} onChange={(e) => setPayoutTime(e.target.value)} className="w-full rounded-xl border border-brand-dark/15 px-4 py-3 text-sm outline-none focus:border-brand-dark" />
+          <div className={`flex items-center rounded-xl border border-brand-dark/15 ${isFinancialsLocked ? "bg-soft-gray" : ""}`}>
+            <input
+              type="time"
+              value={payoutTime}
+              disabled={isFinancialsLocked}
+              onChange={(e) => setPayoutTime(e.target.value)}
+              className="w-full px-4 py-3 text-sm outline-none disabled:text-brand-dark/40"
+            />
+            {isFinancialsLocked && <Lock size={14} className="mr-4 text-brand-dark/30" />}
+          </div>
         </Field>
         <Field label="Maximum Members (optional)">
           <input

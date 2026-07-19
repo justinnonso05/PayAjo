@@ -52,6 +52,12 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
   TimeOfDay? _payoutTime;
   bool _isSubmitting = false;
 
+  /// Once a group is active, the backend locks anything that would break
+  /// the math or scheduling for members already mid-rotation — contribution
+  /// amount, cycle frequency, payout day/month, and payout time. Name and
+  /// member cap stay editable throughout.
+  bool get _isFinancialsLocked => widget.group.status == 'active';
+
   @override
   void initState() {
     super.initState();
@@ -85,8 +91,8 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
   }
 
   Future<void> _submit() async {
-    final amount = double.tryParse(_amountController.text.trim().replaceAll(',', ''));
-    if (_nameController.text.trim().isEmpty || amount == null || amount <= 0) {
+    final amount = _isFinancialsLocked ? null : double.tryParse(_amountController.text.trim().replaceAll(',', ''));
+    if (_nameController.text.trim().isEmpty || (!_isFinancialsLocked && (amount == null || amount <= 0))) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Enter a valid group name and amount', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
@@ -100,11 +106,14 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
             widget.group.id,
             GroupUpdateRequest(
               name: _nameController.text.trim(),
-              contributionAmount: amount,
+              // Once active, the backend rejects any change to these — so
+              // they're just never sent rather than surfacing a confusing
+              // "silent" failure.
+              contributionAmount: _isFinancialsLocked ? null : amount,
               // shortfallPolicy intentionally omitted — no UI for it, and
               // leaving it null here means the existing value is preserved.
               memberCap: memberCapText.isEmpty ? null : int.tryParse(memberCapText),
-              payoutTime: _formatPayoutTime(_payoutTime),
+              payoutTime: _isFinancialsLocked ? null : _formatPayoutTime(_payoutTime),
             ),
           );
       if (!mounted) return;
@@ -134,6 +143,27 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
               ],
             ),
             const SizedBox(height: 12),
+            if (_isFinancialsLocked) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(color: AppColors.paleGreen, borderRadius: BorderRadius.circular(AppRadius.md)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.lock_outline_rounded, color: AppColors.accentGreen, size: 16),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "This group is active, so the contribution amount and payout time are locked to keep payouts fair for everyone already in the rotation. Finish this round, then start a new group to change them.",
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary, height: 1.4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
             _label('Group Name'),
             const SizedBox(height: 8),
             TextField(controller: _nameController, style: _kFieldTextStyle, decoration: _kFieldDecoration),
@@ -142,19 +172,26 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
             const SizedBox(height: 8),
             TextField(
               controller: _amountController,
+              enabled: !_isFinancialsLocked,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: _kFieldTextStyle,
-              decoration: _kFieldDecoration.copyWith(prefixText: '₦ '),
+              style: _kFieldTextStyle.copyWith(color: _isFinancialsLocked ? AppColors.textMuted : AppColors.textPrimary),
+              decoration: _kFieldDecoration.copyWith(
+                prefixText: '₦ ',
+                suffixIcon: _isFinancialsLocked ? const Icon(Icons.lock_outline_rounded, color: AppColors.textMuted, size: 18) : null,
+                fillColor: _isFinancialsLocked ? AppColors.background : null,
+                filled: _isFinancialsLocked,
+              ),
             ),
             const SizedBox(height: 20),
             _label('Payout Time (optional)'),
             const SizedBox(height: 8),
             GestureDetector(
-              onTap: _pickPayoutTime,
+              onTap: _isFinancialsLocked ? null : _pickPayoutTime,
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 decoration: BoxDecoration(
+                  color: _isFinancialsLocked ? AppColors.background : null,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: AppColors.border, width: 1.2),
                 ),
@@ -163,13 +200,13 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
                   children: [
                     Text(
                       _payoutTime != null ? _payoutTime!.format(context) : 'Not set',
-                      style: TextStyle(fontFamily: 'PlusJakartaSans', 
+                      style: TextStyle(fontFamily: 'PlusJakartaSans',
                         fontSize: 14,
-                        color: _payoutTime != null ? AppColors.textPrimary : AppColors.hint,
+                        color: _isFinancialsLocked ? AppColors.textMuted : (_payoutTime != null ? AppColors.textPrimary : AppColors.hint),
                         fontWeight: _payoutTime != null ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
-                    const Icon(Icons.access_time_rounded, color: AppColors.hint, size: 20),
+                    Icon(_isFinancialsLocked ? Icons.lock_outline_rounded : Icons.access_time_rounded, color: AppColors.textMuted, size: _isFinancialsLocked ? 18 : 20),
                   ],
                 ),
               ),
