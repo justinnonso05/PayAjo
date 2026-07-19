@@ -1,16 +1,20 @@
 "use client";
 
-import { CheckCircle2, ChevronDown, Search } from "lucide-react";
+import { Building2, CheckCircle2, ChevronDown, Pencil, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SuccessModal } from "@/components/app/success-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
+import { useProfile } from "@/lib/hooks/use-profile";
 import type { Bank, BankValidationResult } from "@/lib/types";
 
 export default function PayoutBankPage() {
   const router = useRouter();
-  const [stage, setStage] = useState<"details" | "otp" | "success">("details");
+  const { profile, isLoading: isLoadingProfile } = useProfile();
+  // "loading" until we know whether there's already a bank on file — that
+  // decides whether returning users see a summary or the blank form.
+  const [stage, setStage] = useState<"loading" | "summary" | "details" | "otp" | "success">("loading");
   const [banks, setBanks] = useState<Bank[]>([]);
   const [isLoadingBanks, setIsLoadingBanks] = useState(true);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -36,6 +40,20 @@ export default function PayoutBankPage() {
       .catch((err) => setError(err instanceof ApiError ? err.message : "Couldn't load banks."))
       .finally(() => setIsLoadingBanks(false));
   }, []);
+
+  useEffect(() => {
+    if (isLoadingProfile || stage !== "loading") return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time decision once the profile finishes loading, not a render-loop
+    setStage(profile?.payout_bank_account_number ? "summary" : "details");
+  }, [isLoadingProfile, profile, stage]);
+
+  const currentBank = banks.find((b) => b.code === profile?.payout_bank_code) ?? null;
+
+  const handleEdit = () => {
+    if (currentBank) setSelectedBank(currentBank);
+    if (profile?.payout_bank_account_number) setAccountNumber(profile.payout_bank_account_number);
+    setStage("details");
+  };
 
   const canValidate = selectedBank !== null && accountNumber.length === 10;
 
@@ -98,6 +116,43 @@ export default function PayoutBankPage() {
 
   const filteredBanks = banks.filter((b) => b.name.toLowerCase().includes(bankQuery.toLowerCase()));
 
+  if (stage === "loading") {
+    return (
+      <div className="mx-auto max-w-md px-6 py-12 sm:py-16">
+        <div className="h-40 animate-pulse rounded-card bg-soft-gray" />
+      </div>
+    );
+  }
+
+  if (stage === "summary" && profile) {
+    return (
+      <div className="mx-auto max-w-md px-6 py-12 sm:py-16">
+        <h1 className="font-display text-2xl font-bold text-brand-dark">Payout Bank</h1>
+        <p className="mt-2 text-sm text-brand-dark/55">Withdrawals go straight here. Tap Edit to change it.</p>
+
+        <div className="mt-6 flex items-center gap-3.5 rounded-card border border-brand-dark/10 bg-white p-4.5 shadow-sm">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-pale">
+            <Building2 size={20} className="text-brand-accent" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-brand-dark">{currentBank?.name ?? "Bank on file"}</p>
+            <p className="font-display text-base font-bold tracking-wide text-brand-dark">{profile.payout_bank_account_number}</p>
+            {profile.payout_account_name && <p className="text-xs text-brand-dark/40">{profile.payout_account_name}</p>}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleEdit}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-brand-dark/15 py-3 text-sm font-bold text-brand-dark"
+        >
+          <Pencil size={15} />
+          Edit
+        </button>
+      </div>
+    );
+  }
+
   if (stage === "success" && selectedBank && validated) {
     return (
       <SuccessModal
@@ -146,6 +201,11 @@ export default function PayoutBankPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-12 sm:py-16">
+      {profile?.payout_bank_account_number && (
+        <button type="button" onClick={() => setStage("summary")} className="mb-4 text-sm font-bold text-brand-dark/50 hover:text-brand-dark">
+          ← Cancel
+        </button>
+      )}
       <h1 className="font-display text-2xl font-bold text-brand-dark">Where should withdrawals go?</h1>
       <p className="mt-2 text-sm text-brand-dark/55">Set this once. Every withdrawal after this goes straight to this account, no need to re-enter it.</p>
 

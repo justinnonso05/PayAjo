@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../routing/app_router.dart';
+import '../../auth/data/user_profile.dart';
+import '../../auth/data/user_repository.dart';
 import '../data/payout_bank_models.dart';
 import '../data/wallet_repository.dart';
 
@@ -26,6 +28,12 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
   bool _isContinuing = false;
   String? _error;
 
+  /// `true` shows the form; `false` shows a summary of what's already on
+  /// file with an Edit action. Defaults to whatever we already know about
+  /// the cached profile at open time — returning users with a bank on file
+  /// land on the summary instead of a blank form to refill.
+  late bool _isEditing = ref.read(userProfileControllerProvider).profile?.payoutBankCode == null;
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +41,25 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
     _accountNumberController.addListener(() {
       if (_validated != null) setState(() => _validated = null);
     });
+  }
+
+  /// Bank name isn't stored on the profile directly (only its code), so
+  /// once the bank list loads we resolve it for display in the summary.
+  Bank? _currentBank(UserProfile profile) {
+    if (profile.payoutBankCode == null) return null;
+    for (final bank in _banks) {
+      if (bank.code == profile.payoutBankCode) return bank;
+    }
+    return null;
+  }
+
+  void _startEditing(UserProfile? profile) {
+    if (profile?.payoutBankCode != null) {
+      final match = _currentBank(profile!);
+      if (match != null) _selectedBank = match;
+      _accountNumberController.text = profile.payoutBankAccountNumber ?? '';
+    }
+    setState(() => _isEditing = true);
   }
 
   @override
@@ -132,9 +159,88 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
     }
   }
 
+  Widget _buildSummary(UserProfile profile) {
+    final bank = _currentBank(profile);
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Payout Bank',
+            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Withdrawals go straight here. Tap Edit to change it.',
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.lg), border: Border.all(color: AppColors.border, width: 1)),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(color: AppColors.paleGreen, shape: BoxShape.circle),
+                  child: const Icon(Icons.account_balance_rounded, color: AppColors.accentGreen, size: 20),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bank?.name ?? 'Bank on file',
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        profile.payoutBankAccountNumber ?? '—',
+                        style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary, letterSpacing: 1),
+                      ),
+                      if (profile.payoutAccountName != null) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          profile.payoutAccountName!,
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            height: 46,
+            child: OutlinedButton.icon(
+              onPressed: () => _startEditing(profile),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: AppColors.border),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23)),
+              ),
+              icon: const Icon(Icons.edit_outlined, size: 16, color: AppColors.textPrimary),
+              label: Text('Edit', style: TextStyle(fontFamily: 'PlusJakartaSans', fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final profile = ref.watch(userProfileControllerProvider).profile;
     final canValidate = _selectedBank != null && _accountNumberController.text.trim().length == 10;
+
+    final hasExistingBank = profile?.payoutBankCode != null;
+    final showingSummary = !_isEditing && hasExistingBank;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -142,10 +248,17 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        // Editing an existing bank (not setting one up fresh) should back
+        // out to the summary rather than leaving the screen entirely.
+        leading: !showingSummary && hasExistingBank
+            ? IconButton(onPressed: () => setState(() => _isEditing = false), icon: const Icon(Icons.arrow_back))
+            : null,
         title: Text('Payout Bank', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
-        child: Padding(
+        child: showingSummary
+            ? _buildSummary(profile!)
+            : Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
