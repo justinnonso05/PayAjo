@@ -68,11 +68,29 @@ async def reminder_job():
                 logger.error(f"Error evaluating reminders for group {group.id}: {e}", exc_info=True)
     logger.info("Automated reminder job completed.")
 
+from app.modules.cycle.auto_debit_service import evaluate_and_process_auto_debits
+
+async def auto_debit_job():
+    logger.info("Running automated auto-debit job...")
+    async with AsyncSessionLocal() as db:
+        from app.common.enums import GroupStatus
+        groups_res = await db.execute(
+            select(Group).where(Group.status == GroupStatus.ACTIVE)
+        )
+        groups = groups_res.scalars().all()
+        for group in groups:
+            try:
+                await evaluate_and_process_auto_debits(db, group)
+            except Exception as e:
+                logger.error(f"Error evaluating auto-debits for group {group.id}: {e}", exc_info=True)
+    logger.info("Automated auto-debit job completed.")
+
 def start_scheduler():
     # Only start if enabled in env
     interval_minutes = getattr(settings, "SCHEDULER_INTERVAL_MINUTES", 5)
     scheduler.add_job(payout_job, IntervalTrigger(minutes=interval_minutes), id="payout_job", replace_existing=True)
     scheduler.add_job(reminder_job, IntervalTrigger(minutes=interval_minutes), id="reminder_job", replace_existing=True)
+    scheduler.add_job(auto_debit_job, IntervalTrigger(minutes=interval_minutes), id="auto_debit_job", replace_existing=True)
     scheduler.start()
     logger.info(f"Scheduler started with {interval_minutes} minutes interval.")
 

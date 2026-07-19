@@ -7,8 +7,8 @@ from app.common.schemas import BaseResponse
 from app.modules.user.models import User
 from app.modules.group.models import Group
 from app.core.security import get_current_user
-from .schemas import GroupResponse, GroupCreate, GroupUpdate, GroupStartRequest, JoinGroupRequest, PayFromWalletRequest, GroupMemberProfileResponse, GroupRotationResponse
-from .service import create_group_service, join_group_service, update_group_service, start_group_service, pay_group_from_wallet_service, generate_direct_payment_service, get_group_members_service, get_group_rotation_service
+from .schemas import GroupResponse, GroupCreate, GroupUpdate, GroupStartRequest, JoinGroupRequest, PayFromWalletRequest, GroupMemberProfileResponse, GroupRotationResponse, AutoDebitSetupRequest
+from .service import create_group_service, join_group_service, update_group_service, start_group_service, pay_group_from_wallet_service, generate_direct_payment_service, get_group_members_service, get_group_rotation_service, setup_auto_debit_service
 
 router = APIRouter(prefix="/groups", tags=["Groups"])
 
@@ -203,6 +203,20 @@ async def pay_from_wallet(
         success=True,
         message="Contribution paid successfully",
         data=group
+    )
+
+@router.post("/{group_id}/auto-debit", response_model=BaseResponse[GroupMemberProfileResponse])
+async def setup_auto_debit(
+    group_id: str,
+    data: AutoDebitSetupRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    mem_profile = await setup_auto_debit_service(current_user, group_id, data.enabled, data.days_before, data.pin, db)
+    return BaseResponse(
+        success=True,
+        message="Auto-debit settings updated successfully",
+        data=mem_profile
     )
 
 @router.post("/{group_id}/generate-direct-payment", response_model=BaseResponse[dict])

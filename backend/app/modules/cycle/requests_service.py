@@ -7,11 +7,20 @@ from app.modules.group.models import Group
 from app.modules.cycle.models import CycleAssignment, DelegationRequest, SwapRequest
 from app.modules.notification.models import Notification
 from app.core.security import verify_password
+from app.core.pin_limiter import check_pin_rate_limit, record_pin_failure, record_pin_success
 from app.modules.chat.service import post_system_message
 
 async def initiate_delegation(db: AsyncSession, group: Group, cycle_number: int, user: User, to_member_id: str, pin: str) -> DelegationRequest:
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
     if not user.pin_hash or not verify_password(pin, user.pin_hash):
-        raise HTTPException(status_code=400, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=400, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
 
     # Ensure user is the assigned member for this cycle
     import json
@@ -71,8 +80,16 @@ async def initiate_delegation(db: AsyncSession, group: Group, cycle_number: int,
     return req
 
 async def initiate_swap(db: AsyncSession, group: Group, user: User, target_member_id: str, target_cycle_number: int, pin: str) -> SwapRequest:
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
     if not user.pin_hash or not verify_password(pin, user.pin_hash):
-        raise HTTPException(status_code=400, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=400, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
         
     import json
     rotation_order = json.loads(group.rotation_order) if group.rotation_order else []
@@ -111,8 +128,16 @@ async def initiate_swap(db: AsyncSession, group: Group, user: User, target_membe
     return req
 
 async def respond_swap(db: AsyncSession, group: Group, user: User, swap_id: str, accept: bool, pin: str) -> SwapRequest:
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
     if not user.pin_hash or not verify_password(pin, user.pin_hash):
-        raise HTTPException(status_code=400, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=400, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
         
     swap_res = await db.execute(select(SwapRequest).where(and_(SwapRequest.id == swap_id, SwapRequest.group_id == group.id)))
     swap = swap_res.scalar_one_or_none()

@@ -24,6 +24,8 @@ async def trigger_scheduler(
     count = 0
     for group in groups:
         try:
+            from app.modules.cycle.auto_debit_service import evaluate_and_process_auto_debits
+            await evaluate_and_process_auto_debits(db, group)
             await evaluate_payout_for_group(db, group)
             count += 1
         except Exception as e:

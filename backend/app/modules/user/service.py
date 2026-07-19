@@ -153,13 +153,23 @@ async def get_banks_list() -> list:
 from app.core.security import verify_password
 from app.modules.transaction.models import WalletLedgerEntry
 from app.common.enums import WalletLedgerEntryType
+from app.core.pin_limiter import check_pin_rate_limit, record_pin_failure, record_pin_success
 
 async def withdraw_from_wallet(user: User, amount: float, pin: str, db: AsyncSession) -> WalletLedgerEntry:
-    # 1. Verify PIN
+    # 1. Rate-limit check
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+    # 2. Verify PIN
     if not user.pin_hash:
         raise HTTPException(status_code=400, detail="Transaction PIN not set")
     if not verify_password(pin, user.pin_hash):
-        raise HTTPException(status_code=400, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=400, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
         
     # 2. Check balance
     if float(user.wallet_balance) < amount:
@@ -235,10 +245,18 @@ async def transfer_wallet_to_wallet(
     from app.services.email import send_email
 
     # 1. Verify PIN
+    try:
+        check_pin_rate_limit(sender.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
     if not sender.pin_hash:
         raise HTTPException(status_code=400, detail="Transaction PIN not set")
     if not verify_password(pin, sender.pin_hash):
-        raise HTTPException(status_code=400, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(sender.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=400, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(sender.id)
 
     # 2. Validate amount
     if amount <= 0:

@@ -11,6 +11,7 @@ from app.modules.group.schemas import GroupCreate, GroupUpdate, GroupStartReques
 from app.common.enums import GroupStatus, MembershipStatus, KYCStatus, GroupInviteStatus, WalletLedgerEntryType, GroupLedgerEntryType
 from app.modules.transaction.models import WalletLedgerEntry, GroupLedgerEntry
 from app.modules.notification.models import Notification
+from app.core.pin_limiter import check_pin_rate_limit, record_pin_failure, record_pin_success
 import uuid
 
 from datetime import datetime, timezone
@@ -293,12 +294,22 @@ async def send_targeted_invite_service(admin_user: User, group_id: str, email_or
 
 async def pay_group_from_wallet_service(user: User, group_id: str, pin: str, db: AsyncSession):
     import bcrypt
-    
-    # 1. Verify PIN
+
+    # 1. Rate-limit check
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+
+    # 2. Verify PIN
     if not user.pin_hash:
         raise HTTPException(status_code=400, detail="Transaction PIN not set")
     if not bcrypt.checkpw(pin.encode(), user.pin_hash.encode()):
-        raise HTTPException(status_code=401, detail="Invalid Transaction PIN")
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=401, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
         
     # 2. Get Group
     group_res = await db.execute(select(Group).where(Group.id == group_id))
@@ -611,3 +622,59 @@ async def rotate_invite_code_service(admin_user: User, group_id: str, db: AsyncS
     await db.commit()
     await db.refresh(group)
     return group
+
+async def setup_auto_debit_service(user: User, group_id: str, enabled: bool, days_before: int, pin: str, db: AsyncSession):
+    import bcrypt
+    from app.core.pin_limiter import check_pin_rate_limit, record_pin_failure, record_pin_success
+
+    # 1. Rate-limit check
+    try:
+        check_pin_rate_limit(user.id)
+    except ValueError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+
+    # 2. Verify PIN
+    if not user.pin_hash:
+        raise HTTPException(status_code=400, detail="Transaction PIN not set")
+    if not bcrypt.checkpw(pin.encode(), user.pin_hash.encode()):
+        rem = record_pin_failure(user.id)
+        if rem == 0:
+            raise HTTPException(status_code=429, detail="Too many incorrect PIN attempts. Try again in 15 minute(s).")
+        raise HTTPException(status_code=401, detail=f"Invalid Transaction PIN. {rem} attempt(s) remaining.")
+    record_pin_success(user.id)
+
+    # 3. Find Membership
+    mem_res = await db.execute(
+        select(Membership).where(
+            and_(Membership.group_id == group_id, Membership.user_id == user.id)
+        )
+    )
+    membership = mem_res.scalar_one_or_none()
+    if not membership:
+        raise HTTPException(status_code=404, detail="You are not a member of this group")
+
+    # 4. Update
+    if days_before < 0:
+        raise HTTPException(status_code=400, detail="Days before must be >= 0")
+
+    membership.auto_debit_enabled = enabled
+    membership.auto_debit_days_before = days_before
+    db.add(membership)
+    await db.commit()
+
+    return {
+        "id": membership.id,
+        "group_id": membership.group_id,
+        "user_id": membership.user_id,
+        "is_admin": membership.is_admin,
+        "status": membership.status,
+        "joined_at": membership.created_at,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "username": user.username,
+        "risk_score": user.risk_score,
+        "risk_factors": user.risk_factors,
+        "has_paid_current_cycle": False,
+        "auto_debit_enabled": membership.auto_debit_enabled,
+        "auto_debit_days_before": membership.auto_debit_days_before
+    }

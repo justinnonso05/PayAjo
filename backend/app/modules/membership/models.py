@@ -11,6 +11,9 @@ class Membership(Base, UUIDMixin, TimestampMixin):
     
     is_admin: Mapped[bool] = mapped_column(default=False, nullable=False)
     
+    auto_debit_enabled: Mapped[bool] = mapped_column(default=False, nullable=False)
+    auto_debit_days_before: Mapped[int] = mapped_column(default=1, nullable=False)
+    
     kyc_status: Mapped[str] = mapped_column(String(50), nullable=False) # Enum
     status: Mapped[str] = mapped_column(String(50), nullable=False) # Enum
 

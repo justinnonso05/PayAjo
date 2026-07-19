@@ -44,6 +44,11 @@ class JoinGroupRequest(BaseModel):
 class PayFromWalletRequest(BaseModel):
     pin: str
 
+class AutoDebitSetupRequest(BaseModel):
+    enabled: bool
+    days_before: int
+    pin: str
+
 class GroupInviteCreate(BaseModel):
     email_or_username: str
 
@@ -91,6 +96,10 @@ class GroupMemberProfileResponse(BaseModel):
     # Payment status for current cycle
     has_paid_current_cycle: bool = False
     payout_position: Optional[int] = None
+    
+    # Auto-debit settings
+    auto_debit_enabled: bool = False
+    auto_debit_days_before: int = 1
 
     class Config:
         from_attributes = True
