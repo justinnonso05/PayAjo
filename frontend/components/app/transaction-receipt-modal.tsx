@@ -4,7 +4,7 @@ import { Copy, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
-import { formatAmount, formatShortDate } from "@/lib/format";
+import { formatAmount, formatShortDate, formatTime } from "@/lib/format";
 import { downloadReceiptPdf } from "@/lib/receipt-pdf";
 import type { TransactionReceipt } from "@/lib/types";
 import { Modal } from "./modal";
@@ -75,6 +75,20 @@ export function TransactionReceiptModal({ transactionId, onClose }: { transactio
 
 function ReceiptBody({ receipt }: { receipt: TransactionReceipt }) {
   const credit = isCreditType(receipt.type);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    setDownloadError(null);
+    try {
+      await downloadReceiptPdf(receipt);
+    } catch {
+      setDownloadError("Could not generate the PDF. Please try again.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <div>
@@ -87,7 +101,7 @@ function ReceiptBody({ receipt }: { receipt: TransactionReceipt }) {
 
       <div className="mt-4 divide-y divide-brand-dark/5 rounded-2xl bg-soft-gray px-4">
         <Row label="Type" value={friendlyType(receipt.type)} />
-        <Row label="Date" value={formatShortDate(receipt.date)} />
+        <Row label="Date & Time" value={`${formatShortDate(receipt.date)} · ${formatTime(receipt.date)}`} />
         {receipt.sender_name && <Row label="From" value={receipt.sender_name} />}
         {receipt.recipient_name && <Row label="To" value={receipt.recipient_name} />}
         {receipt.narration && <Row label="Narration" value={receipt.narration} />}
@@ -106,13 +120,20 @@ function ReceiptBody({ receipt }: { receipt: TransactionReceipt }) {
         )}
       </div>
 
+      {downloadError && <p className="mt-3 text-xs font-semibold text-red-500">{downloadError}</p>}
+
       <button
         type="button"
-        onClick={() => downloadReceiptPdf(receipt)}
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-full border border-brand-dark/15 py-3 text-sm font-bold text-brand-dark transition-transform hover:scale-[1.01] active:scale-95"
+        onClick={handleDownload}
+        disabled={isDownloading}
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-full border border-brand-dark/15 py-3 text-sm font-bold text-brand-dark transition-transform hover:scale-[1.01] active:scale-95 disabled:opacity-60"
       >
-        <Download size={15} />
-        Download as PDF
+        {isDownloading ? (
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-dark/30 border-t-brand-dark" />
+        ) : (
+          <Download size={15} />
+        )}
+        {isDownloading ? "Preparing…" : "Download as PDF"}
       </button>
     </div>
   );
