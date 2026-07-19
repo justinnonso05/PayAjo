@@ -146,6 +146,7 @@ class ApiClient {
     required String filename,
     String fileFieldName = 'file',
     String? contentType,
+    Map<String, String>? fields,
     Map<String, String>? headers,
   }) async {
     final uri = EnvConfig.uri(path);
@@ -158,6 +159,7 @@ class ApiClient {
       final resolvedContentType = contentType ?? _guessImageContentType(filename);
       final request = http.MultipartRequest('POST', uri)
         ..headers.addAll({'Accept': 'application/json', ...?headers})
+        ..fields.addAll(fields ?? const {})
         ..files.add(http.MultipartFile.fromBytes(
           fileFieldName,
           fileBytes,

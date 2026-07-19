@@ -38,6 +38,14 @@ export const createGroupSchema = z.object({
   name: z.string().trim().min(2, "Group name is required"),
   contributionAmount: z.coerce.number().positive("Enter an amount greater than 0"),
   cycleFrequency: z.enum(["weekly", "monthly", "yearly"]),
+  // These are all optional and parsed manually on submit (not coerced by
+  // zod) since an empty optional number input coerces to NaN, which would
+  // fail min/max checks even though nothing was entered.
+  payoutDayOfWeek: z.number().min(0).max(6).optional(),
+  payoutDayOfMonth: z.string().optional(),
+  payoutMonth: z.string().optional(),
+  payoutTime: z.string().optional(),
+  memberCap: z.string().optional(),
 });
 
 export type CreateGroupFormValues = z.infer<typeof createGroupSchema>;

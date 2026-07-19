@@ -83,4 +83,5 @@ class ApiConstants {
   static String chatHistory(String groupId, {int limit = 50, int offset = 0}) =>
       '$apiPrefix/groups/$groupId/chat?limit=$limit&offset=$offset';
   static String chatWebSocket(String groupId, String token) => '$apiPrefix/groups/$groupId/ws?token=$token';
+  static String chatImage(String groupId) => '$apiPrefix/groups/$groupId/chat/image';
 }

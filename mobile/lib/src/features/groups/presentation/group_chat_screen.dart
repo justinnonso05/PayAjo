@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -42,6 +43,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
   String? _loadError;
   String? _connectionError;
   String? _editingMessageId;
+  bool _isSendingImage = false;
 
   @override
   void initState() {
@@ -172,6 +174,47 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
     _controller.clear();
   }
 
+  Future<void> _pickAndSendImage() async {
+    if (_isSendingImage) return;
+    XFile? picked;
+    try {
+      picked = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1600, imageQuality: 85);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open your photo library: $e', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+      return;
+    }
+    if (picked == null || !mounted) return;
+
+    setState(() => _isSendingImage = true);
+    try {
+      final bytes = await picked.readAsBytes();
+      final caption = _controller.text.trim();
+      await ref.read(chatRepositoryProvider).sendImage(
+            widget.groupId,
+            bytes: bytes,
+            filename: picked.name,
+            contentType: picked.mimeType,
+            caption: caption.isEmpty ? null : caption,
+          );
+      if (!mounted) return;
+      _controller.clear();
+      _scrollToBottom();
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not send the image: $e', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+    } finally {
+      if (mounted) setState(() => _isSendingImage = false);
+    }
+  }
+
   void _startEdit(ChatMessage message) {
     setState(() {
       _editingMessageId = message.id;
@@ -285,6 +328,8 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
             _Composer(
               controller: _controller,
               onSend: _send,
+              onPickImage: _pickAndSendImage,
+              isSendingImage: _isSendingImage,
               isEditing: _editingMessageId != null,
               onCancelEdit: _cancelEdit,
             ),
@@ -347,6 +392,20 @@ class _MessageBubble extends StatelessWidget {
 
   const _MessageBubble({required this.message, required this.isMe, required this.senderName, this.onLongPress});
 
+  void _showFullImage(BuildContext context, String url) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (context) => GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(child: InteractiveViewer(child: Image.network(url))),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (message.isSystem) {
@@ -390,14 +449,34 @@ class _MessageBubble extends StatelessWidget {
           children: [
             if (!isMe) Text(senderName ?? 'Member', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
             if (!isMe) const SizedBox(height: 2),
-            Text(
-              message.message,
-              style: TextStyle(fontFamily: 'PlusJakartaSans', 
-                fontSize: 13.5,
-                color: message.isDeleted ? AppColors.textMuted : AppColors.textPrimary,
-                fontStyle: message.isDeleted ? FontStyle.italic : FontStyle.normal,
+            if (message.imageUrl != null && !message.isDeleted) ...[
+              GestureDetector(
+                onTap: () => _showFullImage(context, message.imageUrl!),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    message.imageUrl!,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const SizedBox(width: 200, height: 200, child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accentGreen)));
+                    },
+                    errorBuilder: (context, error, stackTrace) =>
+                        const SizedBox(width: 200, height: 120, child: Center(child: Icon(Icons.broken_image_outlined, color: AppColors.textMuted))),
+                  ),
+                ),
               ),
-            ),
+              if (message.message.isNotEmpty) const SizedBox(height: 8),
+            ],
+            if (message.message.isNotEmpty)
+              Text(
+                message.message,
+                style: TextStyle(fontFamily: 'PlusJakartaSans',
+                  fontSize: 13.5,
+                  color: message.isDeleted ? AppColors.textMuted : AppColors.textPrimary,
+                  fontStyle: message.isDeleted ? FontStyle.italic : FontStyle.normal,
+                ),
+              ),
             const SizedBox(height: 4),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -420,12 +499,16 @@ class _MessageBubble extends StatelessWidget {
 class _Composer extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
+  final VoidCallback onPickImage;
+  final bool isSendingImage;
   final bool isEditing;
   final VoidCallback onCancelEdit;
 
   const _Composer({
     required this.controller,
     required this.onSend,
+    required this.onPickImage,
+    this.isSendingImage = false,
     this.isEditing = false,
     required this.onCancelEdit,
   });
@@ -466,12 +549,10 @@ class _Composer extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Image sharing coming soon', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
-                    );
-                  },
-                  icon: const Icon(Icons.image_outlined, color: AppColors.textSecondary),
+                  onPressed: isSendingImage ? null : onPickImage,
+                  icon: isSendingImage
+                      ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accentGreen))
+                      : const Icon(Icons.image_outlined, color: AppColors.textSecondary),
                 ),
                 Expanded(
                   child: TextField(

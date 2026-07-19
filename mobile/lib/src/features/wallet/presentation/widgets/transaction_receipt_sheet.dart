@@ -140,7 +140,9 @@ class _TransactionReceiptSheetState extends ConsumerState<TransactionReceiptShee
             children: [
               _row('Type', _friendlyType(receipt.type)),
               _divider(),
-              _row('Date', '${formatShortDate(receipt.date)} · ${formatTime(receipt.date)}'),
+              _row('Date', formatShortDate(receipt.date)),
+              _divider(),
+              _row('Time', formatTime(receipt.date)),
               if (receipt.senderName != null) ...[_divider(), _row('From', receipt.senderName!)],
               if (receipt.recipientName != null) ...[_divider(), _row('To', receipt.recipientName!)],
               if (receipt.narration != null && receipt.narration!.isNotEmpty) ...[_divider(), _row('Narration', receipt.narration!)],

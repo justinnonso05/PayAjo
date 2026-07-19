@@ -101,7 +101,8 @@ function ReceiptBody({ receipt }: { receipt: TransactionReceipt }) {
 
       <div className="mt-4 divide-y divide-brand-dark/5 rounded-2xl bg-soft-gray px-4">
         <Row label="Type" value={friendlyType(receipt.type)} />
-        <Row label="Date & Time" value={`${formatShortDate(receipt.date)} · ${formatTime(receipt.date)}`} />
+        <Row label="Date" value={formatShortDate(receipt.date)} />
+        <Row label="Time" value={formatTime(receipt.date)} />
         {receipt.sender_name && <Row label="From" value={receipt.sender_name} />}
         {receipt.recipient_name && <Row label="To" value={receipt.recipient_name} />}
         {receipt.narration && <Row label="Narration" value={receipt.narration} />}

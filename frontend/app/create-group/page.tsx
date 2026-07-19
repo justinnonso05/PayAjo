@@ -17,9 +17,13 @@ const FREQUENCIES: { value: CreateGroupFormValues["cycleFrequency"]; label: stri
   { value: "yearly", label: "Yearly" },
 ];
 
+// Matches the backend's payout_day_of_week convention: Monday = 0 ... Sunday = 6.
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export default function CreateGroupPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [payoutDayError, setPayoutDayError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -36,8 +40,14 @@ export default function CreateGroupPage() {
   }, [router]);
 
   const cycleFrequency = watch("cycleFrequency");
+  const payoutDayOfWeek = watch("payoutDayOfWeek");
 
   const onSubmit = async (values: CreateGroupFormValues) => {
+    if (values.cycleFrequency === "weekly" && values.payoutDayOfWeek === undefined) {
+      setPayoutDayError("Please choose a payout day.");
+      return;
+    }
+    setPayoutDayError(null);
     setServerError(null);
     try {
       await api.post(
@@ -47,6 +57,15 @@ export default function CreateGroupPage() {
           contribution_amount: values.contributionAmount,
           cycle_frequency: values.cycleFrequency,
           shortfall_policy: "hold",
+          ...(values.cycleFrequency === "weekly" && values.payoutDayOfWeek !== undefined
+            ? { payout_day_of_week: values.payoutDayOfWeek }
+            : {}),
+          ...(values.cycleFrequency !== "weekly" && values.payoutDayOfMonth?.trim()
+            ? { payout_day_of_month: parseInt(values.payoutDayOfMonth, 10) }
+            : {}),
+          ...(values.cycleFrequency === "yearly" && values.payoutMonth?.trim() ? { payout_month: parseInt(values.payoutMonth, 10) } : {}),
+          ...(values.payoutTime ? { payout_time: `${values.payoutTime}:00Z` } : {}),
+          ...(values.memberCap?.trim() ? { member_cap: parseInt(values.memberCap, 10) } : {}),
         },
         authHeaders(),
       );
@@ -87,6 +106,54 @@ export default function CreateGroupPage() {
             ))}
           </div>
         </div>
+
+        {cycleFrequency === "weekly" && (
+          <div>
+            <span className="mb-1.5 block text-xs font-bold text-brand-dark">Payout Day</span>
+            <div className="flex flex-wrap gap-2">
+              {WEEKDAYS.map((day, index) => (
+                <button
+                  key={day}
+                  type="button"
+                  onClick={() => {
+                    setValue("payoutDayOfWeek", index, { shouldValidate: true });
+                    setPayoutDayError(null);
+                  }}
+                  className={`rounded-full border px-3.5 py-2 text-xs font-bold transition-colors ${
+                    payoutDayOfWeek === index
+                      ? "border-brand-accent bg-brand-pale text-brand-dark"
+                      : "border-brand-dark/15 bg-white text-brand-dark/60"
+                  }`}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+            {payoutDayError && <p className="mt-1.5 text-xs font-semibold text-red-500">{payoutDayError}</p>}
+          </div>
+        )}
+
+        {(cycleFrequency === "monthly" || cycleFrequency === "yearly") && (
+          <div className="flex gap-3">
+            {cycleFrequency === "yearly" && (
+              <TextField
+                label="Payout Month (1-12)"
+                type="number"
+                placeholder="1"
+                {...register("payoutMonth")}
+              />
+            )}
+            <TextField
+              label="Payout Day of Month (1-28)"
+              type="number"
+              placeholder="1"
+              {...register("payoutDayOfMonth")}
+            />
+          </div>
+        )}
+
+        <TextField label="Payout Time (optional)" type="time" {...register("payoutTime")} />
+        <TextField label="Maximum Members (optional)" type="number" placeholder="10" {...register("memberCap")} />
 
         {serverError && <p className="text-sm font-semibold text-red-500">{serverError}</p>}
 

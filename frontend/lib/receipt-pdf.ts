@@ -115,7 +115,8 @@ export async function downloadReceiptPdf(receipt: TransactionReceipt) {
 
   const rows: [string, string][] = [
     ["Type", friendlyType(receipt.type)],
-    ["Date & Time", `${formatShortDate(receipt.date)} · ${formatTime(receipt.date)}`],
+    ["Date", formatShortDate(receipt.date)],
+    ["Time", formatTime(receipt.date)],
   ];
   if (receipt.sender_name) rows.push(["From", receipt.sender_name]);
   if (receipt.recipient_name) rows.push(["To", receipt.recipient_name]);

@@ -44,7 +44,8 @@ Future<void> shareReceiptPdf(TransactionReceipt receipt) async {
 
   final rows = <List<String>>[
     ['Type', _friendlyType(receipt.type)],
-    ['Date & Time', '${formatShortDate(receipt.date)} · ${formatTime(receipt.date)}'],
+    ['Date', formatShortDate(receipt.date)],
+    ['Time', formatTime(receipt.date)],
     if (receipt.senderName != null) ['From', receipt.senderName!],
     if (receipt.recipientName != null) ['To', receipt.recipientName!],
     if (receipt.narration != null && receipt.narration!.isNotEmpty) ['Narration', receipt.narration!],

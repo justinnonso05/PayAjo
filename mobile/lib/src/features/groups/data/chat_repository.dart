@@ -41,6 +41,27 @@ class ChatRepository {
     final uri = EnvConfig.wsUri(ApiConstants.chatWebSocket(groupId, token));
     return WebSocketChannel.connect(uri);
   }
+
+  /// Uploads an image (with an optional text caption) to the group chat.
+  /// The backend broadcasts the resulting message over the WebSocket to
+  /// every connected client, including the sender — same "wait for the
+  /// echo" pattern as text messages, so this just needs to succeed.
+  Future<void> sendImage(
+    String groupId, {
+    required List<int> bytes,
+    required String filename,
+    String? contentType,
+    String? caption,
+  }) async {
+    await _apiClient.postMultipart(
+      ApiConstants.chatImage(groupId),
+      fileBytes: bytes,
+      filename: filename,
+      contentType: contentType,
+      fields: caption != null && caption.trim().isNotEmpty ? {'message': caption.trim()} : null,
+      headers: await _secureStorage.authHeaders(),
+    );
+  }
 }
 
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
