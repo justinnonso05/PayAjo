@@ -35,6 +35,7 @@ class ApiConstants {
 
   // Wallet endpoints
   static String get walletTransactions => '$apiPrefix/users/me/wallet/transactions';
+  static String walletTransactionReceipt(String transactionId) => '$apiPrefix/users/me/wallet/transactions/$transactionId';
   static String get walletWithdraw => '$apiPrefix/users/me/wallet/withdraw';
   static String walletLookup(String accountNumber) => '$apiPrefix/users/me/wallet/lookup?account_number=$accountNumber';
   static String get walletTransfer => '$apiPrefix/users/me/wallet/transfer';

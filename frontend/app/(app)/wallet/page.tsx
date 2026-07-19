@@ -8,6 +8,7 @@ import { Modal } from "@/components/app/modal";
 import { PinConfirmModal } from "@/components/app/pin-confirm-modal";
 import { SectionHeader } from "@/components/app/section-header";
 import { SuccessModal } from "@/components/app/success-modal";
+import { TransactionReceiptModal } from "@/components/app/transaction-receipt-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
 import { formatAmount, formatShortDate } from "@/lib/format";
@@ -22,6 +23,7 @@ export default function WalletPage() {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showTransfer, setShowTransfer] = useState(false);
   const [showNoPayoutBank, setShowNoPayoutBank] = useState(false);
+  const [openTransactionId, setOpenTransactionId] = useState<string | null>(null);
 
   const balance = parseFloat(profile?.wallet_balance ?? "0") || 0;
 
@@ -89,11 +91,6 @@ export default function WalletPage() {
                 title="Fund wallet via bank transfer"
                 subtitle="Send money to your personal virtual account above. It lands in your wallet automatically."
               />
-              <MethodTile
-                icon={Bolt}
-                title="Pay contributions from wallet"
-                subtitle="When your balance covers a contribution, pay in one tap instead of transferring to the group directly."
-              />
             </div>
           </div>
         </>
@@ -110,7 +107,12 @@ export default function WalletPage() {
             {transactions.map((tx) => {
               const credit = isCreditTransaction(tx);
               return (
-                <div key={tx.id} className="flex items-center gap-3 px-5 py-4">
+                <button
+                  key={tx.id}
+                  type="button"
+                  onClick={() => setOpenTransactionId(tx.id)}
+                  className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-soft-gray"
+                >
                   <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${credit ? "bg-brand-pale" : "bg-amber-50"}`}>
                     {credit ? <ArrowDownRight size={16} className="text-brand-accent" /> : <ArrowUpRight size={16} className="text-amber-600" />}
                   </span>
@@ -121,7 +123,7 @@ export default function WalletPage() {
                   <p className={`text-sm font-bold ${credit ? "text-brand-accent" : "text-brand-dark"}`}>
                     {credit ? "+" : "-"}₦{formatAmount(Math.abs(tx.amount))}
                   </p>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -171,6 +173,10 @@ export default function WalletPage() {
             </Link>
           </div>
         </Modal>
+      )}
+
+      {openTransactionId && (
+        <TransactionReceiptModal transactionId={openTransactionId} onClose={() => setOpenTransactionId(null)} />
       )}
 
       {showWithdraw && profile && (

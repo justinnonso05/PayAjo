@@ -28,6 +28,20 @@ class WalletRepository {
     return items;
   }
 
+  /// Fetches a single transaction rendered as a receipt (amounts, names,
+  /// dates, references) — used for the transaction detail view.
+  Future<TransactionReceipt> getTransactionReceipt(String transactionId) async {
+    final response = await _apiClient.get(
+      ApiConstants.walletTransactionReceipt(transactionId),
+      headers: await _secureStorage.authHeaders(),
+    );
+    final data = response['data'];
+    if (data is! Map<String, dynamic>) {
+      throw ApiException('Unexpected response from server.');
+    }
+    return TransactionReceipt.fromJson(data);
+  }
+
   /// Withdraws [amount] from the wallet to the user's payout bank.
   /// Throws [ApiException] on failure (insufficient balance, wrong PIN,
   /// no payout bank on file, etc).

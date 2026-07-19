@@ -140,6 +140,7 @@ export const endpoints = {
 
   // Wallet
   walletTransactions: `${API_PREFIX}/users/me/wallet/transactions`,
+  walletTransactionReceipt: (transactionId: string) => `${API_PREFIX}/users/me/wallet/transactions/${transactionId}`,
   walletWithdraw: `${API_PREFIX}/users/me/wallet/withdraw`,
   walletLookup: (accountNumber: string) => `${API_PREFIX}/users/me/wallet/lookup?account_number=${accountNumber}`,
   walletTransfer: `${API_PREFIX}/users/me/wallet/transfer`,

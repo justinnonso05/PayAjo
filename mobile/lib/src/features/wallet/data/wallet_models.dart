@@ -42,6 +42,46 @@ class WalletTransaction {
   }
 }
 
+/// From `GET /users/me/wallet/transactions/{id}` — a single transaction
+/// rendered as a receipt (amounts, names, dates, references).
+class TransactionReceipt {
+  final String transactionId;
+  final String type;
+  final double amount;
+  final String status;
+  final DateTime date;
+  final String? senderName;
+  final String? recipientName;
+  final String? narration;
+  final String? reference;
+
+  const TransactionReceipt({
+    required this.transactionId,
+    required this.type,
+    required this.amount,
+    required this.status,
+    required this.date,
+    this.senderName,
+    this.recipientName,
+    this.narration,
+    this.reference,
+  });
+
+  factory TransactionReceipt.fromJson(Map<String, dynamic> json) {
+    return TransactionReceipt(
+      transactionId: json['transaction_id']?.toString() ?? '',
+      type: json['type']?.toString() ?? '',
+      amount: (json['amount'] as num?)?.toDouble() ?? 0,
+      status: json['status']?.toString() ?? '',
+      date: DateTime.tryParse(json['date']?.toString() ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
+      senderName: json['sender_name']?.toString(),
+      recipientName: json['recipient_name']?.toString(),
+      narration: json['narration']?.toString(),
+      reference: json['reference']?.toString(),
+    );
+  }
+}
+
 /// From `GET /users/me/wallet/lookup` — used to confirm who owns a wallet
 /// before sending them a transfer.
 class UserByAccount {

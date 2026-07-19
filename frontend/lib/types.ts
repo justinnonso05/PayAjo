@@ -129,6 +129,18 @@ export type UserSearchResult = {
   risk_factors?: string | null;
 };
 
+export type TransactionReceipt = {
+  transaction_id: string;
+  type: string;
+  amount: number;
+  status: string;
+  date: string;
+  sender_name?: string | null;
+  recipient_name?: string | null;
+  narration?: string | null;
+  reference?: string | null;
+};
+
 export type UserByAccount = {
   id: string;
   first_name: string;

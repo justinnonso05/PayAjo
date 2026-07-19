@@ -17,6 +17,7 @@ import '../../auth/data/user_repository.dart';
 import '../data/wallet_controller.dart';
 import '../data/wallet_models.dart';
 import '../data/wallet_repository.dart';
+import 'widgets/transaction_receipt_sheet.dart';
 import 'widgets/transfer_sheet.dart';
 
 class WalletTab extends ConsumerStatefulWidget {
@@ -396,20 +397,10 @@ class _FundingMethods extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _methodTile(
-          icon: Icons.account_balance_rounded,
-          title: 'Fund wallet via bank transfer',
-          subtitle: 'Send money to your personal virtual account above. It lands in your wallet automatically.',
-        ),
-        const SizedBox(height: 10),
-        _methodTile(
-          icon: Icons.bolt_rounded,
-          title: 'Pay contributions from wallet',
-          subtitle: 'When your balance covers a contribution, pay in one tap instead of transferring to the group directly.',
-        ),
-      ],
+    return _methodTile(
+      icon: Icons.account_balance_rounded,
+      title: 'Fund wallet via bank transfer',
+      subtitle: 'Send money to your personal virtual account above. It lands in your wallet automatically.',
     );
   }
 
@@ -485,34 +476,37 @@ class _TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCredit = transaction.isCredit;
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(color: isCredit ? AppColors.paleGreen : AppColors.warningPale, shape: BoxShape.circle),
-            child: Icon(isCredit ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded, color: isCredit ? AppColors.accentGreen : AppColors.warning, size: 18),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  transaction.narration?.isNotEmpty == true ? transaction.narration! : transaction.type,
-                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                ),
-                Text('${formatShortDate(transaction.createdAt)} · ${formatTime(transaction.createdAt)}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
-              ],
+    return InkWell(
+      onTap: () => TransactionReceiptSheet.show(context, transaction.id),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(color: isCredit ? AppColors.paleGreen : AppColors.warningPale, shape: BoxShape.circle),
+              child: Icon(isCredit ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded, color: isCredit ? AppColors.accentGreen : AppColors.warning, size: 18),
             ),
-          ),
-          Text(
-            '${isCredit ? '+' : '-'}₦${formatAmount(transaction.amount.abs())}',
-            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    transaction.narration?.isNotEmpty == true ? transaction.narration! : transaction.type,
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  ),
+                  Text('${formatShortDate(transaction.createdAt)} · ${formatTime(transaction.createdAt)}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
+                ],
+              ),
+            ),
+            Text(
+              '${isCredit ? '+' : '-'}₦${formatAmount(transaction.amount.abs())}',
+              style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
+            ),
+          ],
+        ),
       ),
     );
   }
