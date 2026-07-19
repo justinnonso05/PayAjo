@@ -4,6 +4,7 @@ import { CheckCircle2, Hourglass } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { PinConfirmModal } from "@/components/app/pin-confirm-modal";
+import { SuccessModal } from "@/components/app/success-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
 import { hasPaidCurrentRound } from "@/lib/contribution-status";
@@ -22,6 +23,7 @@ export default function ContributePage({ params }: { params: Promise<{ groupId: 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPin, setShowPin] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isGeneratingDirectPayment, setIsGeneratingDirectPayment] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -60,7 +62,7 @@ export default function ContributePage({ params }: { params: Promise<{ groupId: 
       await api.post(endpoints.payFromWallet(groupId), { pin }, authHeaders());
       await refreshTransactions();
       setShowPin(false);
-      router.push(`/groups/${groupId}`);
+      setShowSuccess(true);
     } catch (err) {
       setActionError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
       setShowPin(false);
@@ -125,6 +127,14 @@ export default function ContributePage({ params }: { params: Promise<{ groupId: 
           subtitle={`Enter your PIN to pay ₦${formatAmount(group.contribution_amount)} from your wallet.`}
           onConfirm={handlePinConfirm}
           onClose={() => setShowPin(false)}
+        />
+      )}
+
+      {showSuccess && (
+        <SuccessModal
+          title="Contribution Paid"
+          subtitle={`₦${formatAmount(group.contribution_amount)} has been added to your group's pool.`}
+          onPrimary={() => router.push(`/groups/${groupId}`)}
         />
       )}
     </div>

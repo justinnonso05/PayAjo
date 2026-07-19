@@ -3,13 +3,14 @@
 import { CheckCircle2, ChevronDown, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SuccessModal } from "@/components/app/success-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
 import type { Bank, BankValidationResult } from "@/lib/types";
 
 export default function PayoutBankPage() {
   const router = useRouter();
-  const [stage, setStage] = useState<"details" | "otp">("details");
+  const [stage, setStage] = useState<"details" | "otp" | "success">("details");
   const [banks, setBanks] = useState<Bank[]>([]);
   const [isLoadingBanks, setIsLoadingBanks] = useState(true);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -87,7 +88,7 @@ export default function PayoutBankPage() {
         { bank_account_number: validated.accountNumber, bank_code: selectedBank.code, otp_code: otp.trim() },
         authHeaders(),
       );
-      router.push("/wallet");
+      setStage("success");
     } catch (err) {
       setOtpError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -96,6 +97,16 @@ export default function PayoutBankPage() {
   };
 
   const filteredBanks = banks.filter((b) => b.name.toLowerCase().includes(bankQuery.toLowerCase()));
+
+  if (stage === "success" && selectedBank && validated) {
+    return (
+      <SuccessModal
+        title="Payout Bank Set"
+        subtitle={`Withdrawals will now go straight to ${validated.accountName} at ${selectedBank.name}.`}
+        onPrimary={() => router.push("/wallet")}
+      />
+    );
+  }
 
   if (stage === "otp" && selectedBank && validated) {
     return (
