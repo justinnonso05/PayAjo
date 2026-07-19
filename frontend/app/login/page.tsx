@@ -24,7 +24,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     const cachedEmail = getLastEmail();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from localStorage, not a render-loop
     if (cachedEmail) setValue("email", cachedEmail);
     if (window.sessionStorage.getItem("ajopay_session_expired")) {
       window.sessionStorage.removeItem("ajopay_session_expired");
