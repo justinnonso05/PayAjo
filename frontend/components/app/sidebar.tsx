@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { clearToken } from "@/lib/auth";
+import { useHasUnreadNotifications } from "@/lib/hooks/use-has-unread-notifications";
 import type { Profile } from "@/lib/types";
 
 const NAV_ITEMS = [
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
 export function Sidebar({ profile }: { profile: Profile | null }) {
   const pathname = usePathname();
   const router = useRouter();
+  const hasUnread = useHasUnreadNotifications();
 
   const handleLogout = () => {
     clearToken();
@@ -41,7 +43,10 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
                 active ? "bg-brand-pale text-brand-dark" : "text-brand-dark/50 hover:bg-soft-gray hover:text-brand-dark"
               }`}
             >
-              <Icon size={18} />
+              <span className="relative">
+                <Icon size={18} />
+                {href === "/notifications" && hasUnread && <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-red-500" />}
+              </span>
               {label}
             </Link>
           );

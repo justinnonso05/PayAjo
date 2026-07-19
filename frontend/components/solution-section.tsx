@@ -1,5 +1,5 @@
 import { Banknote, Bell, MessageCircle, ShieldCheck, Wallet, Zap } from "lucide-react";
-import { Reveal, StaggerGroup, StaggerItem } from "./reveal";
+import { Reveal } from "./reveal";
 
 const FEATURES = [
   { icon: Banknote, label: "Automatic contribution tracking" },

@@ -26,6 +26,7 @@ export function useWalletTransactions() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- refresh() is async, setState happens post-await
     refresh();
   }, [refresh]);
 

@@ -35,11 +35,20 @@ export type GroupMembership = {
   pool_balance: number;
 };
 
+export type ShortfallPolicy = "hold" | "partial" | "admin_decides";
+
+export const SHORTFALL_POLICY_DESCRIPTIONS: Record<ShortfallPolicy, string> = {
+  hold: "Pause the payout until everyone's contribution is in.",
+  partial: "Pay out whatever has been contributed so far.",
+  admin_decides: "You'll choose what happens each time it comes up.",
+};
+
 export type Group = {
   id: string;
   name: string;
   contribution_amount: number;
   cycle_frequency: CycleFrequency | null;
+  shortfall_policy: ShortfallPolicy | null;
   status: string;
   admin_user_id: string;
   invite_code: string | null;
@@ -95,6 +104,15 @@ export function isCreditTransaction(tx: WalletTransaction): boolean {
   return CREDIT_KEYWORDS.some((k) => t.includes(k));
 }
 
+export type UserSearchResult = {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  risk_score: number;
+  risk_factors?: string | null;
+};
+
 export type Bank = { name: string; code: string };
 
 export type BankValidationResult = { accountNumber: string; accountName: string; bankCode: string };
@@ -116,6 +134,7 @@ export type AppNotification = {
   id: string;
   title: string;
   message: string;
+  type: string;
   is_read: boolean;
   created_at: string;
 };

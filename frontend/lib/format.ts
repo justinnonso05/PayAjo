@@ -49,3 +49,21 @@ function ordinal(day: number): string {
 export function formatFriendlyDate(date: Date): string {
   return `${WEEKDAYS[(date.getDay() + 6) % 7]}, ${ordinal(date.getDate())} ${date.toLocaleDateString("en-GB", { month: "long" })}`;
 }
+
+/** e.g. "3:45 PM" */
+export function formatTime(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+}
+
+/** Buckets a timestamp into Today / Yesterday / Earlier for notification-style feeds. */
+export function dayBucket(iso: string, now: Date = new Date()): "Today" | "Yesterday" | "Earlier" {
+  const date = new Date(iso);
+  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffDays = Math.round((today.getTime() - target.getTime()) / 86_400_000);
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  return "Earlier";
+}

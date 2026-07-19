@@ -13,3 +13,16 @@ Name: QA Test Group
 Invite code: 80WBSV
 Weekly, ₦5,000 contribution, payout day Monday, 70% quorum, shortfall policy "Hold", max 10 members
 Status: gathering, 2 members so far (qa999 as admin, qa777 pending approval)
+
+
+9. Smart Invite Link ⭐⭐⭐⭐
+
+Instead of
+
+AJO-04838
+
+Users share
+
+ajopay.app/invite/green-family
+
+Cleaner.

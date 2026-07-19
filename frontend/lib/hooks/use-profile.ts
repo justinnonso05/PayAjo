@@ -25,6 +25,9 @@ export function useProfile() {
   }, []);
 
   useEffect(() => {
+    // refresh() is async — its setState calls happen after an await, not
+    // synchronously in the effect body — but the lint rule can't tell that statically.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
   }, [refresh]);
 

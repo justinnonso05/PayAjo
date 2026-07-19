@@ -8,6 +8,7 @@ import {
   Copy,
   History,
   Info,
+  Mail,
   MessageCircle,
   PlusCircle,
   Send,
@@ -15,12 +16,13 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EmptyState } from "@/components/app/empty-state";
 import { SectionHeader } from "@/components/app/section-header";
 import { StatusPill } from "@/components/app/status-pill";
 import { formatAmount, formatFriendlyDate, formatShortDate, greeting } from "@/lib/format";
 import { useGroups, type GroupSummary } from "@/lib/hooks/use-groups";
+import { useInvites } from "@/lib/hooks/use-invites";
 import { useProfile } from "@/lib/hooks/use-profile";
 import { useWalletTransactions } from "@/lib/hooks/use-wallet-transactions";
 import { isCreditTransaction } from "@/lib/types";
@@ -29,10 +31,15 @@ export default function HomePage() {
   const { profile } = useProfile();
   const { summaries, hasGroup, isLoading } = useGroups();
   const { items: transactions } = useWalletTransactions();
+  const { invites } = useInvites();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mountedGreeting, setMountedGreeting] = useState("");
 
-  useEffect(() => setMountedGreeting(greeting()), []);
+  useEffect(() => {
+    // Computed client-side only to avoid an SSR/CSR hydration mismatch (server has no local time-of-day).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMountedGreeting(greeting());
+  }, []);
 
   const clampedIndex = summaries.length === 0 ? 0 : Math.min(selectedIndex, summaries.length - 1);
   const selected = summaries[clampedIndex];
@@ -45,6 +52,16 @@ export default function HomePage() {
           <p className="font-display text-2xl font-bold text-brand-dark">{profile?.first_name || "there"} 👋</p>
         </div>
       </div>
+
+      {invites.length > 0 && (
+        <Link href="/invites" className="mt-5 flex items-center gap-3 rounded-2xl bg-blue-50 px-4 py-3.5 transition-colors hover:bg-blue-100">
+          <Mail size={18} className="shrink-0 text-blue-500" />
+          <p className="flex-1 text-sm font-bold text-brand-dark">
+            {invites.length === 1 ? "You've been invited to a group" : `You've been invited to ${invites.length} groups`}
+          </p>
+          <ChevronRight size={16} className="text-blue-500" />
+        </Link>
+      )}
 
       <div className="mt-6">
         {isLoading && !hasGroup ? (
@@ -236,16 +253,23 @@ function QuickActions({ groupId, isAdmin }: { groupId: string | null; isAdmin: b
 
 function UpcomingContributions({ summary }: { summary: GroupSummary }) {
   const { group, membership } = summary;
-  const anchor = group.next_payout_date ? new Date(group.next_payout_date) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const dates: Date[] = [anchor];
-  for (let i = 1; i < 3; i++) {
-    const prev = dates[dates.length - 1];
-    const next = new Date(prev);
-    if (group.cycle_frequency === "monthly") next.setMonth(next.getMonth() + 1);
-    else if (group.cycle_frequency === "yearly") next.setFullYear(next.getFullYear() + 1);
-    else next.setDate(next.getDate() + 7);
-    dates.push(next);
-  }
+  // Lazy-initialized once per mount — the sanctioned way to capture an
+  // impure "now" value without re-reading it (and re-triggering the
+  // purity lint) on every render.
+  const [now] = useState(() => Date.now());
+  const dates = useMemo(() => {
+    const anchor = group.next_payout_date ? new Date(group.next_payout_date) : new Date(now + 7 * 24 * 60 * 60 * 1000);
+    const result: Date[] = [anchor];
+    for (let i = 1; i < 3; i++) {
+      const prev = result[result.length - 1];
+      const next = new Date(prev);
+      if (group.cycle_frequency === "monthly") next.setMonth(next.getMonth() + 1);
+      else if (group.cycle_frequency === "yearly") next.setFullYear(next.getFullYear() + 1);
+      else next.setDate(next.getDate() + 7);
+      result.push(next);
+    }
+    return result;
+  }, [group.next_payout_date, group.cycle_frequency, now]);
 
   return (
     <div className="divide-y divide-brand-dark/5 rounded-card bg-white shadow-sm">
