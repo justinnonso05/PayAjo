@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
+import Link from "next/link";
 import { PhoneMockup } from "./phone-mockup";
 
 export function Hero() {
@@ -52,12 +53,12 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="mt-9 flex flex-wrap items-center gap-4"
           >
-            <a
-              href="#final-cta"
-              className="rounded-full bg-brand-dark px-7 py-3.5 text-sm font-bold text-white shadow-[0_8px_30px_rgba(29,49,8,0.25)] transition-transform hover:scale-105 active:scale-95"
+            <Link
+              href="/signup"
+              className="rounded-full bg-brand px-7 py-3.5 text-sm font-bold text-brand-dark shadow-[0_8px_30px_rgba(172,236,135,0.4)] transition-transform hover:scale-105 active:scale-95"
             >
               Get Started
-            </a>
+            </Link>
             <a
               href="#how-it-works"
               className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold text-brand-dark transition-colors hover:text-brand-accent"

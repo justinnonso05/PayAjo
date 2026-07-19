@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "./reveal";
 
 export function FinalCta() {
@@ -12,12 +13,12 @@ export function FinalCta() {
           Join thousands running their Ajo the smarter way — transparent, automatic, and always on time.
         </p>
         <div className="relative mt-9 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="#"
+          <Link
+            href="/signup"
             className="rounded-full bg-brand px-7 py-3.5 text-sm font-bold text-brand-dark shadow-lg transition-transform hover:scale-105 active:scale-95"
           >
             Create Free Account
-          </a>
+          </Link>
           <a
             href="#"
             className="rounded-full border border-white/20 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/10"

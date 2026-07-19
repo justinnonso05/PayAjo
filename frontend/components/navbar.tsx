@@ -51,15 +51,15 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <a href="#" className="text-sm font-semibold text-brand-dark/70 transition-colors hover:text-brand-dark">
+          <Link href="/login" className="text-sm font-semibold text-brand-dark/70 transition-colors hover:text-brand-dark">
             Sign In
-          </a>
-          <a
-            href="#final-cta"
-            className="rounded-full bg-brand-dark px-5 py-2.5 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95"
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-brand-dark transition-transform hover:scale-105 active:scale-95"
           >
             Get Started
-          </a>
+          </Link>
         </div>
 
         <button
@@ -93,16 +93,16 @@ export function Navbar() {
                 </a>
               ))}
               <div className="mt-2 flex flex-col gap-2 border-t border-black/5 pt-4">
-                <a href="#" className="text-sm font-semibold text-brand-dark/70">
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm font-semibold text-brand-dark/70">
                   Sign In
-                </a>
-                <a
-                  href="#final-cta"
+                </Link>
+                <Link
+                  href="/signup"
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-full bg-brand-dark px-5 py-2.5 text-center text-sm font-bold text-white"
+                  className="rounded-full bg-brand px-5 py-2.5 text-center text-sm font-bold text-brand-dark"
                 >
                   Get Started
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
