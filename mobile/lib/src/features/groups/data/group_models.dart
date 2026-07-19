@@ -230,6 +230,8 @@ class GroupMember {
   final String username;
   final bool hasPaidCurrentCycle;
   final int? payoutPosition;
+  final bool autoDebitEnabled;
+  final int autoDebitDaysBefore;
 
   const GroupMember({
     required this.id,
@@ -242,6 +244,8 @@ class GroupMember {
     required this.username,
     required this.hasPaidCurrentCycle,
     required this.payoutPosition,
+    required this.autoDebitEnabled,
+    required this.autoDebitDaysBefore,
   });
 
   String get fullName => '$firstName $lastName'.trim();
@@ -258,6 +262,8 @@ class GroupMember {
       username: json['username']?.toString() ?? '',
       hasPaidCurrentCycle: json['has_paid_current_cycle'] == true,
       payoutPosition: (json['payout_position'] as num?)?.toInt(),
+      autoDebitEnabled: json['auto_debit_enabled'] == true,
+      autoDebitDaysBefore: (json['auto_debit_days_before'] as num?)?.toInt() ?? 1,
     );
   }
 }

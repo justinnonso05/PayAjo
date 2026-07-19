@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -25,7 +24,7 @@ class _RequestPinResetScreenState extends ConsumerState<RequestPinResetScreen> {
       context.pushNamed(AppRoute.verifyPinResetOtp.name);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -49,11 +48,11 @@ class _RequestPinResetScreenState extends ConsumerState<RequestPinResetScreen> {
                 child: const Icon(Icons.mail_lock_outlined, color: AppColors.accentGreen, size: 28),
               ),
               const SizedBox(height: 20),
-              Text('Reset Your PIN', style: GoogleFonts.spaceGrotesk(fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Reset Your PIN', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 8),
               Text(
                 "We'll send a one-time code to your registered email to verify it's you before setting a new PIN.",
-                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, height: 1.5),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, height: 1.5),
               ),
               const Spacer(),
               SizedBox(
@@ -70,7 +69,7 @@ class _RequestPinResetScreenState extends ConsumerState<RequestPinResetScreen> {
                   ),
                   child: _isSubmitting
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                      : Text('Send Code', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                      : Text('Send Code', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],

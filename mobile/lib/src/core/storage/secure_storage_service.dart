@@ -7,7 +7,16 @@ import '../network/api_client.dart';
 class SecureStorageService {
   final FlutterSecureStorage _storage;
 
-  SecureStorageService({FlutterSecureStorage? storage}) : _storage = storage ?? const FlutterSecureStorage();
+  // Without `encryptedSharedPreferences: true`, Android falls back to a
+  // legacy per-value Keystore encryption path that's known to throw
+  // (BadPaddingException/KeyStoreException) on some OEMs/devices after a
+  // reinstall or Keystore invalidation — a real crash source in release
+  // builds that debug testing on one device won't surface.
+  SecureStorageService({FlutterSecureStorage? storage})
+      : _storage = storage ??
+            const FlutterSecureStorage(
+              aOptions: AndroidOptions(encryptedSharedPreferences: true),
+            );
 
   static const _accessTokenKey = 'access_token';
   static const _tokenTypeKey = 'token_type';

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { use, useState } from "react";
 import { Modal } from "@/components/app/modal";
 import { StatusPill } from "@/components/app/status-pill";
+import { SuccessModal } from "@/components/app/success-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
 import { hasPaidCurrentRound } from "@/lib/contribution-status";
@@ -13,7 +14,8 @@ import { useCurrentUserId } from "@/lib/hooks/use-current-user-id";
 import { useGroup } from "@/lib/hooks/use-group";
 import { useRotations } from "@/lib/hooks/use-rotations";
 import { useWalletTransactions } from "@/lib/hooks/use-wallet-transactions";
-import { SHORTFALL_POLICY_DESCRIPTIONS, type GroupMember } from "@/lib/types";
+import type { GroupMember } from "@/lib/types";
+import { AutoDebitCard } from "./auto-debit-card";
 import { EditGroupModal } from "./edit-group-modal";
 import { SendInviteModal } from "./send-invite-modal";
 import { StartGroupModal } from "./start-group-modal";
@@ -32,6 +34,7 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
     startGroup,
     rotateInviteCode,
     setGroup,
+    setMembers,
   } = useGroup(groupId);
   const { items: transactions } = useWalletTransactions();
   const { rotations, isLoading: isLoadingRotations } = useRotations(groupId);
@@ -42,6 +45,7 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
   const [showMembers, setShowMembers] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
+  const [showInviteSuccess, setShowInviteSuccess] = useState(false);
   const [showStartGroup, setShowStartGroup] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [remindingUserId, setRemindingUserId] = useState<string | null>(null);
@@ -279,21 +283,17 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
         </div>
       </div>
 
-      <div className="mt-6 rounded-card bg-white p-5 shadow-sm">
-        <p className="text-xs font-bold text-brand-dark/40">Rules</p>
-        <ul className="mt-2.5 space-y-2">
-          <li className="flex gap-2.5 text-xs leading-relaxed text-brand-dark/60">
-            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-accent" />
-            {group.shortfall_policy ? SHORTFALL_POLICY_DESCRIPTIONS[group.shortfall_policy] : "Shortfall policy not set."}
-          </li>
-          {group.member_cap && (
+      {group.member_cap && (
+        <div className="mt-6 rounded-card bg-white p-5 shadow-sm">
+          <p className="text-xs font-bold text-brand-dark/40">Rules</p>
+          <ul className="mt-2.5 space-y-2">
             <li className="flex gap-2.5 text-xs leading-relaxed text-brand-dark/60">
               <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-accent" />
               Group is capped at {group.member_cap} members.
             </li>
-          )}
-        </ul>
-      </div>
+          </ul>
+        </div>
+      )}
 
       {group.status === "active" && (
         <div className="mt-6 rounded-card bg-white p-5 shadow-sm">
@@ -329,6 +329,14 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
             )}
           </div>
         </div>
+      )}
+
+      {group.status === "active" && currentMember && (
+        <AutoDebitCard
+          groupId={groupId}
+          member={currentMember}
+          onUpdated={(updated) => setMembers((prev) => prev.map((m) => (m.user_id === updated.user_id ? updated : m)))}
+        />
       )}
 
       <div className="mt-8 space-y-3">
@@ -412,8 +420,16 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
           onClose={() => setShowInvite(false)}
           onSent={() => {
             setShowInvite(false);
-            showToast("Invite sent");
+            setShowInviteSuccess(true);
           }}
+        />
+      )}
+
+      {showInviteSuccess && (
+        <SuccessModal
+          title="Invite Sent"
+          subtitle="They'll see it under their invites and can join the group once they accept."
+          onPrimary={() => setShowInviteSuccess(false)}
         />
       )}
 

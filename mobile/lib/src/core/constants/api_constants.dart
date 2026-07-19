@@ -21,6 +21,7 @@ class ApiConstants {
   static String group(String groupId) => '$apiPrefix/groups/$groupId';
   static String groupMembers(String groupId) => '$apiPrefix/groups/$groupId/members';
   static String groupRotations(String groupId) => '$apiPrefix/groups/$groupId/rotations';
+  static String autoDebit(String groupId) => '$apiPrefix/groups/$groupId/auto-debit';
 
   // User endpoints
   static String get me => '$apiPrefix/users/me';

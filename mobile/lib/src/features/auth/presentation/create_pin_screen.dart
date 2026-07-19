@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import 'widgets/numeric_keypad.dart';
@@ -44,7 +43,7 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
             Text(
               'Set your 4-digit transaction PIN',
               textAlign: TextAlign.center,
-              style: GoogleFonts.spaceGrotesk(
+              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1D3108),
@@ -56,7 +55,7 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
               child: Text(
                 "You'll only be asked for this once. You'll use it to approve transactions and log in quickly.",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(fontFamily: 'PlusJakartaSans', 
                   fontSize: 14,
                   color: Colors.grey[500],
                   fontWeight: FontWeight.w500,
@@ -73,7 +72,7 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
               onPressed: () => context.goNamed(AppRoute.home.name),
               child: Text(
                 'Not now',
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(fontFamily: 'PlusJakartaSans', 
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[500],

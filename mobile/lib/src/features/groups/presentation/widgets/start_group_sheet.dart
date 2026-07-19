@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/group_models.dart';
@@ -80,14 +79,14 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Start Group', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Start Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: Colors.grey)),
             ],
           ),
           const SizedBox(height: 4),
           Text(
             'This locks in the payout rotation order and begins the first contribution cycle. This cannot be undone.',
-            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.4),
           ),
           const SizedBox(height: 20),
           Row(
@@ -101,7 +100,7 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
             const SizedBox(height: 16),
             Text(
               'Drag to set the payout order — first member gets paid first.',
-              style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted),
             ),
             const SizedBox(height: 8),
             ConstrainedBox(
@@ -116,6 +115,18 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
                     final member = _order.removeAt(oldIndex);
                     _order.insert(newIndex, member);
                   });
+                },
+                // Without this, the dragged item falls back to Flutter's
+                // default proxy Material, which renders as a plain black
+                // box on some themes instead of matching the card style.
+                proxyDecorator: (child, index, animation) {
+                  return Material(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    elevation: 4,
+                    shadowColor: Colors.black26,
+                    child: child,
+                  );
                 },
                 itemBuilder: (context, index) {
                   final member = _order[index];
@@ -135,13 +146,13 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
                           height: 24,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(color: AppColors.paleGreen, shape: BoxShape.circle),
-                          child: Text('${index + 1}', style: GoogleFonts.spaceGrotesk(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+                          child: Text('${index + 1}', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             member.fullName.isNotEmpty ? member.fullName : '@${member.username}',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -178,7 +189,7 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
               ),
               child: _isSubmitting
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                  : Text('Start Group', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                  : Text('Start Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -201,7 +212,7 @@ class _StartGroupSheetState extends ConsumerState<StartGroupSheet> {
           children: [
             Icon(icon, size: 18, color: AppColors.accentGreen),
             const SizedBox(height: 6),
-            Text(label, textAlign: TextAlign.center, style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text(label, textAlign: TextAlign.center, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ],
         ),
       ),

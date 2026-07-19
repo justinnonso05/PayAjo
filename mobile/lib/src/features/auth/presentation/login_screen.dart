@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../../../core/network/api_client.dart';
@@ -86,7 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFF1D3108)),
+        SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: const Color(0xFF1D3108)),
       );
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -113,7 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           builder: (context, constraints) {
             final bottomPadding = MediaQuery.of(context).padding.bottom;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, bottomPadding + 16.0),
+              padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, bottomPadding + 16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - (32.0 + bottomPadding),
@@ -132,7 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             Text(
                               'Welcome to AjoPay',
-                              style: GoogleFonts.spaceGrotesk(
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF1D3108),
@@ -150,7 +149,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'Save together. Grow together.',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 15,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w500,
@@ -161,7 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         // Email Field
                         Text(
                           'Email',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -172,6 +171,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                           decoration: InputDecoration(
                             hintText: 'brittnilonda5487@gmail.com',
                             hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14, fontWeight: FontWeight.w400),
@@ -195,7 +195,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         // Password Field
                         Text(
                           'Password',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -206,6 +206,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           controller: _passwordController,
                           obscureText: _obscurePassword,
                           validator: _validatePassword,
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                           decoration: InputDecoration(
                             hintText: '••••••••',
                             hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14, fontWeight: FontWeight.w400),
@@ -263,7 +264,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 const SizedBox(width: 8),
                                 Text(
                                   'Remember me',
-                                  style: GoogleFonts.plusJakartaSans(
+                                  style: TextStyle(fontFamily: 'PlusJakartaSans', 
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.grey[600],
@@ -275,7 +276,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onTap: () {},
                               child: Text(
                                 'Forgot Password?',
-                                style: GoogleFonts.plusJakartaSans(
+                                style: TextStyle(fontFamily: 'PlusJakartaSans', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFF5BA72D),
@@ -295,7 +296,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: Text(
                             'By entering and tapping Log in, you agree to the\nTerms, E-Sign Consent & Privacy Notice',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', 
                               fontSize: 11,
                               color: Colors.grey[400],
                               height: 1.4,
@@ -324,7 +325,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                   child: Text(
                                     'Sign up',
-                                    style: GoogleFonts.spaceGrotesk(
+                                    style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       color: const Color(0xFF4B5563),
@@ -361,7 +362,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         )
                                       : Text(
                                           'Log in',
-                                          style: GoogleFonts.spaceGrotesk(
+                                          style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                           ),

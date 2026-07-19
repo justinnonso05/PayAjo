@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -154,7 +153,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
     if (text.isEmpty) return;
     if (_channel == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Not connected. Tap the banner to reconnect.'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Not connected. Tap the banner to reconnect.', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
       return;
     }
@@ -257,7 +256,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
           children: [
             const CircleAvatar(radius: 16, backgroundColor: AppColors.paleGreen, child: Icon(Icons.groups_rounded, color: AppColors.accentGreen, size: 16)),
             const SizedBox(width: 10),
-            Text('Group Chat', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Group Chat', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ],
         ),
       ),
@@ -274,7 +273,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
                   child: Text(
                     _connectionError!,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.warning),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.warning),
                   ),
                 ),
               ),
@@ -304,7 +303,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(_loadError!, style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary), textAlign: TextAlign.center),
+          child: Text(_loadError!, style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.textSecondary), textAlign: TextAlign.center),
         ),
       );
     }
@@ -313,7 +312,7 @@ class _GroupChatScreenState extends ConsumerState<GroupChatScreen> {
       return Center(
         child: Text(
           'No messages yet. Say hello 👋',
-          style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textMuted),
+          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textMuted),
         ),
       );
     }
@@ -357,7 +356,7 @@ class _MessageBubble extends StatelessWidget {
             const Icon(Icons.info_outline_rounded, color: AppColors.accentGreen, size: 18),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(message.message, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textPrimary, height: 1.4)),
+              child: Text(message.message, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textPrimary, height: 1.4)),
             ),
           ],
         ),
@@ -385,11 +384,11 @@ class _MessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!isMe) Text(senderName ?? 'Member', style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+            if (!isMe) Text(senderName ?? 'Member', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
             if (!isMe) const SizedBox(height: 2),
             Text(
               message.message,
-              style: GoogleFonts.plusJakartaSans(
+              style: TextStyle(fontFamily: 'PlusJakartaSans', 
                 fontSize: 13.5,
                 color: message.isDeleted ? AppColors.textMuted : AppColors.textPrimary,
                 fontStyle: message.isDeleted ? FontStyle.italic : FontStyle.normal,
@@ -399,10 +398,10 @@ class _MessageBubble extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(formatTime(message.createdAt), style: GoogleFonts.plusJakartaSans(fontSize: 10, color: AppColors.textMuted)),
+                Text(formatTime(message.createdAt), style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 10, color: AppColors.textMuted)),
                 if (message.isEdited && !message.isDeleted) ...[
                   const SizedBox(width: 4),
-                  Text('· edited', style: GoogleFonts.plusJakartaSans(fontSize: 10, color: AppColors.textMuted, fontStyle: FontStyle.italic)),
+                  Text('· edited', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 10, color: AppColors.textMuted, fontStyle: FontStyle.italic)),
                 ],
               ],
             ),
@@ -448,7 +447,7 @@ class _Composer extends StatelessWidget {
                   const SizedBox(width: 6),
                   Text(
                     'Editing message',
-                    style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -465,7 +464,7 @@ class _Composer extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Image sharing coming soon'), backgroundColor: AppColors.darkGreen),
+                      const SnackBar(content: Text('Image sharing coming soon', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
                     );
                   },
                   icon: const Icon(Icons.image_outlined, color: AppColors.textSecondary),
@@ -476,6 +475,7 @@ class _Composer extends StatelessWidget {
                     minLines: 1,
                     maxLines: 4,
                     onSubmitted: (_) => onSend(),
+                    style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: isEditing ? 'Edit your message…' : 'Message the group…',
                       hintStyle: const TextStyle(color: AppColors.hint, fontSize: 13),

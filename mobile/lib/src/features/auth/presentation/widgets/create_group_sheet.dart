@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -77,7 +76,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: const Color(0xFF1D3108)),
+      SnackBar(content: Text(message, style: TextStyle(color: Colors.white)), backgroundColor: const Color(0xFF1D3108)),
     );
   }
 
@@ -152,7 +151,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
                 children: [
                   Text(
                     'Create a Group',
-                    style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
+                    style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 22, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
                   ),
                   IconButton(
                     onPressed: _isSubmitting ? null : () => Navigator.pop(context),
@@ -163,7 +162,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               const SizedBox(height: 8),
               Text(
                 'Start a saving group and define the contribution schedule.',
-                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: Colors.grey[500]),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: Colors.grey[500]),
               ),
               const SizedBox(height: 24),
 
@@ -171,6 +170,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: _groupNameController,
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                 decoration: _kFieldDecoration.copyWith(
                   hintText: 'e.g. Monthly Traders',
                   hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
@@ -184,9 +184,10 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               TextFormField(
                 controller: _amountController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                 decoration: _kFieldDecoration.copyWith(
                   prefixText: '₦ ',
-                  prefixStyle: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold, color: const Color(0xFF1D3108), fontSize: 16),
+                  prefixStyle: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold, color: const Color(0xFF1D3108), fontSize: 16),
                   hintText: '10,000',
                   hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
                 ),
@@ -278,7 +279,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
                     children: [
                       Text(
                         _payoutTime != null ? _payoutTime!.format(context) : 'Not set',
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', 
                           fontSize: 14,
                           color: _payoutTime != null ? const Color(0xFF1D3108) : const Color(0xFF9CA3AF),
                           fontWeight: _payoutTime != null ? FontWeight.bold : FontWeight.normal,
@@ -296,6 +297,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               TextFormField(
                 controller: _memberCapController,
                 keyboardType: TextInputType.number,
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                 decoration: _kFieldDecoration.copyWith(
                   hintText: '10',
                   hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
@@ -322,7 +324,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2.5, color: Color(0xFF1D3108)),
                         )
-                      : Text('Create Group', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                      : Text('Create Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
@@ -335,7 +337,7 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
   Widget _label(String text) {
     return Text(
       text,
-      style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
+      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
     );
   }
 }
@@ -370,7 +372,7 @@ class _ChoiceChipOption extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: GoogleFonts.plusJakartaSans(
+          style: TextStyle(fontFamily: 'PlusJakartaSans', 
             fontSize: 13,
             fontWeight: FontWeight.bold,
             color: isSelected ? const Color(0xFF1D3108) : const Color(0xFF4B5563),
@@ -411,7 +413,7 @@ class _StepperField extends StatelessWidget {
           ),
           Text(
             '$value',
-            style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
+            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
           ),
           IconButton(
             onPressed: value < max ? () => onChanged(value + 1) : null,

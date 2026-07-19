@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import 'widgets/create_group_sheet.dart';
@@ -147,7 +146,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                             Text(
                               title,
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.spaceGrotesk(
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF1D3108),
@@ -157,7 +156,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                             Text(
                               subtitle,
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(fontFamily: 'PlusJakartaSans', 
                                 fontSize: 11,
                                 color: Colors.grey[500],
                                 fontWeight: FontWeight.w600,
@@ -205,7 +204,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
           builder: (context, constraints) {
             final bottomPadding = MediaQuery.of(context).padding.bottom;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, bottomPadding + 16.0),
+              padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, bottomPadding + 16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - (32.0 + bottomPadding),
@@ -219,7 +218,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                       // Title & Subtitle
                       Text(
                         'Join or Create',
-                        style: GoogleFonts.spaceGrotesk(
+                        style: TextStyle(fontFamily: 'SpaceGrotesk', 
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF1D3108),
@@ -228,7 +227,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                       const SizedBox(height: 8),
                       Text(
                         'AjoPay is built around saving together. Choose how you would like to get started.',
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', 
                           fontSize: 15,
                           color: Colors.grey[500],
                           fontWeight: FontWeight.w500,
@@ -305,7 +304,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                         alignment: Alignment.center,
                         child: Text(
                           'Select an option above to continue.',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 11,
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w500,
@@ -338,7 +337,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                                 ),
                                 child: Text(
                                   context.canPop() ? 'Back' : 'Skip',
-                                  style: GoogleFonts.spaceGrotesk(
+                                  style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: const Color(0xFF4B5563),
@@ -374,7 +373,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                                 ),
                                 child: Text(
                                   'Continue',
-                                  style: GoogleFonts.spaceGrotesk(
+                                  style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),

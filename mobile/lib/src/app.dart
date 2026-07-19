@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'routing/app_router.dart';
 
 class MyApp extends StatelessWidget {
@@ -7,8 +6,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseTextTheme = ThemeData.light().textTheme;
-    final baseDarkTextTheme = ThemeData.dark().textTheme;
+    final baseTextTheme = ThemeData.light().textTheme.apply(fontFamily: 'PlusJakartaSans');
+    final baseDarkTextTheme = ThemeData.dark().textTheme.apply(fontFamily: 'PlusJakartaSans');
 
     return MaterialApp.router(
       title: 'AjoPay',
@@ -18,16 +17,16 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xFFC8E6A0),
           brightness: Brightness.light,
         ),
-        textTheme: GoogleFonts.plusJakartaSansTextTheme(baseTextTheme).copyWith(
-          displayLarge: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.displayLarge),
-          displayMedium: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.displayMedium),
-          displaySmall: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.displaySmall),
-          headlineLarge: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.headlineLarge),
-          headlineMedium: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.headlineMedium),
-          headlineSmall: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.headlineSmall),
-          titleLarge: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.titleLarge),
-          titleMedium: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.titleMedium),
-          titleSmall: GoogleFonts.spaceGrotesk(textStyle: baseTextTheme.titleSmall),
+        textTheme: baseTextTheme.copyWith(
+          displayLarge: baseTextTheme.displayLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          displayMedium: baseTextTheme.displayMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          displaySmall: baseTextTheme.displaySmall?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineLarge: baseTextTheme.headlineLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineMedium: baseTextTheme.headlineMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineSmall: baseTextTheme.headlineSmall?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleLarge: baseTextTheme.titleLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleMedium: baseTextTheme.titleMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleSmall: baseTextTheme.titleSmall?.copyWith(fontFamily: 'SpaceGrotesk'),
         ),
       ),
       darkTheme: ThemeData(
@@ -36,16 +35,16 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xFFC8E6A0),
           brightness: Brightness.dark,
         ),
-        textTheme: GoogleFonts.plusJakartaSansTextTheme(baseDarkTextTheme).copyWith(
-          displayLarge: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.displayLarge),
-          displayMedium: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.displayMedium),
-          displaySmall: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.displaySmall),
-          headlineLarge: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.headlineLarge),
-          headlineMedium: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.headlineMedium),
-          headlineSmall: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.headlineSmall),
-          titleLarge: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.titleLarge),
-          titleMedium: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.titleMedium),
-          titleSmall: GoogleFonts.spaceGrotesk(textStyle: baseDarkTextTheme.titleSmall),
+        textTheme: baseDarkTextTheme.copyWith(
+          displayLarge: baseDarkTextTheme.displayLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          displayMedium: baseDarkTextTheme.displayMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          displaySmall: baseDarkTextTheme.displaySmall?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineLarge: baseDarkTextTheme.headlineLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineMedium: baseDarkTextTheme.headlineMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          headlineSmall: baseDarkTextTheme.headlineSmall?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleLarge: baseDarkTextTheme.titleLarge?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleMedium: baseDarkTextTheme.titleMedium?.copyWith(fontFamily: 'SpaceGrotesk'),
+          titleSmall: baseDarkTextTheme.titleSmall?.copyWith(fontFamily: 'SpaceGrotesk'),
         ),
       ),
       themeMode: ThemeMode.system,

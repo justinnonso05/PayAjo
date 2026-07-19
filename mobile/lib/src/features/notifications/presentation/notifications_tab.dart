@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_formatter.dart';
 import '../../../core/widgets/empty_state.dart';
@@ -33,20 +32,20 @@ class NotificationsTab extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Notifications',
-                  style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 if (state.items.any((n) => !n.isRead))
                   TextButton(
                     onPressed: controller.markAllRead,
                     child: Text(
                       'Mark all read',
-                      style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
                     ),
                   ),
               ],
@@ -116,7 +115,7 @@ class NotificationsTab extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 16, bottom: 8),
               child: Text(
                 entry.key,
-                style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMuted),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMuted),
               ),
             ),
             for (final notification in entry.value)
@@ -177,17 +176,17 @@ class _NotificationTile extends StatelessWidget {
                   children: [
                     Text(
                       notification.title,
-                      style: GoogleFonts.plusJakartaSans(fontSize: 13.5, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       notification.message,
-                      style: GoogleFonts.plusJakartaSans(fontSize: 12.5, color: AppColors.textSecondary, height: 1.3),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.textSecondary, height: 1.3),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       formatTime(notification.createdAt),
-                      style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted),
                     ),
                   ],
                 ),

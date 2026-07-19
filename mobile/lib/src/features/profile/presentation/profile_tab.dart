@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -53,9 +52,9 @@ class ProfileTab extends ConsumerWidget {
     return SafeArea(
       bottom: false,
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 16, 24, 120),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 120),
         children: [
-          Text('Profile', style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          Text('Profile', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           const SizedBox(height: 20),
           if (profile == null)
             const SkeletonCard(height: 140)
@@ -157,7 +156,7 @@ class ProfileTab extends ConsumerWidget {
 
   void _comingSoon(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Coming soon'), backgroundColor: AppColors.darkGreen),
+      const SnackBar(content: Text('Coming soon', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
     );
   }
 
@@ -185,14 +184,14 @@ class _ProfileHeader extends StatelessWidget {
             height: 72,
             decoration: const BoxDecoration(color: AppColors.paleGreen, shape: BoxShape.circle),
             child: Center(
-              child: Text(initial.toUpperCase(), style: GoogleFonts.spaceGrotesk(fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+              child: Text(initial.toUpperCase(), style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
             ),
           ),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('$firstName $lastName'.trim(), style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('$firstName $lastName'.trim(), style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               if (profile.kycStatus == true) ...[
                 const SizedBox(width: 6),
                 const Icon(Icons.verified_rounded, color: AppColors.accentGreen, size: 18),
@@ -201,7 +200,7 @@ class _ProfileHeader extends StatelessWidget {
           ),
           if (profile.kycStatus == true) ...[
             const SizedBox(height: 2),
-            Text('BVN Verified', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.accentGreen, fontWeight: FontWeight.bold)),
+            Text('BVN Verified', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.accentGreen, fontWeight: FontWeight.bold)),
           ],
           const SizedBox(height: 14),
           Divider(color: Colors.grey[100]),
@@ -224,7 +223,7 @@ class _ProfileHeader extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: AppColors.textMuted),
         const SizedBox(width: 8),
-        Text(text, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary)),
+        Text(text, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary)),
       ],
     );
   }
@@ -244,7 +243,7 @@ class _SettingsGroup extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 10),
-          child: Text(title, style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMuted)),
+          child: Text(title, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMuted)),
         ),
         Container(
           decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow()),
@@ -288,9 +287,9 @@ class _SettingsRow extends StatelessWidget {
           children: [
             Icon(icon, size: 20, color: isDanger ? AppColors.danger : AppColors.textSecondary),
             const SizedBox(width: 14),
-            Expanded(child: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13.5, fontWeight: FontWeight.w600, color: color))),
+            Expanded(child: Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.w600, color: color))),
             if (trailing != null)
-              Text(trailing!, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted)),
+              Text(trailing!, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted)),
             const SizedBox(width: 6),
             if (!isDanger) const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.textMuted),
           ],

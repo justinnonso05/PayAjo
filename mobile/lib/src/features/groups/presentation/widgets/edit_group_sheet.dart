@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/group_models.dart';
 import '../../data/group_repository.dart';
+
+const _kFieldTextStyle = TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary);
 
 const _kFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -87,7 +88,7 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
     final amount = double.tryParse(_amountController.text.trim().replaceAll(',', ''));
     if (_nameController.text.trim().isEmpty || amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid group name and amount'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Enter a valid group name and amount', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
       return;
     }
@@ -110,7 +111,7 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
       Navigator.pop(context, updated);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -128,20 +129,21 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Edit Group', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                Text('Edit Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: Colors.grey)),
               ],
             ),
             const SizedBox(height: 12),
             _label('Group Name'),
             const SizedBox(height: 8),
-            TextField(controller: _nameController, decoration: _kFieldDecoration),
+            TextField(controller: _nameController, style: _kFieldTextStyle, decoration: _kFieldDecoration),
             const SizedBox(height: 20),
             _label('Contribution Amount'),
             const SizedBox(height: 8),
             TextField(
               controller: _amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              style: _kFieldTextStyle,
               decoration: _kFieldDecoration.copyWith(prefixText: '₦ '),
             ),
             const SizedBox(height: 20),
@@ -161,7 +163,7 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
                   children: [
                     Text(
                       _payoutTime != null ? _payoutTime!.format(context) : 'Not set',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', 
                         fontSize: 14,
                         color: _payoutTime != null ? AppColors.textPrimary : AppColors.hint,
                         fontWeight: _payoutTime != null ? FontWeight.bold : FontWeight.normal,
@@ -175,7 +177,7 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
             const SizedBox(height: 20),
             _label('Maximum Members (optional)'),
             const SizedBox(height: 8),
-            TextField(controller: _memberCapController, keyboardType: TextInputType.number, decoration: _kFieldDecoration),
+            TextField(controller: _memberCapController, keyboardType: TextInputType.number, style: _kFieldTextStyle, decoration: _kFieldDecoration),
             const SizedBox(height: 28),
             SizedBox(
               width: double.infinity,
@@ -191,7 +193,7 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
                 ),
                 child: _isSubmitting
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                    : Text('Save Changes', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                    : Text('Save Changes', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -201,6 +203,6 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
   }
 
   Widget _label(String text) {
-    return Text(text, style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary));
+    return Text(text, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary));
   }
 }

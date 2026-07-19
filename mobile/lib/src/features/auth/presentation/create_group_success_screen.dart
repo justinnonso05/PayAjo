@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../data/user_repository.dart';
@@ -84,7 +83,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
           builder: (context, constraints) {
             final bottomPadding = MediaQuery.of(context).padding.bottom;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, bottomPadding + 16.0),
+              padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, bottomPadding + 16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - (32.0 + bottomPadding),
@@ -103,7 +102,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
                         child: Text(
                           'Group Created 🎉',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.spaceGrotesk(
+                          style: TextStyle(fontFamily: 'SpaceGrotesk', 
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -118,7 +117,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
                         child: Text(
                           'Your savings group is ready. Invite members and start collecting contributions securely.',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 14,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w500,
@@ -162,7 +161,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
                             ),
                             child: Text(
                               'Continue',
-                              style: GoogleFonts.spaceGrotesk(
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -188,7 +187,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
                             ),
                             child: Text(
                               'Invite Members (optional)',
-                              style: GoogleFonts.spaceGrotesk(
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF4B5563),

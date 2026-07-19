@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
@@ -65,7 +64,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
         },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(0, 16, 0, 100),
+          padding: const EdgeInsets.fromLTRB(0, 24, 0, 100),
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -184,12 +183,12 @@ class _GreetingHeader extends StatelessWidget {
           children: [
             Text(
               '${greeting()},',
-              style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 2),
             Text(
               '${name?.isNotEmpty == true ? name : 'there'} 👋',
-              style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
           ],
         ),
@@ -202,7 +201,7 @@ class _GreetingHeader extends StatelessWidget {
             child: Center(
               child: Text(
                 (name?.isNotEmpty == true ? name![0] : '?').toUpperCase(),
-                style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
               ),
             ),
           ),
@@ -250,7 +249,7 @@ class _ActiveGroupCard extends StatelessWidget {
                     membership.groupName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.spaceGrotesk(fontSize: 19, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
+                    style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 19, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
                   ),
                 ),
                 Container(
@@ -258,7 +257,7 @@ class _ActiveGroupCard extends StatelessWidget {
                   decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     'Round ${group.currentCycleNumber}',
-                    style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
                   ),
                 ),
               ],
@@ -266,7 +265,7 @@ class _ActiveGroupCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               '₦${formatAmount(membership.contributionAmount)} • ${membership.cycleFrequency?.label ?? '—'}',
-              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.darkGreen.withValues(alpha: 0.8), fontWeight: FontWeight.w600),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.darkGreen.withValues(alpha: 0.8), fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 18),
             Row(
@@ -293,7 +292,7 @@ class _ActiveGroupCard extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 '₦${formatAmount(group.poolBalance)} raised so far',
-                style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.darkGreen.withValues(alpha: 0.75), fontWeight: FontWeight.w600),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.darkGreen.withValues(alpha: 0.75), fontWeight: FontWeight.w600),
               ),
             ],
           ],
@@ -306,9 +305,9 @@ class _ActiveGroupCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.darkGreen.withValues(alpha: 0.7), fontWeight: FontWeight.w600)),
+        Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.darkGreen.withValues(alpha: 0.7), fontWeight: FontWeight.w600)),
         const SizedBox(height: 2),
-        Text(value, style: GoogleFonts.spaceGrotesk(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.darkGreen)),
+        Text(value, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.darkGreen)),
       ],
     );
   }
@@ -336,7 +335,7 @@ class _NoGroupCard extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
-          child: Text('Join or Create a Group', style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold)),
+          child: Text('Join or Create a Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold)),
         ),
       ),
     );
@@ -373,7 +372,7 @@ class _AddGroupCard extends StatelessWidget {
             Text(
               'Join or Create\nAnother Group',
               textAlign: TextAlign.center,
-              style: GoogleFonts.spaceGrotesk(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
           ],
         ),
@@ -401,7 +400,7 @@ class _PendingInvitesBanner extends StatelessWidget {
             Expanded(
               child: Text(
                 count == 1 ? "You've been invited to a group" : "You've been invited to $count groups",
-                style: GoogleFonts.plusJakartaSans(fontSize: 12.5, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
             ),
             const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.info),
@@ -440,15 +439,15 @@ class _ReservedAccountCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Reserved Account', style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+                Text('Reserved Account', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 2),
                 Text(
                   profile.personalReservedAccountBank ?? '—',
-                  style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textSecondary),
+                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary),
                 ),
                 Text(
                   profile.personalReservedAccountNumber ?? '—',
-                  style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
               ],
             ),
@@ -459,7 +458,7 @@ class _ReservedAccountCard extends StatelessWidget {
               if (number == null) return;
               Clipboard.setData(ClipboardData(text: number));
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Account number copied'), backgroundColor: AppColors.darkGreen),
+                const SnackBar(content: Text('Account number copied', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
               );
             },
             icon: const Icon(Icons.copy_rounded, size: 18, color: AppColors.textSecondary),
@@ -467,7 +466,7 @@ class _ReservedAccountCard extends StatelessWidget {
           IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sharing coming soon'), backgroundColor: AppColors.darkGreen),
+                const SnackBar(content: Text('Sharing coming soon', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
               );
             },
             icon: const Icon(Icons.ios_share_rounded, size: 18, color: AppColors.textSecondary),
@@ -526,7 +525,7 @@ class _QuickActions extends StatelessWidget {
                     action.label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                   ),
                 ),
               ],
@@ -593,8 +592,8 @@ class _UpcomingContributions extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(formatFriendlyDate(dates[i]), style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                        Text('₦${formatAmount(membership.contributionAmount)}', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textSecondary)),
+                        Text(formatFriendlyDate(dates[i]), style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                        Text('₦${formatAmount(membership.contributionAmount)}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary)),
                       ],
                     ),
                   ),
@@ -681,15 +680,15 @@ class _ActivityTile extends StatelessWidget {
               children: [
                 Text(
                   transaction.narration?.isNotEmpty == true ? transaction.narration! : transaction.type,
-                  style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
-                Text(formatShortDate(transaction.createdAt), style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted)),
+                Text(formatShortDate(transaction.createdAt), style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
               ],
             ),
           ),
           Text(
             '${isCredit ? '+' : '-'}₦${formatAmount(transaction.amount.abs())}',
-            style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
+            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
           ),
         ],
       ),

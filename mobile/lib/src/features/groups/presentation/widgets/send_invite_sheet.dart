@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/data/user_repository.dart';
@@ -83,11 +82,11 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
       Navigator.pop(context, true);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Something went wrong sending the invite. Please try again.'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Something went wrong sending the invite. Please try again.', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -105,22 +104,23 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Invite Someone', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Invite Someone', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: Colors.grey)),
             ],
           ),
           const SizedBox(height: 4),
           Text(
             "They'll see this invite next time they open AjoPay.",
-            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 20),
-          Text('Email or Username', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          Text('Email or Username', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           const SizedBox(height: 8),
           TextField(
             controller: _controller,
             autofocus: true,
             onChanged: _onChanged,
+            style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
             decoration: InputDecoration(
               hintText: 'e.g. amara or amara@email.com',
               hintStyle: const TextStyle(color: AppColors.hint, fontSize: 14),
@@ -140,7 +140,7 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
           if (_status == _SearchStatus.notFound)
             Text(
               'No AjoPay user found with that email or username.',
-              style: GoogleFonts.plusJakartaSans(fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
             ),
           if (_status == _SearchStatus.found && _result != null) _UserPreviewCard(result: _result!),
           const SizedBox(height: 24),
@@ -158,7 +158,7 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
               ),
               child: _isSubmitting
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                  : Text('Send Invite', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                  : Text('Send Invite', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -190,9 +190,9 @@ class _UserPreviewCard extends StatelessWidget {
               children: [
                 Text(
                   result.fullName.isNotEmpty ? result.fullName : '@${result.username}',
-                  style: GoogleFonts.plusJakartaSans(fontSize: 13.5, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
+                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13.5, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
                 ),
-                Text('@${result.username}', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.darkGreen.withValues(alpha: 0.7))),
+                Text('@${result.username}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.darkGreen.withValues(alpha: 0.7))),
               ],
             ),
           ),
@@ -200,7 +200,7 @@ class _UserPreviewCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(color: AppColors.dangerPale, borderRadius: BorderRadius.circular(20)),
-              child: Text('High risk', style: GoogleFonts.plusJakartaSans(fontSize: 10.5, fontWeight: FontWeight.bold, color: AppColors.danger)),
+              child: Text('High risk', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 10.5, fontWeight: FontWeight.bold, color: AppColors.danger)),
             ),
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Large circular numeric keypad used by PIN entry screens.
 /// Calls [onDigit] with '0'-'9' for digit taps, and [onBackspace] on delete.
@@ -77,7 +76,7 @@ class _KeypadButton extends StatelessWidget {
                 ? Icon(icon, color: const Color(0xFF1D3108), size: 26)
                 : Text(
                     label!,
-                    style: GoogleFonts.spaceGrotesk(
+                    style: TextStyle(fontFamily: 'SpaceGrotesk', 
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: const Color(0xFF1D3108),

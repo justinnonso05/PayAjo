@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../../../core/network/api_client.dart';
@@ -64,7 +63,7 @@ class _ConfirmPinScreenState extends ConsumerState<ConfirmPinScreen> {
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFF1D3108)),
+        SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: const Color(0xFF1D3108)),
       );
       setState(() {
         _isSubmitting = false;
@@ -83,7 +82,7 @@ class _ConfirmPinScreenState extends ConsumerState<ConfirmPinScreen> {
             const SizedBox(height: 24),
             Text(
               'Confirm your PIN',
-              style: GoogleFonts.spaceGrotesk(
+              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1D3108),
@@ -95,7 +94,7 @@ class _ConfirmPinScreenState extends ConsumerState<ConfirmPinScreen> {
               child: Text(
                 'Enter your PIN again to confirm.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(fontFamily: 'PlusJakartaSans', 
                   fontSize: 14,
                   color: Colors.grey[500],
                   fontWeight: FontWeight.w500,

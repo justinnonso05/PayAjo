@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
 
 class _FaqItem {
@@ -57,7 +56,7 @@ class _FaqScreenState extends State<FaqScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('FAQ', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('FAQ', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: ListView.separated(
@@ -82,7 +81,7 @@ class _FaqScreenState extends State<FaqScreen> {
                           Expanded(
                             child: Text(
                               item.question,
-                              style: GoogleFonts.spaceGrotesk(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                             ),
                           ),
                           AnimatedRotation(
@@ -101,7 +100,7 @@ class _FaqScreenState extends State<FaqScreen> {
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                       child: Text(
                         item.answer,
-                        style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, height: 1.5),
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.5),
                       ),
                     ),
                     secondChild: const SizedBox(width: double.infinity),

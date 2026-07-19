@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 
@@ -119,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           step.title,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.spaceGrotesk(
+                          style: TextStyle(fontFamily: 'SpaceGrotesk', 
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -131,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           step.description,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 15,
                             color: Colors.grey[600],
                             height: 1.6,
@@ -193,7 +192,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         child: Text(
                           'Skip',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             color: const Color(0xFF4B5563),
                             fontWeight: FontWeight.w600,
                           ),

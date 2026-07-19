@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -65,17 +64,18 @@ class _WalletTabState extends ConsumerState<WalletTab> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Withdraw', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Withdraw', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 4),
             Text(
               'Available balance: ₦${formatAmount(double.tryParse(profile.walletBalance) ?? 0)}',
-              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               autofocus: true,
+              style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
               decoration: InputDecoration(
                 prefixText: '₦ ',
                 hintText: '0.00',
@@ -101,7 +101,7 @@ class _WalletTabState extends ConsumerState<WalletTab> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                 ),
-                child: Text('Continue', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                child: Text('Continue', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -134,7 +134,7 @@ class _WalletTabState extends ConsumerState<WalletTab> {
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isWithdrawing = false);
     }
@@ -149,7 +149,7 @@ class _WalletTabState extends ConsumerState<WalletTab> {
     ]);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Transfer sent'), backgroundColor: AppColors.darkGreen),
+      const SnackBar(content: Text('Transfer sent', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
     );
   }
 
@@ -171,9 +171,9 @@ class _WalletTabState extends ConsumerState<WalletTab> {
         },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 100),
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
           children: [
-            Text('Wallet', style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Wallet', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 20),
             if (profile == null)
               const SkeletonCard(height: 180)
@@ -228,9 +228,9 @@ class _BalanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('WALLET BALANCE', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: Colors.white70, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+          Text('WALLET BALANCE', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: Colors.white70, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
           const SizedBox(height: 10),
-          Text('₦${formatAmount(balance)}', style: GoogleFonts.spaceGrotesk(fontSize: 32, color: Colors.white, fontWeight: FontWeight.w800)),
+          Text('₦${formatAmount(balance)}', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 32, color: Colors.white, fontWeight: FontWeight.w800)),
           const SizedBox(height: 22),
           Row(
             children: [
@@ -266,18 +266,18 @@ class _BalanceCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Add Money', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                Text('Add Money', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 IconButton(onPressed: () => Navigator.pop(sheetContext), icon: const Icon(Icons.close, color: Colors.grey)),
               ],
             ),
             const SizedBox(height: 4),
             Text(
               'Transfer any amount to this account. It lands in your wallet automatically once the bank confirms it.',
-              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.4),
             ),
             const SizedBox(height: 24),
             if (number == null)
-              Text('No virtual account on file yet.', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textMuted))
+              Text('No virtual account on file yet.', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textMuted))
             else
               Container(
                 width: double.infinity,
@@ -286,17 +286,17 @@ class _BalanceCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(bank ?? '—', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                    Text(bank ?? '—', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(number, style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary, letterSpacing: 1)),
+                        Text(number, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary, letterSpacing: 1)),
                         IconButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: number));
                             ScaffoldMessenger.of(sheetContext).showSnackBar(
-                              const SnackBar(content: Text('Account number copied'), backgroundColor: AppColors.darkGreen),
+                              const SnackBar(content: Text('Account number copied', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
                             );
                           },
                           icon: const Icon(Icons.copy_rounded, color: AppColors.accentGreen),
@@ -305,7 +305,7 @@ class _BalanceCard extends StatelessWidget {
                     ),
                     if (name != null) ...[
                       const SizedBox(height: 2),
-                      Text(name, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted)),
+                      Text(name, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted)),
                     ],
                   ],
                 ),
@@ -319,7 +319,7 @@ class _BalanceCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'This is your personal account. Money sent here always goes to your AjoPay wallet, not a specific group.',
-                    style: GoogleFonts.plusJakartaSans(fontSize: 11.5, color: AppColors.textMuted, height: 1.4),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, color: AppColors.textMuted, height: 1.4),
                   ),
                 ),
               ],
@@ -341,7 +341,7 @@ class _BalanceCard extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white, size: 18),
             const SizedBox(height: 6),
-            Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
+            Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white)),
           ],
         ),
       ),
@@ -366,11 +366,11 @@ class _VirtualAccountCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(profile.personalReservedAccountBank ?? '—', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textSecondary)),
+                Text(profile.personalReservedAccountBank ?? '—', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary)),
                 const SizedBox(height: 4),
-                Text(profile.personalReservedAccountNumber ?? '—', style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                Text(profile.personalReservedAccountNumber ?? '—', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 const SizedBox(height: 2),
-                Text(profile.personalReservedAccountName ?? '—', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted)),
+                Text(profile.personalReservedAccountName ?? '—', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted)),
               ],
             ),
           ),
@@ -379,7 +379,7 @@ class _VirtualAccountCard extends StatelessWidget {
               final number = profile.personalReservedAccountNumber;
               if (number == null) return;
               Clipboard.setData(ClipboardData(text: number));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Account number copied'), backgroundColor: AppColors.darkGreen));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Account number copied', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
             },
             icon: const Icon(Icons.copy_rounded, color: AppColors.textSecondary),
           ),
@@ -432,9 +432,9 @@ class _FundingMethods extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                Text(title, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 const SizedBox(height: 2),
-                Text(subtitle, style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textSecondary, height: 1.4)),
+                Text(subtitle, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary, height: 1.4)),
               ],
             ),
           ),
@@ -502,15 +502,15 @@ class _TransactionTile extends StatelessWidget {
               children: [
                 Text(
                   transaction.narration?.isNotEmpty == true ? transaction.narration! : transaction.type,
-                  style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
-                Text('${formatShortDate(transaction.createdAt)} · ${formatTime(transaction.createdAt)}', style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted)),
+                Text('${formatShortDate(transaction.createdAt)} · ${formatTime(transaction.createdAt)}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
               ],
             ),
           ),
           Text(
             '${isCredit ? '+' : '-'}₦${formatAmount(transaction.amount.abs())}',
-            style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
+            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 13, fontWeight: FontWeight.bold, color: isCredit ? AppColors.accentGreen : AppColors.textPrimary),
           ),
         ],
       ),

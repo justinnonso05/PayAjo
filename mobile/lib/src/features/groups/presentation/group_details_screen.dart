@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
+import '../../../core/widgets/pin_entry_sheet.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../../../core/widgets/status_pill.dart';
+import '../../../core/widgets/success_bottom_sheet.dart';
 import '../../../routing/app_router.dart';
 import '../../auth/data/user_repository.dart';
 import '../../wallet/data/wallet_controller.dart';
@@ -108,10 +109,10 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       await ref.read(groupRepositoryProvider).approveMember(widget.groupId, pending.userId);
       await Future.wait([_loadPendingMembers(), _refreshMembers()]);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Member approved'), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Member approved', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isBusy = false);
     }
@@ -126,7 +127,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     final updated = await StartGroupSheet.show(context, widget.groupId, _members);
     if (updated == null || !mounted) return;
     setState(() => _group = updated);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Group started!'), backgroundColor: AppColors.darkGreen));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Group started!', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
   }
 
   Future<void> _rotateInviteCode() async {
@@ -148,10 +149,10 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       final updated = await ref.read(groupRepositoryProvider).rotateInviteCode(widget.groupId);
       setState(() => _group = updated);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('New invite code generated'), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('New invite code generated', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isBusy = false);
     }
@@ -160,7 +161,13 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
   Future<void> _sendInvite() async {
     final sent = await SendInviteSheet.show(context, widget.groupId);
     if (sent != true || !mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invite sent'), backgroundColor: AppColors.darkGreen));
+    SuccessBottomSheet.show(
+      context,
+      title: 'Invite Sent',
+      subtitle: "They'll see it under their invites and can join the group once they accept.",
+      primaryLabel: 'Done',
+      onPrimary: () => Navigator.pop(context),
+    );
   }
 
   Future<void> _sendReminders() async {
@@ -169,15 +176,15 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       await ref.read(groupRepositoryProvider).sendRemindersBulk(widget.groupId);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reminders sent to everyone who still owes this round'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Reminders sent to everyone who still owes this round', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not send reminders: $e'), backgroundColor: AppColors.darkGreen),
+        SnackBar(content: Text('Could not send reminders: $e', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } finally {
       if (mounted) setState(() => _isBusy = false);
@@ -210,14 +217,14 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       final updated = await ref.read(groupRepositoryProvider).getGroup(widget.groupId);
       if (!mounted) return;
       setState(() => _group = updated);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not run payout check: $e'), backgroundColor: AppColors.darkGreen),
+        SnackBar(content: Text('Could not run payout check: $e', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } finally {
       if (mounted) setState(() => _isBusy = false);
@@ -229,16 +236,53 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       await ref.read(groupRepositoryProvider).sendMemberReminder(widget.groupId, member.userId);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Reminder sent to ${member.fullName}'), backgroundColor: AppColors.darkGreen),
+        SnackBar(content: Text('Reminder sent to ${member.fullName}', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not send reminder: $e'), backgroundColor: AppColors.darkGreen),
+        SnackBar(content: Text('Could not send reminder: $e', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
+    }
+  }
+
+  /// Toggles auto-debit for the current user's own membership. PIN-confirmed
+  /// since it authorizes the backend to pull contributions automatically.
+  Future<void> _setAutoDebit({required bool enabled, required int daysBefore}) async {
+    final pin = await PinEntrySheet.show(
+      context,
+      title: enabled ? 'Enable Auto-Debit' : 'Turn Off Auto-Debit',
+      subtitle: enabled
+          ? "Confirm with your PIN. We'll pay this group's contribution from your wallet automatically, $daysBefore day${daysBefore == 1 ? '' : 's'} before payout, as long as you haven't already paid."
+          : "Confirm with your PIN to stop automatic contributions for this group.",
+    );
+    if (pin == null || !mounted) return;
+
+    setState(() => _isBusy = true);
+    try {
+      final updated = await ref.read(groupRepositoryProvider).setupAutoDebit(
+            widget.groupId,
+            enabled: enabled,
+            daysBefore: daysBefore,
+            pin: pin,
+          );
+      if (!mounted) return;
+      setState(() {
+        _members = [
+          for (final m in _members) m.userId == updated.userId ? updated : m,
+        ];
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(enabled ? 'Auto-debit enabled' : 'Auto-debit turned off', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } finally {
+      if (mounted) setState(() => _isBusy = false);
     }
   }
 
@@ -247,14 +291,14 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     if (updated == null) return;
     setState(() => _group = updated);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Group updated'), backgroundColor: AppColors.darkGreen));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Group updated', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
   }
 
   void _copyInviteCode() {
     final code = _group?.inviteCode;
     if (code == null) return;
     Clipboard.setData(ClipboardData(text: code));
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invite code copied'), backgroundColor: AppColors.darkGreen));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invite code copied', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
   }
 
   void _shareInviteLink() {
@@ -262,7 +306,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     if (code == null) return;
     Clipboard.setData(ClipboardData(text: 'Join my AjoPay group with code $code'));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Invite message copied. Paste it anywhere to share.'), backgroundColor: AppColors.darkGreen),
+      const SnackBar(content: Text('Invite message copied. Paste it anywhere to share.', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
     );
   }
 
@@ -291,7 +335,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Members (${_members.length})', style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Members (${_members.length})', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 16),
               Expanded(
                 child: Builder(
@@ -328,13 +372,13 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('Group Details', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('Group Details', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: _isLoading
             ? const Padding(padding: EdgeInsets.all(24), child: SkeletonCard(height: 400))
             : _error != null
-                ? Center(child: Text(_error!, style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary)))
+                ? Center(child: Text(_error!, style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.textSecondary)))
                 : _buildContent(),
       ),
     );
@@ -358,7 +402,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
         Row(
           children: [
             Expanded(
-              child: Text(group.name, style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              child: Text(group.name, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             ),
             if (isCurrentUserAdmin)
               IconButton(onPressed: _isBusy ? null : _editGroup, icon: const Icon(Icons.edit_outlined, color: AppColors.textSecondary)),
@@ -423,12 +467,12 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Invite Code', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+              Text('Invite Code', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
               const SizedBox(height: 6),
               Row(
                 children: [
                   Expanded(
-                    child: Text(group.inviteCode ?? '—', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary, letterSpacing: 2)),
+                    child: Text(group.inviteCode ?? '—', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary, letterSpacing: 2)),
                   ),
                   IconButton(onPressed: _copyInviteCode, icon: const Icon(Icons.copy_rounded, color: AppColors.textSecondary)),
                   IconButton(onPressed: _shareInviteLink, icon: const Icon(Icons.ios_share_rounded, color: AppColors.textSecondary)),
@@ -437,23 +481,32 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow()),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Rules', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              _ruleLine(group.shortfallPolicy?.description ?? 'Shortfall policy not set.'),
-              if (group.memberCap != null) _ruleLine('Group is capped at ${group.memberCap} members.'),
-            ],
+        if (group.memberCap != null) ...[
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow()),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Rules', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                _ruleLine('Group is capped at ${group.memberCap} members.'),
+              ],
+            ),
           ),
-        ),
+        ],
         if (group.status == 'active') ...[
           const SizedBox(height: 20),
           _PayoutScheduleCard(rotations: _rotations, isLoading: _isLoadingRotations),
+        ],
+        if (group.status == 'active' && currentMember != null) ...[
+          const SizedBox(height: 20),
+          _AutoDebitCard(
+            member: currentMember,
+            isBusy: _isBusy,
+            onChanged: (enabled, daysBefore) => _setAutoDebit(enabled: enabled, daysBefore: daysBefore),
+          ),
         ],
         const SizedBox(height: 24),
         SizedBox(
@@ -477,7 +530,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
                   : hasPaid
                       ? 'Already Contributed'
                       : 'Contribute',
-              style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold, fontSize: group.status == 'active' && !hasPaid ? 15 : 13),
+              style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold, fontSize: group.status == 'active' && !hasPaid ? 15 : 13),
             ),
           ),
         ),
@@ -491,7 +544,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
               side: const BorderSide(color: AppColors.border),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             ),
-            child: Text('View Members', style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            child: Text('View Members', style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ),
         ),
         const SizedBox(height: 12),
@@ -504,7 +557,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
               side: const BorderSide(color: AppColors.border),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             ),
-            child: Text('Open Group Chat', style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            child: Text('Open Group Chat', style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ),
         ),
       ],
@@ -517,8 +570,8 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
-          Text(value, style: GoogleFonts.spaceGrotesk(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+          Text(value, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
         ],
       ),
     );
@@ -534,7 +587,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
         children: [
           const Padding(padding: EdgeInsets.only(top: 5), child: Icon(Icons.circle, size: 5, color: AppColors.accentGreen)),
           const SizedBox(width: 10),
-          Expanded(child: Text(text, style: GoogleFonts.plusJakartaSans(fontSize: 12.5, color: AppColors.textSecondary, height: 1.4))),
+          Expanded(child: Text(text, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.textSecondary, height: 1.4))),
         ],
       ),
     );
@@ -583,7 +636,7 @@ class _AdminToolsCard extends StatelessWidget {
             children: [
               const Icon(Icons.admin_panel_settings_rounded, color: AppColors.accentGreen, size: 18),
               const SizedBox(width: 8),
-              Text('Admin Tools', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Admin Tools', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 14),
@@ -592,7 +645,7 @@ class _AdminToolsCard extends StatelessWidget {
           if (isLoadingPending)
             const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: SkeletonBox(height: 40))
           else if (pendingMembers.isNotEmpty) ...[
-            Text('Pending Requests (${pendingMembers.length})', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+            Text('Pending Requests (${pendingMembers.length})', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             for (final pending in pendingMembers)
               Padding(
@@ -612,11 +665,11 @@ class _AdminToolsCard extends StatelessWidget {
                         children: [
                           Text(
                             pending.fullName.isNotEmpty ? pending.fullName : '@${pending.username}',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                           ),
                           Text(
                             'Requested ${formatShortDate(pending.joinedAt)}',
-                            style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted),
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted),
                           ),
                         ],
                       ),
@@ -624,7 +677,7 @@ class _AdminToolsCard extends StatelessWidget {
                     TextButton(
                       onPressed: isBusy ? null : () => onApprove(pending),
                       style: TextButton.styleFrom(backgroundColor: AppColors.paleGreen, padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8)),
-                      child: Text('Approve', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+                      child: Text('Approve', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
                     ),
                   ],
                 ),
@@ -646,7 +699,7 @@ class _AdminToolsCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     ),
-                    child: Text('Start Group', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+                    child: Text('Start Group', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
                   ),
                 ),
               if (onStartGroup != null) const SizedBox(width: 10),
@@ -658,7 +711,7 @@ class _AdminToolsCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   ),
-                  child: Text('New Invite Code', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  child: Text('New Invite Code', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 ),
               ),
             ],
@@ -670,7 +723,7 @@ class _AdminToolsCard extends StatelessWidget {
               onPressed: isBusy ? null : onSendInvite,
               style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 10)),
               icon: const Icon(Icons.person_add_alt_1_rounded, size: 16, color: AppColors.accentGreen),
-              label: Text('Invite Someone Directly', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
+              label: Text('Invite Someone Directly', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.accentGreen)),
             ),
           ),
           if (onSendReminders != null)
@@ -680,7 +733,7 @@ class _AdminToolsCard extends StatelessWidget {
                 onPressed: isBusy ? null : onSendReminders,
                 style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 10)),
                 icon: const Icon(Icons.notifications_active_outlined, size: 16, color: AppColors.warning),
-                label: Text('Remind Everyone Who Owes', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.warning)),
+                label: Text('Remind Everyone Who Owes', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.warning)),
               ),
             ),
           SizedBox(
@@ -689,7 +742,7 @@ class _AdminToolsCard extends StatelessWidget {
               onPressed: isBusy ? null : onTriggerScheduler,
               style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 10)),
               icon: const Icon(Icons.bolt_rounded, size: 16, color: AppColors.info),
-              label: Text('Run Payout Check (Demo)', style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.info)),
+              label: Text('Run Payout Check (Demo)', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.info)),
             ),
           ),
         ],
@@ -712,12 +765,12 @@ class _PayoutScheduleCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Payout Schedule', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+          Text('Payout Schedule', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           if (isLoading)
             const SkeletonBox(height: 60)
           else if (rotations.isEmpty)
-            Text('No rotation order yet.', style: GoogleFonts.plusJakartaSans(fontSize: 12.5, color: AppColors.textMuted))
+            Text('No rotation order yet.', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.textMuted))
           else
             for (var i = 0; i < rotations.length; i++) ...[
               _rotationRow(rotations[i]),
@@ -743,7 +796,7 @@ class _PayoutScheduleCard extends StatelessWidget {
             ),
             child: Text(
               '${entry.cycleNumber}',
-              style: GoogleFonts.spaceGrotesk(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
+              style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
             ),
           ),
           const SizedBox(width: 12),
@@ -753,10 +806,10 @@ class _PayoutScheduleCard extends StatelessWidget {
               children: [
                 Text(
                   entry.fullName.isNotEmpty ? entry.fullName : '@${entry.username}',
-                  style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                 ),
                 if (entry.payoutDate != null)
-                  Text(formatShortDate(entry.payoutDate!), style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted)),
+                  Text(formatShortDate(entry.payoutDate!), style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
               ],
             ),
           ),
@@ -766,6 +819,91 @@ class _PayoutScheduleCard extends StatelessWidget {
             const StatusPill(label: 'Paid Out', tone: PillTone.info)
           else
             const StatusPill(label: 'Upcoming', tone: PillTone.neutral),
+        ],
+      ),
+    );
+  }
+}
+
+class _AutoDebitCard extends StatefulWidget {
+  final GroupMember member;
+  final bool isBusy;
+  final void Function(bool enabled, int daysBefore) onChanged;
+
+  const _AutoDebitCard({required this.member, required this.isBusy, required this.onChanged});
+
+  @override
+  State<_AutoDebitCard> createState() => _AutoDebitCardState();
+}
+
+class _AutoDebitCardState extends State<_AutoDebitCard> {
+  late int _daysBefore = widget.member.autoDebitDaysBefore;
+
+  @override
+  void didUpdateWidget(covariant _AutoDebitCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.member.autoDebitDaysBefore != widget.member.autoDebitDaysBefore) {
+      _daysBefore = widget.member.autoDebitDaysBefore;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = widget.member.autoDebitEnabled;
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text('Auto-Debit', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+              ),
+              Switch(
+                value: enabled,
+                onChanged: widget.isBusy ? null : (value) => widget.onChanged(value, _daysBefore),
+                activeThumbColor: AppColors.darkGreen,
+                activeTrackColor: AppColors.brandGreen,
+              ),
+            ],
+          ),
+          Text(
+            "Automatically pay this group's contribution from your wallet before each payout.",
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.textSecondary, height: 1.4),
+          ),
+          if (enabled) ...[
+            const SizedBox(height: 14),
+            Text('Debit this many days before payout', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, color: AppColors.textMuted, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                for (final days in [1, 2, 3]) ...[
+                  ChoiceChip(
+                    label: Text('$days day${days == 1 ? '' : 's'}'),
+                    selected: _daysBefore == days,
+                    onSelected: widget.isBusy
+                        ? null
+                        : (selected) {
+                            if (!selected) return;
+                            setState(() => _daysBefore = days);
+                            widget.onChanged(true, days);
+                          },
+                    selectedColor: AppColors.brandGreen,
+                    labelStyle: TextStyle(fontFamily: 'PlusJakartaSans', 
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: _daysBefore == days ? AppColors.darkGreen : AppColors.textSecondary,
+                    ),
+                    backgroundColor: AppColors.background,
+                    side: BorderSide(color: _daysBefore == days ? AppColors.brandGreen : AppColors.border),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -805,7 +943,7 @@ class _MemberRow extends StatelessWidget {
                 child: Center(
                   child: Text(
                     member.firstName.isNotEmpty ? member.firstName[0].toUpperCase() : '?',
-                    style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                    style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold, color: AppColors.accentGreen),
                   ),
                 ),
               ),
@@ -814,8 +952,8 @@ class _MemberRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(member.fullName, style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                    Text('@${member.username}', style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted)),
+                    Text(member.fullName, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                    Text('@${member.username}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
                   ],
                 ),
               ),
@@ -842,7 +980,7 @@ class _MemberRow extends StatelessWidget {
                       onPressed: onRemind,
                       style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 4), minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
                       icon: const Icon(Icons.notifications_active_outlined, size: 15, color: AppColors.warning),
-                      label: Text('Remind', style: GoogleFonts.plusJakartaSans(fontSize: 11.5, fontWeight: FontWeight.bold, color: AppColors.warning)),
+                      label: Text('Remind', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, fontWeight: FontWeight.bold, color: AppColors.warning)),
                     ),
                 ],
               ),

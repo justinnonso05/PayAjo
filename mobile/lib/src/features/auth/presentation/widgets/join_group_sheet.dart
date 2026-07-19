@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -28,7 +27,7 @@ class _JoinGroupSheetState extends ConsumerState<JoinGroupSheet> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: const Color(0xFF1D3108)),
+      SnackBar(content: Text(message, style: TextStyle(color: Colors.white)), backgroundColor: const Color(0xFF1D3108)),
     );
   }
 
@@ -78,7 +77,7 @@ class _JoinGroupSheetState extends ConsumerState<JoinGroupSheet> {
             children: [
               Text(
                 'Join a Group',
-                style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
+                style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 22, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
               ),
               IconButton(
                 onPressed: _isSubmitting ? null : () => Navigator.pop(context),
@@ -89,18 +88,19 @@ class _JoinGroupSheetState extends ConsumerState<JoinGroupSheet> {
           const SizedBox(height: 8),
           Text(
             'Enter the invitation code sent to you by a group member.',
-            style: GoogleFonts.plusJakartaSans(fontSize: 14, color: Colors.grey[500]),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: Colors.grey[500]),
           ),
           const SizedBox(height: 24),
 
           Text(
             'Invite Code',
-            style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
           ),
           const SizedBox(height: 8),
           TextFormField(
             controller: _inviteCodeController,
             textCapitalization: TextCapitalization.characters,
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
             decoration: InputDecoration(
               hintText: 'e.g. AJO-8392-XYZ',
               hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
@@ -140,7 +140,7 @@ class _JoinGroupSheetState extends ConsumerState<JoinGroupSheet> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2.5, color: Color(0xFF1D3108)),
                     )
-                  : Text('Join Group', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                  : Text('Join Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
             ),
           ),
         ],

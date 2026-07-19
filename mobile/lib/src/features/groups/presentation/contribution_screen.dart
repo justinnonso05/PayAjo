@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -95,7 +94,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isPaying = false);
     }
@@ -109,7 +108,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
       context.pushNamed(AppRoute.directPayment.name, extra: details);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isGeneratingDirectPayment = false);
     }
@@ -126,13 +125,13 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('Contribute', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('Contribute', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: _isLoading
             ? const Padding(padding: EdgeInsets.all(24), child: SkeletonCard(height: 260))
             : _error != null
-                ? Center(child: Text(_error!, style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary)))
+                ? Center(child: Text(_error!, style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.textSecondary)))
                 : _buildContent(balance),
       ),
     );
@@ -159,10 +158,10 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(group.name, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.darkGreen.withValues(alpha: 0.8), fontWeight: FontWeight.w600)),
+                Text(group.name, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.darkGreen.withValues(alpha: 0.8), fontWeight: FontWeight.w600)),
                 const SizedBox(height: 6),
-                Text('₦${formatAmount(group.contributionAmount)}', style: GoogleFonts.spaceGrotesk(fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.darkGreen)),
-                Text('Round ${group.currentCycleNumber} • ${group.cycleFrequency?.label ?? '—'}', style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.darkGreen.withValues(alpha: 0.75))),
+                Text('₦${formatAmount(group.contributionAmount)}', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.darkGreen)),
+                Text('Round ${group.currentCycleNumber} • ${group.cycleFrequency?.label ?? '—'}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.darkGreen.withValues(alpha: 0.75))),
               ],
             ),
           ),
@@ -179,7 +178,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                   Expanded(
                     child: Text(
                       "You've already contributed for this round. No need to pay again.",
-                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.darkGreen, fontWeight: FontWeight.w600, height: 1.4),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.darkGreen, fontWeight: FontWeight.w600, height: 1.4),
                     ),
                   ),
                 ],
@@ -197,7 +196,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                   Expanded(
                     child: Text(
                       "This group hasn't started yet. The admin needs to start the rotation before contributions can be made.",
-                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.darkGreen, fontWeight: FontWeight.w600, height: 1.4),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.darkGreen, fontWeight: FontWeight.w600, height: 1.4),
                     ),
                   ),
                 ],
@@ -211,8 +210,8 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Wallet balance', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
-                  Text('₦${formatAmount(balance)}', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  Text('Wallet balance', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                  Text('₦${formatAmount(balance)}', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 ],
               ),
             ),
@@ -235,7 +234,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                 ),
                 child: _isPaying
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                    : Text('Pay from Wallet', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                    : Text('Pay from Wallet', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 12),
@@ -251,13 +250,13 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                 ),
                 child: _isGeneratingDirectPayment
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                    : Text('Pay by Bank Transfer', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                    : Text('Pay by Bank Transfer', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ] else ...[
             Text(
               "You don't have enough in your wallet for this contribution yet.",
-              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 12),
             SizedBox(
@@ -274,7 +273,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                 ),
                 child: _isGeneratingDirectPayment
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                    : Text('Pay by Bank Transfer', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                    : Text('Pay by Bank Transfer', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 12),
@@ -291,7 +290,7 @@ class _ContributionScreenState extends ConsumerState<ContributionScreen> {
                   side: const BorderSide(color: AppColors.darkGreen, width: 1.2),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                 ),
-                child: Text('Fund Wallet Instead', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                child: Text('Fund Wallet Instead', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

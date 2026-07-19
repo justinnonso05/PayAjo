@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -39,7 +38,7 @@ class _ResetConfirmPinScreenState extends ConsumerState<ResetConfirmPinScreen> {
     if (_digits != widget.pin) {
       setState(() => _shakeTick++);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("PINs don't match. Try again."), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text("PINs don't match. Try again.", style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
       Future.delayed(const Duration(milliseconds: 400), () {
         if (mounted) setState(() => _digits = '');
@@ -54,7 +53,7 @@ class _ResetConfirmPinScreenState extends ConsumerState<ResetConfirmPinScreen> {
       context.pushReplacementNamed(AppRoute.pinResetSuccess.name);
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
       setState(() {
         _isSubmitting = false;
         _digits = '';
@@ -70,14 +69,14 @@ class _ResetConfirmPinScreenState extends ConsumerState<ResetConfirmPinScreen> {
         child: Column(
           children: [
             const SizedBox(height: 24),
-            Text('Confirm New PIN', style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Confirm New PIN', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Text(
                 'Enter your new PIN again to confirm.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500, height: 1.4),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500, height: 1.4),
               ),
             ),
             const SizedBox(height: 48),

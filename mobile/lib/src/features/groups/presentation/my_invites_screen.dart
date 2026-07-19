@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -36,7 +35,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _respondingInviteId = null);
     }
@@ -52,7 +51,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('My Invites', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('My Invites', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -124,8 +123,8 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.groupName, style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                          Text('Invited ${formatShortDate(item.invite.createdAt)}', style: GoogleFonts.plusJakartaSans(fontSize: 11, color: AppColors.textMuted)),
+                          Text(item.groupName, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                          Text('Invited ${formatShortDate(item.invite.createdAt)}', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11, color: AppColors.textMuted)),
                         ],
                       ),
                     ),
@@ -142,7 +141,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         ),
-                        child: Text('Decline', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
+                        child: Text('Decline', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -159,7 +158,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
                         ),
                         child: isBusy
                             ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.darkGreen))
-                            : Text('Accept', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold)),
+                            : Text('Accept', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],

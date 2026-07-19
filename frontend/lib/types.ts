@@ -75,6 +75,8 @@ export type GroupMember = {
   username: string;
   has_paid_current_cycle: boolean;
   payout_position: number | null;
+  auto_debit_enabled: boolean;
+  auto_debit_days_before: number;
 };
 
 export type PendingMember = GroupMember;

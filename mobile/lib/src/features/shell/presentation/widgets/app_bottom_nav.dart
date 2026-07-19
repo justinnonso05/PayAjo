@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class _NavItemData {
@@ -85,7 +84,7 @@ class AppBottomNav extends StatelessWidget {
                     const SizedBox(height: 4),
                     AnimatedDefaultTextStyle(
                       duration: const Duration(milliseconds: 220),
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', 
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: isSelected ? AppColors.accentGreen : Colors.grey[400],

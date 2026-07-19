@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_colors.dart';
 import 'animated_checkmark.dart';
 
@@ -64,13 +63,13 @@ class SuccessBottomSheet extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
           ),
           const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, height: 1.4),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, height: 1.4),
           ),
           const SizedBox(height: 28),
           SizedBox(
@@ -84,7 +83,7 @@ class SuccessBottomSheet extends StatelessWidget {
                 elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
               ),
-              child: Text(primaryLabel, style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+              child: Text(primaryLabel, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
             ),
           ),
           if (secondaryLabel != null) ...[
@@ -93,7 +92,7 @@ class SuccessBottomSheet extends StatelessWidget {
               onPressed: onSecondary,
               child: Text(
                 secondaryLabel!,
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, color: AppColors.textSecondary),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontWeight: FontWeight.bold, color: AppColors.textSecondary),
               ),
             ),
           ],

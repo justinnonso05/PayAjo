@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../../../core/network/api_client.dart';
@@ -82,7 +81,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
           builder: (context, constraints) {
             final bottomPadding = MediaQuery.of(context).padding.bottom;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, bottomPadding + 16.0),
+              padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, bottomPadding + 16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - (32.0 + bottomPadding),
@@ -98,7 +97,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                         // Title & Subtitle
                         Text(
                           'Secure Your Account',
-                          style: GoogleFonts.spaceGrotesk(
+                          style: TextStyle(fontFamily: 'SpaceGrotesk', 
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -107,7 +106,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'To keep every savings group secure, we need to verify your identity.',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 15,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w500,
@@ -119,7 +118,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                         // BVN Field
                         Text(
                           'BVN',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -132,6 +131,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                           maxLength: 11,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                           validator: _validateBvn,
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                           decoration: InputDecoration(
                             counterText: '',
                             hintText: '12345678901',
@@ -162,7 +162,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                           child: Text(
                             'Your BVN is used only to verify your identity and\nis never shared with other group members.',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', 
                               fontSize: 11,
                               color: Colors.grey[400],
                               height: 1.4,
@@ -199,7 +199,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
                                   )
                                 : Text(
                                     'Continue',
-                                    style: GoogleFonts.spaceGrotesk(
+                                    style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),

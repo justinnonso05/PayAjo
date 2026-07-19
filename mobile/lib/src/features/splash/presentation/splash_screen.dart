@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/network/api_client.dart';
+import '../../../core/storage/secure_storage_service.dart';
 import '../../../routing/app_router.dart';
+import '../../auth/data/user_repository.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   // Icon Animations (markIn: 16% to 39%)
@@ -60,14 +63,45 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (mounted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.goNamed(AppRoute.onboarding.name);
-          });
+          WidgetsBinding.instance.addPostFrameCallback((_) => _resolveDestination());
         }
       }
     });
 
     _controller.forward();
+  }
+
+  /// Once signed in, the app should reopen straight to Home (or wherever
+  /// the account's setup is unfinished) instead of onboarding every time —
+  /// so this checks for a stored session and validates it against the
+  /// backend before deciding where to land.
+  Future<void> _resolveDestination() async {
+    final token = await ref.read(secureStorageServiceProvider).readAccessToken();
+    if (token == null || token.isEmpty) {
+      if (mounted) context.goNamed(AppRoute.onboarding.name);
+      return;
+    }
+
+    try {
+      final profile = await ref.read(userRepositoryProvider).getMe();
+      ref.read(currentUserProvider.notifier).state = profile;
+      if (!mounted) return;
+
+      if (!profile.kycStatus) {
+        context.goNamed(AppRoute.bvnVerification.name);
+      } else if (!profile.hasPin) {
+        context.goNamed(AppRoute.pinSetup.name);
+      } else {
+        context.goNamed(AppRoute.home.name);
+      }
+    } on ApiException {
+      // Token expired/invalid — clear it and fall back to onboarding.
+      await ref.read(secureStorageServiceProvider).clear();
+      if (mounted) context.goNamed(AppRoute.onboarding.name);
+    } catch (_) {
+      await ref.read(secureStorageServiceProvider).clear();
+      if (mounted) context.goNamed(AppRoute.onboarding.name);
+    }
   }
 
   @override
@@ -125,7 +159,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               },
               child: Text(
                 'AjoPay',
-                style: GoogleFonts.spaceGrotesk(
+                style: TextStyle(fontFamily: 'SpaceGrotesk', 
                   fontSize: 38,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF1D3108),

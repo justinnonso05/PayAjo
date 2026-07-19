@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -143,7 +142,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('Payout Bank', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('Payout Bank', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: Padding(
@@ -153,16 +152,16 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
             children: [
               Text(
                 'Where should withdrawals go?',
-                style: GoogleFonts.spaceGrotesk(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 8),
               Text(
                 "Set this once. Every withdrawal after this goes straight to this account, no need to re-enter it.",
-                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.4),
               ),
               const SizedBox(height: 28),
 
-              Text('Bank', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Bank', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 8),
               GestureDetector(
                 onTap: _isLoadingBanks ? null : _pickBank,
@@ -178,7 +177,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
                     children: [
                       Text(
                         _isLoadingBanks ? 'Loading banks…' : (_selectedBank?.name ?? 'Select a bank'),
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', 
                           fontSize: 14,
                           color: _selectedBank != null ? AppColors.textPrimary : AppColors.hint,
                           fontWeight: _selectedBank != null ? FontWeight.bold : FontWeight.normal,
@@ -191,7 +190,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
               ),
               const SizedBox(height: 20),
 
-              Text('Account Number', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Account Number', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 8),
               TextField(
                 controller: _accountNumberController,
@@ -199,6 +198,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
                 maxLength: 10,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onChanged: (_) => setState(() {}),
+                style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: '0123456789',
@@ -223,7 +223,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
                       Expanded(
                         child: Text(
                           _validated!.accountName,
-                          style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                         ),
                       ),
                     ],
@@ -241,7 +241,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
                     ),
                     child: _isValidating
                         ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textPrimary))
-                        : Text('Verify Account', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                        : Text('Verify Account', style: TextStyle(fontFamily: 'PlusJakartaSans', fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   ),
                 ),
 
@@ -266,7 +266,7 @@ class _PayoutBankScreenState extends ConsumerState<PayoutBankScreen> {
                   ),
                   child: _isContinuing
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                      : Text('Continue', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                      : Text('Continue', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
@@ -313,11 +313,12 @@ class _BankPickerSheetState extends State<_BankPickerSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Select Bank', style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Select Bank', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 12),
             TextField(
               controller: _searchController,
               onChanged: _onSearch,
+              style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Search banks…',
                 hintStyle: const TextStyle(color: AppColors.hint, fontSize: 14),
@@ -338,7 +339,7 @@ class _BankPickerSheetState extends State<_BankPickerSheet> {
                   final bank = _filtered[index];
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(bank.name, style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textPrimary)),
+                    title: Text(bank.name, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textPrimary)),
                     onTap: () => Navigator.pop(context, bank),
                   );
                 },

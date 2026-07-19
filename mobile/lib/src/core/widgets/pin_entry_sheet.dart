@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../features/auth/presentation/widgets/numeric_keypad.dart';
 import '../../features/auth/presentation/widgets/pin_dots_indicator.dart';
 import '../theme/app_colors.dart';
@@ -62,7 +61,7 @@ class _PinEntrySheetState extends State<PinEntrySheet> {
               Expanded(
                 child: Text(
                   widget.title,
-                  style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
               ),
               IconButton(
@@ -73,7 +72,7 @@ class _PinEntrySheetState extends State<PinEntrySheet> {
           ),
           Text(
             widget.subtitle,
-            style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 28),
           PinDotsIndicator(filledCount: _digits.length),

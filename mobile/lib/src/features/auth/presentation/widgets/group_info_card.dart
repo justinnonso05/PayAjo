@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class GroupInfoRow {
   final String label;
@@ -40,7 +39,7 @@ class GroupInfoCard extends StatelessWidget {
                 children: [
                   Text(
                     rows[i].label,
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: Colors.grey[500],
@@ -50,7 +49,7 @@ class GroupInfoCard extends StatelessWidget {
                     child: Text(
                       rows[i].value,
                       textAlign: TextAlign.right,
-                      style: GoogleFonts.spaceGrotesk(
+                      style: TextStyle(fontFamily: 'SpaceGrotesk', 
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1D3108),

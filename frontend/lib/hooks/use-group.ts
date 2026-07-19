@@ -98,5 +98,6 @@ export function useGroup(groupId: string) {
     startGroup,
     rotateInviteCode,
     setGroup,
+    setMembers,
   };
 }

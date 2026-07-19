@@ -187,6 +187,33 @@ class GroupRepository {
     return response['data']?.toString() ?? 'Payout scheduler triggered.';
   }
 
+  /// Enables/disables auto-debit for the current user's own membership in
+  /// this group — when enabled, the backend automatically pays the
+  /// contribution from wallet balance once within [daysBefore] days of the
+  /// next payout date, as long as it hasn't been paid yet. PIN-confirmed
+  /// since it authorizes a standing outbound money instruction.
+  Future<GroupMember> setupAutoDebit(
+    String groupId, {
+    required bool enabled,
+    required int daysBefore,
+    required String pin,
+  }) async {
+    final response = await _apiClient.post(
+      ApiConstants.autoDebit(groupId),
+      body: {
+        'enabled': enabled,
+        'days_before': daysBefore,
+        'pin': pin,
+      },
+      headers: await _secureStorage.authHeaders(),
+    );
+    final data = response['data'];
+    if (data is! Map<String, dynamic>) {
+      throw ApiException('Unexpected response from server.');
+    }
+    return GroupMember.fromJson(data);
+  }
+
   // --- Invites (direct, by email/username — separate from invite codes) ---
 
   Future<GroupInvite> sendInvite(String groupId, String emailOrUsername) async {

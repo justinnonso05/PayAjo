@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../routing/app_router.dart';
@@ -43,14 +42,14 @@ class _ResetNewPinScreenState extends State<ResetNewPinScreen> {
         child: Column(
           children: [
             const SizedBox(height: 24),
-            Text('Enter New PIN', style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Enter New PIN', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Text(
                 'Choose a new 4-digit PIN for your account.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500, height: 1.4),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.w500, height: 1.4),
               ),
             ),
             const SizedBox(height: 48),

@@ -121,6 +121,7 @@ export const endpoints = {
   group: (groupId: string) => `${API_PREFIX}/groups/${groupId}`,
   groupMembers: (groupId: string) => `${API_PREFIX}/groups/${groupId}/members`,
   groupRotations: (groupId: string) => `${API_PREFIX}/groups/${groupId}/rotations`,
+  autoDebit: (groupId: string) => `${API_PREFIX}/groups/${groupId}/auto-debit`,
   payFromWallet: (groupId: string) => `${API_PREFIX}/groups/${groupId}/pay-from-wallet`,
   generateDirectPayment: (groupId: string) => `${API_PREFIX}/groups/${groupId}/generate-direct-payment`,
   pendingMembers: (groupId: string) => `${API_PREFIX}/groups/${groupId}/members/pending`,

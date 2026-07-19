@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../data/auth_repository.dart';
@@ -161,7 +160,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           builder: (context, constraints) {
             final bottomPadding = MediaQuery.of(context).padding.bottom;
             return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24.0, 16.0, 24.0, bottomPadding + 16.0),
+              padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, bottomPadding + 16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight - (32.0 + bottomPadding),
@@ -180,7 +179,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           children: [
                             Text(
                               'Join AjoPay',
-                              style: GoogleFonts.spaceGrotesk(
+                              style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF1D3108),
@@ -198,7 +197,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'Start saving and growing together.',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 15,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w500,
@@ -266,7 +265,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         // Password Field
                         Text(
                           'Password',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', 
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1D3108),
@@ -277,6 +276,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           controller: _passwordController,
                           obscureText: _obscurePassword,
                           validator: _validatePassword,
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
                           decoration: InputDecoration(
                             hintText: 'password',
                             hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14, fontWeight: FontWeight.w400),
@@ -325,7 +325,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             Expanded(
                               child: Text(
                                 'I agree to the Term & Condition and Privacy',
-                                style: GoogleFonts.plusJakartaSans(
+                                style: TextStyle(fontFamily: 'PlusJakartaSans', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey[600],
@@ -346,7 +346,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           child: Text(
                             'By entering and tapping Sign up, you agree to the\nTerms, E-Sign Consent & Privacy Notice',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(fontFamily: 'PlusJakartaSans', 
                               fontSize: 11,
                               color: Colors.grey[400],
                               height: 1.4,
@@ -375,7 +375,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   ),
                                   child: Text(
                                     'Sign in',
-                                    style: GoogleFonts.spaceGrotesk(
+                                    style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       color: const Color(0xFF4B5563),
@@ -412,7 +412,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                         )
                                       : Text(
                                           'Sign up',
-                                          style: GoogleFonts.spaceGrotesk(
+                                          style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -447,7 +447,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       children: [
         Text(
           label,
-          style: GoogleFonts.plusJakartaSans(
+          style: TextStyle(fontFamily: 'PlusJakartaSans', 
             fontSize: 13,
             fontWeight: FontWeight.bold,
             color: const Color(0xFF1D3108),
@@ -459,6 +459,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           keyboardType: keyboardType,
           textCapitalization: textCapitalization,
           validator: validator,
+          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xFF1D3108)),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14, fontWeight: FontWeight.w400),

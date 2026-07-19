@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../core/theme/app_colors.dart';
@@ -101,7 +100,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
   void _copy(String value, String label) {
     Clipboard.setData(ClipboardData(text: value));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label copied'), backgroundColor: AppColors.darkGreen),
+      SnackBar(content: Text('$label copied', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
     );
   }
 
@@ -115,7 +114,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('Pay by Bank Transfer', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('Pay by Bank Transfer', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -133,7 +132,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   _expired ? 'This account has expired' : 'Expires in ${_formatRemaining(_remaining)}',
-                  style: GoogleFonts.spaceGrotesk(
+                  style: TextStyle(fontFamily: 'SpaceGrotesk', 
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: _expired ? AppColors.danger : AppColors.accentGreen,
@@ -148,9 +147,9 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Transfer exactly', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                    Text('Transfer exactly', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 4),
-                    Text('₦${formatAmount(d.amount)}', style: GoogleFonts.spaceGrotesk(fontSize: 28, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+                    Text('₦${formatAmount(d.amount)}', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 28, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
                     const SizedBox(height: 20),
                     _DetailRow(label: 'Bank', value: d.bankName),
                     const SizedBox(height: 14),
@@ -172,9 +171,9 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                   decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.xl), boxShadow: cardShadow(opacity: 0.04)),
                   child: Column(
                     children: [
-                      Text('Or scan to pay another way', style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                      Text('Or scan to pay another way', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 4),
-                      Text('Card, USSD, or transfer via Monnify checkout', style: GoogleFonts.plusJakartaSans(fontSize: 11.5, color: AppColors.textMuted)),
+                      Text('Card, USSD, or transfer via Monnify checkout', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, color: AppColors.textMuted)),
                       const SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(12),
@@ -195,7 +194,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
               const SizedBox(height: 20),
               Text(
                 'This account is generated just for this contribution and can only be used once. Send exactly ₦${formatAmount(d.amount)} from any bank app before it expires. We\'ll confirm automatically once it lands.',
-                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, height: 1.5),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, height: 1.5),
               ),
               const SizedBox(height: 24),
               Row(
@@ -209,7 +208,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                   Expanded(
                     child: Text(
                       'Waiting for payment…',
-                      style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -223,7 +222,7 @@ class _DirectPaymentScreenState extends ConsumerState<DirectPaymentScreen> {
                     const SizedBox(width: 5),
                     Text(
                       'Secured & powered by Monnify',
-                      style: GoogleFonts.plusJakartaSans(fontSize: 11.5, color: AppColors.textMuted, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, color: AppColors.textMuted, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -248,12 +247,12 @@ class _DetailRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+        Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
         GestureDetector(
           onTap: onTap,
           child: Row(
             children: [
-              Text(value, style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text(value, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               if (onTap != null) ...[
                 const SizedBox(width: 6),
                 const Icon(Icons.copy_rounded, size: 16, color: AppColors.accentGreen),

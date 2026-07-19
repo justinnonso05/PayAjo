@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -144,17 +143,17 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Transfer', style: GoogleFonts.spaceGrotesk(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                Text('Transfer', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close, color: Colors.grey)),
               ],
             ),
             const SizedBox(height: 4),
             Text(
               'Send money to another AjoPay user instantly.',
-              style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+              style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 20),
-            Text('Recipient Account Number', style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            Text('Recipient Account Number', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
             const SizedBox(height: 8),
             TextField(
               controller: _accountController,
@@ -163,6 +162,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
               autofocus: true,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: _onAccountChanged,
+              style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
               decoration: InputDecoration(
                 counterText: '',
                 hintText: '0123456789',
@@ -185,7 +185,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
             if (_status == _LookupStatus.notFound)
               Text(
                 'No AjoPay account found with that number.',
-                style: GoogleFonts.plusJakartaSans(fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
               ),
             if (_status == _LookupStatus.found && _recipient != null)
               Container(
@@ -199,7 +199,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
                     Expanded(
                       child: Text(
                         _recipient!.fullName.isNotEmpty ? _recipient!.fullName : '@${_recipient!.username}',
-                        style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                        style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                       ),
                     ),
                   ],
@@ -209,13 +209,14 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
               const SizedBox(height: 20),
               Text(
                 'Available balance: ₦${formatAmount(widget.balance)}',
-                style: GoogleFonts.plusJakartaSans(fontSize: 13, color: AppColors.textSecondary),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _amountController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 onChanged: (_) => setState(() {}),
+                style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   prefixText: '₦ ',
                   hintText: '0.00',
@@ -228,6 +229,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
               const SizedBox(height: 12),
               TextField(
                 controller: _narrationController,
+                style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: 'What\'s it for? (optional)',
                   hintStyle: const TextStyle(color: AppColors.hint, fontSize: 14),
@@ -258,7 +260,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
                 ),
                 child: _isSubmitting
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                    : Text('Send Money', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                    : Text('Send Money', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

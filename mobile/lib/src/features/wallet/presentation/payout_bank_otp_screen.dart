@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -45,11 +44,11 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
       await ref.read(walletRepositoryProvider).requestPayoutBankOtp();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Code resent to your email'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Code resent to your email', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isResending = false);
     }
@@ -59,7 +58,7 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
     final otp = _otpController.text.trim();
     if (otp.length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter the code from your email'), backgroundColor: AppColors.darkGreen),
+        const SnackBar(content: Text('Enter the code from your email', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
       );
       return;
     }
@@ -86,7 +85,7 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
       );
     } on ApiException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -103,11 +102,11 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Confirm It\'s You', style: GoogleFonts.spaceGrotesk(fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+              Text('Confirm It\'s You', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
               const SizedBox(height: 8),
               Text(
                 'Enter the code we emailed you to confirm ${widget.accountName} (${widget.bankName}) as your payout account.',
-                style: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textSecondary, height: 1.4),
+                style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: AppColors.textSecondary, height: 1.4),
               ),
               const SizedBox(height: 32),
               TextField(
@@ -116,7 +115,7 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
                 textAlign: TextAlign.center,
                 maxLength: 6,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                style: GoogleFonts.spaceGrotesk(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 10, color: AppColors.textPrimary),
+                style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 10, color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   counterText: '',
                   hintText: '••••••',
@@ -133,7 +132,7 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
                   onPressed: _isResending ? null : _resend,
                   child: Text(
                     _isResending ? 'Sending…' : "Didn't get it? Resend code",
-                    style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
                   ),
                 ),
               ),
@@ -152,7 +151,7 @@ class _PayoutBankOtpScreenState extends ConsumerState<PayoutBankOtpScreen> {
                   ),
                   child: _isSubmitting
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: AppColors.darkGreen))
-                      : Text('Confirm', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold)),
+                      : Text('Confirm', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],

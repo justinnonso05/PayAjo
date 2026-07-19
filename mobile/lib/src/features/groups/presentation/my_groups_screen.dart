@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/theme/app_colors.dart';
@@ -57,7 +56,7 @@ class _MyGroupsScreenState extends ConsumerState<MyGroupsScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text('My Groups', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+        title: Text('My Groups', style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
         actions: [
           IconButton(
             onPressed: () => context.pushNamed(AppRoute.joinOrCreate.name),
@@ -80,7 +79,7 @@ class _MyGroupsScreenState extends ConsumerState<MyGroupsScreen> {
     }
 
     if (_error != null) {
-      return Center(child: Text(_error!, style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary)));
+      return Center(child: Text(_error!, style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.textSecondary)));
     }
 
     if (_groups.isEmpty) {
@@ -99,7 +98,7 @@ class _MyGroupsScreenState extends ConsumerState<MyGroupsScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
-              child: Text('Join or Create a Group', style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.bold)),
+              child: Text('Join or Create a Group', style: TextStyle(fontFamily: 'SpaceGrotesk', fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -131,11 +130,11 @@ class _MyGroupsScreenState extends ConsumerState<MyGroupsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(group.groupName, style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                        Text(group.groupName, style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                         const SizedBox(height: 2),
                         Text(
                           '₦${formatAmount(group.contributionAmount)} • ${group.cycleFrequency?.label ?? '—'}',
-                          style: GoogleFonts.plusJakartaSans(fontSize: 12, color: AppColors.textSecondary),
+                          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary),
                         ),
                       ],
                     ),
