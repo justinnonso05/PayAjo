@@ -1,0 +1,40 @@
+import { Bell, Clock, Hash, MessageCircle, ShieldCheck, User, Vault, Wallet } from "lucide-react";
+import { Reveal, StaggerGroup, StaggerItem } from "./reveal";
+
+const FEATURES = [
+  { icon: Vault, title: "Reserved Virtual Accounts", desc: "Every savings group gets its own dedicated account." },
+  { icon: Wallet, title: "Personal Wallet", desc: "Deposit once. Pay contributions instantly." },
+  { icon: MessageCircle, title: "Group Chat", desc: "Communicate with members, right inside the app." },
+  { icon: Bell, title: "Smart Reminders", desc: "Never miss a contribution deadline again." },
+  { icon: User, title: "BVN Verification", desc: "Only verified members can join a group." },
+  { icon: Clock, title: "Transaction History", desc: "Every payment is recorded, timestamped, and visible." },
+  { icon: Hash, title: "Invite Code", desc: "Join groups instantly with a simple code." },
+  { icon: ShieldCheck, title: "Notifications", desc: "Stay informed on every contribution and payout." },
+];
+
+export function FeaturesGrid() {
+  return (
+    <section id="features" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+      <Reveal className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent">Everything you need</p>
+        <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
+          One app, every part of your Ajo.
+        </h2>
+      </Reveal>
+
+      <StaggerGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {FEATURES.map(({ icon: Icon, title, desc }) => (
+          <StaggerItem key={title}>
+            <div className="group h-full rounded-card border border-brand-dark/5 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(29,49,8,0.1)]">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-pale transition-colors duration-300 group-hover:bg-brand">
+                <Icon size={20} className="text-brand-accent" />
+              </div>
+              <h3 className="mt-5 font-display text-sm font-bold text-brand-dark">{title}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-brand-dark/55">{desc}</p>
+            </div>
+          </StaggerItem>
+        ))}
+      </StaggerGroup>
+    </section>
+  );
+}
