@@ -23,6 +23,22 @@ class ApiClient {
 
   ApiClient({http.Client? client}) : _client = client ?? http.Client();
 
+  /// Fires once, the first time any request comes back 401 — set at app
+  /// startup to clear the stored token and bounce to login. Guarded so a
+  /// burst of concurrent requests failing together (a common pattern right
+  /// after expiry, since several screens refresh at once) only triggers it
+  /// once instead of stacking redirects/toasts.
+  static void Function()? onUnauthorized;
+  static bool _isHandlingUnauthorized = false;
+
+  static void resetUnauthorizedGuard() => _isHandlingUnauthorized = false;
+
+  static void _handleUnauthorized() {
+    if (_isHandlingUnauthorized) return;
+    _isHandlingUnauthorized = true;
+    onUnauthorized?.call();
+  }
+
   static const _defaultHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -92,6 +108,9 @@ class ApiClient {
     } catch (_) {
       // Non-JSON body; fall through with an empty map.
     }
+    if (response.statusCode == 401) {
+      _handleUnauthorized();
+    }
     throw ApiException(
       _extractErrorMessage(json) ?? 'Something went wrong (${response.statusCode}).',
       statusCode: response.statusCode,
@@ -159,6 +178,10 @@ class ApiClient {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return json;
+    }
+
+    if (response.statusCode == 401) {
+      _handleUnauthorized();
     }
 
     throw ApiException(

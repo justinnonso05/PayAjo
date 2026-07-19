@@ -1,5 +1,6 @@
 const TOKEN_KEY = "ajopay_access_token";
 const TOKEN_TYPE_KEY = "ajopay_token_type";
+const LAST_EMAIL_KEY = "ajopay_last_email";
 
 // localStorage is the web equivalent of the mobile app's secure storage —
 // it's not encrypted at rest like flutter_secure_storage, which is an
@@ -15,10 +16,22 @@ export function getToken(): string | null {
   return window.localStorage.getItem(TOKEN_KEY);
 }
 
+// Deliberately not cleared here — so a re-login (manual or after an
+// expired-session bounce) still only asks for the password.
 export function clearToken() {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(TOKEN_KEY);
   window.localStorage.removeItem(TOKEN_TYPE_KEY);
+}
+
+export function saveLastEmail(email: string) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(LAST_EMAIL_KEY, email);
+}
+
+export function getLastEmail(): string | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(LAST_EMAIL_KEY);
 }
 
 export function authHeaders(): HeadersInit {

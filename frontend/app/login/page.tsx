@@ -3,28 +3,45 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthCard } from "@/components/auth/auth-card";
 import { TextField } from "@/components/auth/text-field";
-import { api, ApiError, endpoints } from "@/lib/api";
-import { authHeaders, saveTokenFromResponse } from "@/lib/auth";
+import { api, ApiError, endpoints, resetUnauthorizedGuard } from "@/lib/api";
+import { authHeaders, getLastEmail, saveLastEmail, saveTokenFromResponse } from "@/lib/auth";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas";
 
 export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [sessionExpired, setSessionExpired] = useState(false);
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
+
+  useEffect(() => {
+    const cachedEmail = getLastEmail();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from localStorage, not a render-loop
+    if (cachedEmail) setValue("email", cachedEmail);
+    if (window.sessionStorage.getItem("ajopay_session_expired")) {
+      window.sessionStorage.removeItem("ajopay_session_expired");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage, not a render-loop
+      setSessionExpired(true);
+    }
+  }, [setValue]);
 
   const onSubmit = async (values: LoginFormValues) => {
     setServerError(null);
     try {
       const response = await api.post(endpoints.login, values);
       saveTokenFromResponse(response.data);
+      saveLastEmail(values.email);
+      // A previous session's 401 may have latched the "already handling an
+      // expired session" guard — a fresh successful login clears it.
+      resetUnauthorizedGuard();
 
       const me = await api.get(endpoints.me, authHeaders());
       const profile = me.data as { kyc_status?: boolean; has_pin?: boolean } | undefined;
@@ -55,6 +72,9 @@ export default function LoginPage() {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {sessionExpired && (
+          <p className="rounded-xl bg-amber-50 px-3.5 py-2.5 text-xs font-semibold text-amber-700">Your session expired. Please log in again.</p>
+        )}
         <TextField label="Email" type="email" placeholder="amara@email.com" {...register("email")} error={errors.email} />
         <TextField label="Password" type="password" placeholder="••••••••" {...register("password")} error={errors.password} />
 

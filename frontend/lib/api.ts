@@ -1,3 +1,5 @@
+import { clearToken } from "./auth";
+
 const API_PREFIX = "/api/v1";
 
 function baseUrl() {
@@ -42,6 +44,24 @@ function extractErrorMessage(json: Envelope): string | null {
   return null;
 }
 
+// Guarded so a burst of concurrent requests failing together right after
+// expiry (several components refreshing at once) only redirects once
+// instead of stacking navigations.
+let isHandlingUnauthorized = false;
+
+function handleUnauthorized() {
+  if (isHandlingUnauthorized || typeof window === "undefined") return;
+  isHandlingUnauthorized = true;
+  clearToken();
+  window.sessionStorage.setItem("ajopay_session_expired", "1");
+  window.location.href = "/login";
+}
+
+/** Called on successful login so a later expiry can trigger the redirect again. */
+export function resetUnauthorizedGuard() {
+  isHandlingUnauthorized = false;
+}
+
 async function decode(response: Response): Promise<Envelope> {
   let json: Envelope = {};
   const text = await response.text();
@@ -54,6 +74,8 @@ async function decode(response: Response): Promise<Envelope> {
   }
 
   if (response.ok) return json;
+
+  if (response.status === 401) handleUnauthorized();
 
   throw new ApiError(extractErrorMessage(json) ?? `Something went wrong (${response.status}).`, response.status);
 }

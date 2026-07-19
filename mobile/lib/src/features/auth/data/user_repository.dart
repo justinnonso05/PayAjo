@@ -9,6 +9,11 @@ import 'user_profile.dart';
 /// can read `has_pin`, `kyc_status`, wallet balance, etc. without refetching.
 final currentUserProvider = StateProvider<UserProfile?>((ref) => null);
 
+/// Set by [ApiClient.onUnauthorized] right before it bounces to login, so
+/// the login screen can show "your session expired" instead of a bare form.
+/// The login screen resets this back to false once it's shown the banner.
+final sessionExpiredProvider = StateProvider<bool>((ref) => false);
+
 /// From `GET /users/search` — an exact-match lookup by email or username,
 /// used to preview who an admin is about to invite before sending it.
 class UserSearchResult {

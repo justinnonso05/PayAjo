@@ -20,6 +20,7 @@ class SecureStorageService {
 
   static const _accessTokenKey = 'access_token';
   static const _tokenTypeKey = 'token_type';
+  static const _lastEmailKey = 'last_email';
 
   Future<void> saveAccessToken(String token, {String? tokenType}) async {
     await _storage.write(key: _accessTokenKey, value: token);
@@ -32,10 +33,17 @@ class SecureStorageService {
 
   Future<String?> readTokenType() => _storage.read(key: _tokenTypeKey);
 
+  /// Clears the session (token) but deliberately leaves the cached email
+  /// alone — so a re-login (manual or after an expired-session bounce)
+  /// still only asks for the password.
   Future<void> clear() async {
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _tokenTypeKey);
   }
+
+  Future<void> saveLastEmail(String email) => _storage.write(key: _lastEmailKey, value: email);
+
+  Future<String?> readLastEmail() => _storage.read(key: _lastEmailKey);
 
   /// Builds the `Authorization` header for authenticated requests.
   /// Throws [ApiException] if there's no stored token.

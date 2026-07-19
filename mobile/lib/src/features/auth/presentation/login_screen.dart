@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/storage/secure_storage_service.dart';
 import '../../groups/data/group_invites_controller.dart';
 import '../../home/data/home_controller.dart';
 import '../../notifications/data/notifications_repository.dart';
@@ -27,6 +28,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isSubmitting = false;
 
   static final RegExp _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+
+  @override
+  void initState() {
+    super.initState();
+    _prefillLastEmail();
+    // Show the "session expired" banner once, then clear the flag so it
+    // doesn't reappear on a later, unrelated visit to this screen.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ref.read(sessionExpiredProvider)) {
+        ref.read(sessionExpiredProvider.notifier).state = false;
+      }
+    });
+  }
+
+  Future<void> _prefillLastEmail() async {
+    final email = await ref.read(secureStorageServiceProvider).readLastEmail();
+    if (email == null || !mounted) return;
+    setState(() {
+      _emailController.text = email;
+      _rememberMe = true;
+    });
+  }
 
   @override
   void dispose() {
@@ -62,6 +85,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final profile = await ref.read(userRepositoryProvider).getMe();
       ref.read(currentUserProvider.notifier).state = profile;
+      await ref.read(secureStorageServiceProvider).saveLastEmail(_emailController.text.trim());
+      // A previous session's 401 may have latched the "already handling
+      // an expired session" guard — a fresh successful login clears it.
+      ApiClient.resetUnauthorizedGuard();
 
       // These are all NotifierProviders that fetch once on first read and
       // then cache — if any of them were already built earlier in this app
@@ -156,6 +183,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 36),
+                        if (ref.watch(sessionExpiredProvider))
+                          Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFF3E0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.info_outline_rounded, size: 16, color: Color(0xFFB45309)),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Your session expired. Please log in again.',
+                                    style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, fontWeight: FontWeight.w600, color: const Color(0xFFB45309)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
 
                         // Email Field
                         Text(
