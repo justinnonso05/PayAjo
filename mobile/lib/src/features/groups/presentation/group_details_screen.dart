@@ -175,6 +175,11 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not send reminders: $e'), backgroundColor: AppColors.darkGreen),
+      );
     } finally {
       if (mounted) setState(() => _isBusy = false);
     }
@@ -190,6 +195,11 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     } on ApiException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not send reminder: $e'), backgroundColor: AppColors.darkGreen),
+      );
     }
   }
 
