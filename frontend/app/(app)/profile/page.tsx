@@ -90,14 +90,14 @@ export default function ProfilePage() {
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             {avatarError && <p className="mt-2 text-xs font-semibold text-red-500">{avatarError}</p>}
 
-            <button type="button" onClick={() => setShowEditProfile(true)} className="mt-3 flex items-center justify-center gap-1.5">
+            <button type="button" onClick={() => setShowEditProfile(true)} className="mx-auto mt-3 flex items-center justify-center gap-1.5">
               <p className="font-display text-lg font-bold text-brand-dark">{`${profile.first_name} ${profile.last_name}`.trim()}</p>
               {profile.kyc_status && <BadgeCheck size={17} className="text-brand-accent" />}
               <Pencil size={13} className="text-brand-dark/30" />
             </button>
             {profile.kyc_status && <p className="text-xs font-bold text-brand-accent">BVN Verified</p>}
 
-            <div className="mx-auto mt-4 max-w-xs space-y-2 border-t border-brand-dark/5 pt-4 text-left">
+            <div className="mx-auto mt-4 max-w-xs space-y-2 border-t border-brand-dark/5 pt-4">
               <InfoRow icon={Mail} text={profile.email || "—"} />
               <InfoRow icon={Phone} text={profile.phone || "Not set"} />
               <InfoRow icon={Calendar} text={profile.created_at ? `Member since ${formatShortDate(profile.created_at)}` : "Member since —"} />
@@ -155,8 +155,8 @@ export default function ProfilePage() {
 
 function InfoRow({ icon: Icon, text }: { icon: typeof Mail; text: string }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <Icon size={14} className="text-brand-dark/30" />
+    <div className="flex items-center justify-center gap-2.5">
+      <Icon size={14} className="shrink-0 text-brand-dark/30" />
       <span className="text-sm text-brand-dark/60">{text}</span>
     </div>
   );
