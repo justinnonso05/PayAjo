@@ -655,7 +655,7 @@ async def setup_auto_debit_service(user: User, group_id: str, enabled: bool, day
     # 3. Find Membership
     mem_res = await db.execute(
         select(Membership).where(
-            and_(Membership.group_id == group_id, Membership.user_id == user.id)
+            Membership.group_id == group_id, Membership.user_id == user.id
         )
     )
     membership = mem_res.scalar_one_or_none()
