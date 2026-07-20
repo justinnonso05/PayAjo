@@ -215,10 +215,7 @@ class GroupRepository {
   }
 
   /// Gives your payout turn for [cycleNumber] to [toMemberId] instead.
-  /// PIN-confirmed. Note: there's currently no way to list or cancel a
-  /// pending delegation once sent — the recipient/admin approval side of
-  /// this isn't exposed by the backend yet (no endpoint to discover the
-  /// delegation's id), so this is initiate-only for now.
+  /// PIN-confirmed. See [getPendingDelegations] for the admin-approval side.
   Future<String> delegateCycle(String groupId, int cycleNumber, {required String toMemberId, required String pin}) async {
     final response = await _apiClient.post(
       ApiConstants.delegateCycle(groupId, cycleNumber),
@@ -231,9 +228,8 @@ class GroupRepository {
   }
 
   /// Requests to swap your upcoming payout cycle with [targetMemberId]'s
-  /// [targetCycleNumber]. PIN-confirmed. Same caveat as [delegateCycle] —
-  /// initiate-only, since there's no way to list pending swaps to respond
-  /// to or admin-approve yet.
+  /// [targetCycleNumber]. PIN-confirmed. See [getPendingSwaps] for how the
+  /// target member/admin responds.
   Future<String> requestCycleSwap(
     String groupId, {
     required String targetMemberId,
@@ -248,6 +244,56 @@ class GroupRepository {
     final data = response['data'];
     final status = data is Map<String, dynamic> ? data['status']?.toString() : null;
     return status ?? 'pending';
+  }
+
+  /// Swaps where the current user is the target awaiting their response,
+  /// plus — if they're the group admin — any awaiting admin approval too.
+  Future<List<CycleSwapRequest>> getPendingSwaps(String groupId) async {
+    final response = await _apiClient.get(
+      ApiConstants.pendingSwaps(groupId),
+      headers: await _secureStorage.authHeaders(),
+    );
+    final data = response['data'];
+    if (data is! List) return [];
+    return data.whereType<Map<String, dynamic>>().map(CycleSwapRequest.fromJson).toList();
+  }
+
+  /// Admin-only: delegations awaiting admin approval. 403s for non-admins.
+  Future<List<CycleDelegationRequest>> getPendingDelegations(String groupId) async {
+    final response = await _apiClient.get(
+      ApiConstants.pendingDelegations(groupId),
+      headers: await _secureStorage.authHeaders(),
+    );
+    final data = response['data'];
+    if (data is! List) return [];
+    return data.whereType<Map<String, dynamic>>().map(CycleDelegationRequest.fromJson).toList();
+  }
+
+  /// The target member accepts or declines a swap. PIN-confirmed.
+  Future<void> respondToSwap(String groupId, String swapId, {required bool accept, required String pin}) async {
+    await _apiClient.post(
+      ApiConstants.respondSwap(groupId, swapId),
+      body: {'accept': accept, 'pin': pin},
+      headers: await _secureStorage.authHeaders(),
+    );
+  }
+
+  /// Admin approves or declines a swap. PIN-confirmed.
+  Future<void> approveSwap(String groupId, String swapId, {required bool approve, required String pin, String? reason}) async {
+    await _apiClient.post(
+      ApiConstants.approveSwap(groupId, swapId),
+      body: {'approve': approve, 'pin': pin, if (reason != null && reason.isNotEmpty) 'reason': reason},
+      headers: await _secureStorage.authHeaders(),
+    );
+  }
+
+  /// Admin approves or declines a delegation. PIN-confirmed.
+  Future<void> approveDelegation(String groupId, String delegationId, {required bool approve, required String pin, String? reason}) async {
+    await _apiClient.post(
+      ApiConstants.approveDelegation(groupId, delegationId),
+      body: {'approve': approve, 'pin': pin, if (reason != null && reason.isNotEmpty) 'reason': reason},
+      headers: await _secureStorage.authHeaders(),
+    );
   }
 
   // --- Invites (direct, by email/username — separate from invite codes) ---

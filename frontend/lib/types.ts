@@ -93,6 +93,27 @@ export type GroupRotationEntry = {
   is_current: boolean;
 };
 
+export type CycleSwapRequest = {
+  id: string;
+  group_id: string;
+  initiator_member_id: string;
+  target_member_id: string;
+  initiator_cycle_number: number;
+  target_cycle_number: number;
+  status: string;
+  created_at: string;
+};
+
+export type CycleDelegationRequest = {
+  id: string;
+  group_id: string;
+  cycle_number: number;
+  from_member_id: string;
+  to_member_id: string;
+  status: string;
+  created_at: string;
+};
+
 export type GroupInvite = {
   id: string;
   group_id: string;
@@ -173,6 +194,11 @@ export type AppNotification = {
   title: string;
   message: string;
   type: string;
+  // For type === "swap_request" this is a SwapRequest.id; for
+  // "delegation_request" it's a DelegationRequest.id. There's no group_id
+  // alongside it, so this alone isn't enough to deep-link to the right
+  // group's review screen — surfaced for now in case that changes.
+  action_id?: string | null;
   is_read: boolean;
   created_at: string;
 };

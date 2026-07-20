@@ -35,9 +35,12 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
   List<GroupMember> _members = [];
   List<PendingMembership> _pendingMembers = [];
   List<GroupRotationEntry> _rotations = [];
+  List<CycleSwapRequest> _pendingSwaps = [];
+  List<CycleDelegationRequest> _pendingDelegations = [];
   bool _isLoading = true;
   bool _isLoadingPending = false;
   bool _isLoadingRotations = true;
+  bool _isLoadingPendingCycle = false;
   bool _isBusy = false;
   String? _error;
 
@@ -67,11 +70,122 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       });
       if (_isCurrentUserAdmin) _loadPendingMembers();
       _loadRotations();
+      _loadPendingCycleRequests();
     } on ApiException catch (e) {
       setState(() {
         _error = e.message;
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _loadPendingCycleRequests() async {
+    if (_group?.status != 'active') return;
+    setState(() => _isLoadingPendingCycle = true);
+    try {
+      final repo = ref.read(groupRepositoryProvider);
+      final swaps = await repo.getPendingSwaps(widget.groupId);
+      var delegations = <CycleDelegationRequest>[];
+      if (_isCurrentUserAdmin) {
+        try {
+          delegations = await repo.getPendingDelegations(widget.groupId);
+        } catch (_) {
+          // Admin-only; a 403 here just means "nothing to show" for a non-admin edge case.
+        }
+      }
+      if (!mounted) return;
+      setState(() {
+        _pendingSwaps = swaps;
+        _pendingDelegations = delegations;
+        _isLoadingPendingCycle = false;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _isLoadingPendingCycle = false);
+    }
+  }
+
+  String _memberName(String userId) {
+    final matches = _members.where((m) => m.userId == userId);
+    return matches.isEmpty ? 'Member' : matches.first.fullName;
+  }
+
+  Future<void> _respondToSwap(CycleSwapRequest swap, bool accept) async {
+    final pin = await PinEntrySheet.show(
+      context,
+      title: accept ? 'Accept Swap' : 'Decline Swap',
+      subtitle: accept
+          ? 'Confirm with your PIN to swap your cycle ${swap.targetCycleNumber} for ${_memberName(swap.initiatorMemberId)}\'s cycle ${swap.initiatorCycleNumber}.'
+          : 'Confirm with your PIN to decline this swap request.',
+    );
+    if (pin == null || !mounted) return;
+    setState(() => _isBusy = true);
+    try {
+      await ref.read(groupRepositoryProvider).respondToSwap(widget.groupId, swap.id, accept: accept, pin: pin);
+      await _loadPendingCycleRequests();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(accept ? 'Swap accepted' : 'Swap declined', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something went wrong: $e', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } finally {
+      if (mounted) setState(() => _isBusy = false);
+    }
+  }
+
+  Future<void> _approveSwap(CycleSwapRequest swap, bool approve) async {
+    final pin = await PinEntrySheet.show(
+      context,
+      title: approve ? 'Approve Swap' : 'Decline Swap',
+      subtitle: 'Confirm with your PIN as the group admin.',
+    );
+    if (pin == null || !mounted) return;
+    setState(() => _isBusy = true);
+    try {
+      await ref.read(groupRepositoryProvider).approveSwap(widget.groupId, swap.id, approve: approve, pin: pin);
+      await _loadPendingCycleRequests();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(approve ? 'Swap approved' : 'Swap declined', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something went wrong: $e', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } finally {
+      if (mounted) setState(() => _isBusy = false);
+    }
+  }
+
+  Future<void> _approveDelegation(CycleDelegationRequest delegation, bool approve) async {
+    final pin = await PinEntrySheet.show(
+      context,
+      title: approve ? 'Approve Delegation' : 'Decline Delegation',
+      subtitle: 'Confirm with your PIN as the group admin.',
+    );
+    if (pin == null || !mounted) return;
+    setState(() => _isBusy = true);
+    try {
+      await ref.read(groupRepositoryProvider).approveDelegation(widget.groupId, delegation.id, approve: approve, pin: pin);
+      await _loadPendingCycleRequests();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(approve ? 'Delegation approved' : 'Delegation declined', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message, style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something went wrong: $e', style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen));
+    } finally {
+      if (mounted) setState(() => _isBusy = false);
     }
   }
 
@@ -497,6 +611,19 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             ),
           ),
         ],
+        if (group.status == 'active' && !_isLoadingPendingCycle && (_pendingSwaps.isNotEmpty || _pendingDelegations.isNotEmpty)) ...[
+          const SizedBox(height: 20),
+          _PendingCycleRequestsCard(
+            swaps: _pendingSwaps,
+            delegations: _pendingDelegations,
+            currentUserId: currentUserId,
+            isAdmin: isCurrentUserAdmin,
+            memberName: _memberName,
+            onRespondSwap: _respondToSwap,
+            onApproveSwap: _approveSwap,
+            onApproveDelegation: _approveDelegation,
+          ),
+        ],
         if (group.status == 'active') ...[
           const SizedBox(height: 20),
           _PayoutScheduleCard(groupId: widget.groupId, rotations: _rotations, isLoading: _isLoadingRotations, currentUserId: currentUserId),
@@ -748,6 +875,147 @@ class _AdminToolsCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PendingCycleRequestsCard extends StatelessWidget {
+  final List<CycleSwapRequest> swaps;
+  final List<CycleDelegationRequest> delegations;
+  final String? currentUserId;
+  final bool isAdmin;
+  final String Function(String userId) memberName;
+  final void Function(CycleSwapRequest swap, bool accept) onRespondSwap;
+  final void Function(CycleSwapRequest swap, bool approve) onApproveSwap;
+  final void Function(CycleDelegationRequest delegation, bool approve) onApproveDelegation;
+
+  const _PendingCycleRequestsCard({
+    required this.swaps,
+    required this.delegations,
+    required this.currentUserId,
+    required this.isAdmin,
+    required this.memberName,
+    required this.onRespondSwap,
+    required this.onApproveSwap,
+    required this.onApproveDelegation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        boxShadow: cardShadow(),
+        border: Border.all(color: AppColors.paleGreen, width: 1.2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.swap_horiz_rounded, color: AppColors.accentGreen, size: 18),
+              const SizedBox(width: 8),
+              Text('Pending Requests', style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            ],
+          ),
+          const SizedBox(height: 14),
+          for (final swap in swaps) ...[
+            _swapTile(swap),
+            const SizedBox(height: 10),
+          ],
+          for (final delegation in delegations) ...[
+            _delegationTile(delegation),
+            const SizedBox(height: 10),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _swapTile(CycleSwapRequest swap) {
+    final isTargetingMe = swap.targetMemberId == currentUserId && swap.status == 'pending_counterpart';
+    final needsAdminApproval = isAdmin && swap.status == 'pending_admin_approval';
+    if (!isTargetingMe && !needsAdminApproval) {
+      // Informational only — e.g. an admin viewing someone else's still-pending-counterpart swap.
+      return Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(AppRadius.md)),
+        child: Text(
+          '${memberName(swap.initiatorMemberId)} wants to swap cycle ${swap.initiatorCycleNumber} with ${memberName(swap.targetMemberId)}\'s cycle ${swap.targetCycleNumber} — awaiting response.',
+          style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, color: AppColors.textSecondary, height: 1.4),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(AppRadius.md)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            needsAdminApproval
+                ? 'Swap needs your approval: ${memberName(swap.initiatorMemberId)} (cycle ${swap.initiatorCycleNumber}) ↔ ${memberName(swap.targetMemberId)} (cycle ${swap.targetCycleNumber})'
+                : '${memberName(swap.initiatorMemberId)} wants to swap their cycle ${swap.initiatorCycleNumber} for your cycle ${swap.targetCycleNumber}.',
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary, height: 1.4),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _actionButton(
+                'Accept',
+                AppColors.accentGreen,
+                () => isTargetingMe ? onRespondSwap(swap, true) : onApproveSwap(swap, true),
+              ),
+              const SizedBox(width: 10),
+              _actionButton(
+                'Decline',
+                AppColors.danger,
+                () => isTargetingMe ? onRespondSwap(swap, false) : onApproveSwap(swap, false),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _delegationTile(CycleDelegationRequest delegation) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(AppRadius.md)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Delegation needs your approval: ${memberName(delegation.fromMemberId)} → ${memberName(delegation.toMemberId)} for cycle ${delegation.cycleNumber}.',
+            style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary, height: 1.4),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _actionButton('Approve', AppColors.accentGreen, () => onApproveDelegation(delegation, true)),
+              const SizedBox(width: 10),
+              _actionButton('Decline', AppColors.danger, () => onApproveDelegation(delegation, false)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _actionButton(String label, Color color, VoidCallback onTap) {
+    return TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(
+        backgroundColor: color.withValues(alpha: 0.12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Text(label, style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12, fontWeight: FontWeight.bold, color: color)),
     );
   }
 }

@@ -27,6 +27,11 @@ class ApiConstants {
   // the other group endpoints, these live under /cycles, not /groups.
   static String delegateCycle(String groupId, int cycleNumber) => '$apiPrefix/cycles/$groupId/cycles/$cycleNumber/delegate';
   static String swapCycle(String groupId) => '$apiPrefix/cycles/$groupId/swap';
+  static String pendingSwaps(String groupId) => '$apiPrefix/cycles/$groupId/swaps/pending';
+  static String pendingDelegations(String groupId) => '$apiPrefix/cycles/$groupId/delegations/pending';
+  static String respondSwap(String groupId, String swapId) => '$apiPrefix/cycles/$groupId/swaps/$swapId/respond';
+  static String approveSwap(String groupId, String swapId) => '$apiPrefix/cycles/$groupId/swaps/$swapId/approve';
+  static String approveDelegation(String groupId, String delegationId) => '$apiPrefix/cycles/$groupId/delegations/$delegationId/approve';
 
   // User endpoints
   static String get me => '$apiPrefix/users/me';

@@ -306,6 +306,78 @@ class GroupRotationEntry {
   }
 }
 
+/// From `GET /cycles/{id}/swaps/pending` — a swap request either awaiting
+/// the target member's response or the admin's approval. Only carries
+/// member IDs, not names — the UI resolves those against the members list.
+class CycleSwapRequest {
+  final String id;
+  final String groupId;
+  final String initiatorMemberId;
+  final String targetMemberId;
+  final int initiatorCycleNumber;
+  final int targetCycleNumber;
+  final String status;
+  final DateTime createdAt;
+
+  const CycleSwapRequest({
+    required this.id,
+    required this.groupId,
+    required this.initiatorMemberId,
+    required this.targetMemberId,
+    required this.initiatorCycleNumber,
+    required this.targetCycleNumber,
+    required this.status,
+    required this.createdAt,
+  });
+
+  factory CycleSwapRequest.fromJson(Map<String, dynamic> json) {
+    return CycleSwapRequest(
+      id: json['id']?.toString() ?? '',
+      groupId: json['group_id']?.toString() ?? '',
+      initiatorMemberId: json['initiator_member_id']?.toString() ?? '',
+      targetMemberId: json['target_member_id']?.toString() ?? '',
+      initiatorCycleNumber: (json['initiator_cycle_number'] as num?)?.toInt() ?? 0,
+      targetCycleNumber: (json['target_cycle_number'] as num?)?.toInt() ?? 0,
+      status: json['status']?.toString() ?? '',
+      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
+    );
+  }
+}
+
+/// From `GET /cycles/{id}/delegations/pending` (admin-only) — a delegation
+/// awaiting admin approval.
+class CycleDelegationRequest {
+  final String id;
+  final String groupId;
+  final int cycleNumber;
+  final String fromMemberId;
+  final String toMemberId;
+  final String status;
+  final DateTime createdAt;
+
+  const CycleDelegationRequest({
+    required this.id,
+    required this.groupId,
+    required this.cycleNumber,
+    required this.fromMemberId,
+    required this.toMemberId,
+    required this.status,
+    required this.createdAt,
+  });
+
+  factory CycleDelegationRequest.fromJson(Map<String, dynamic> json) {
+    return CycleDelegationRequest(
+      id: json['id']?.toString() ?? '',
+      groupId: json['group_id']?.toString() ?? '',
+      cycleNumber: (json['cycle_number'] as num?)?.toInt() ?? 0,
+      fromMemberId: json['from_member_id']?.toString() ?? '',
+      toMemberId: json['to_member_id']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
+      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
+    );
+  }
+}
+
 /// From `GET /groups/{id}/members/pending` — despite the leaner name, this
 /// actually returns the same `GroupMemberProfileResponse` shape as
 /// `GET /groups/{id}/members` (first/last name, username, `joined_at`, no

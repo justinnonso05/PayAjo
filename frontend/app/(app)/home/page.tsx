@@ -89,9 +89,9 @@ export default function HomePage() {
               onScroll={handleCarouselScroll}
               className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-1 [scrollbar-width:none] sm:-mx-10 sm:px-10 [&::-webkit-scrollbar]:hidden"
             >
-              {summaries.map((summary) => (
+              {summaries.map((summary, i) => (
                 <div key={summary.group.id} className="w-[85%] shrink-0 snap-center sm:w-[380px]">
-                  <GroupCard summary={summary} />
+                  <GroupCard summary={summary} isSelected={i === clampedIndex} />
                 </div>
               ))}
               <Link
@@ -187,13 +187,18 @@ export default function HomePage() {
   );
 }
 
-function GroupCard({ summary }: { summary: GroupSummary }) {
+function GroupCard({ summary, isSelected }: { summary: GroupSummary; isSelected: boolean }) {
   const { membership, group, memberCount } = summary;
   const progress =
     group.member_cap && group.member_cap > 0 ? Math.min(1, group.pool_balance / (membership.contribution_amount * group.member_cap)) : null;
 
   return (
-    <div className="h-full rounded-card bg-gradient-to-br from-brand to-brand-accent p-6 shadow-lg">
+    <div
+      className={`h-full rounded-card bg-gradient-to-br from-brand to-brand-accent p-6 shadow-lg transition-shadow ${
+        isSelected ? "ring-[3px] ring-brand-dark/70 ring-offset-2 ring-offset-soft-gray" : "ring-1 ring-transparent"
+      }`}
+    >
+
       <div className="flex items-start justify-between gap-3">
         <p className="truncate font-display text-lg font-bold text-brand-dark">{membership.group_name}</p>
         <span className="shrink-0 rounded-lg bg-white/50 px-2.5 py-1 text-[11px] font-bold text-brand-dark">Round {group.current_cycle_number}</span>

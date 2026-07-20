@@ -2,7 +2,7 @@
 
 import { BellRing, Calendar, Copy, Pencil, Share2, ShieldCheck, UserPlus, Users, Zap } from "lucide-react";
 import Link from "next/link";
-import { use, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { Modal } from "@/components/app/modal";
 import { StatusPill } from "@/components/app/status-pill";
 import { SuccessModal } from "@/components/app/success-modal";
@@ -14,10 +14,11 @@ import { useCurrentUserId } from "@/lib/hooks/use-current-user-id";
 import { useGroup } from "@/lib/hooks/use-group";
 import { useRotations } from "@/lib/hooks/use-rotations";
 import { useWalletTransactions } from "@/lib/hooks/use-wallet-transactions";
-import type { GroupMember, GroupRotationEntry } from "@/lib/types";
+import type { CycleDelegationRequest, CycleSwapRequest, GroupMember, GroupRotationEntry } from "@/lib/types";
 import { AutoDebitCard } from "./auto-debit-card";
 import { CycleActionModal } from "./cycle-action-modal";
 import { EditGroupModal } from "./edit-group-modal";
+import { PendingCycleRequestsCard } from "./pending-cycle-requests-card";
 import { SendInviteModal } from "./send-invite-modal";
 import { StartGroupModal } from "./start-group-modal";
 
@@ -51,6 +52,32 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
   const [showStartGroup, setShowStartGroup] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [remindingUserId, setRemindingUserId] = useState<string | null>(null);
+  const [pendingSwaps, setPendingSwaps] = useState<CycleSwapRequest[]>([]);
+  const [pendingDelegations, setPendingDelegations] = useState<CycleDelegationRequest[]>([]);
+
+  const loadPendingCycleRequests = useCallback(async () => {
+    if (group?.status !== "active") return;
+    try {
+      const res = await api.get(endpoints.pendingSwaps(groupId), authHeaders());
+      setPendingSwaps((res.data as CycleSwapRequest[]) ?? []);
+    } catch {
+      setPendingSwaps([]);
+    }
+    if (isAdmin) {
+      try {
+        const res = await api.get(endpoints.pendingDelegations(groupId), authHeaders());
+        setPendingDelegations((res.data as CycleDelegationRequest[]) ?? []);
+      } catch {
+        // Admin-only; a 403 here just means "nothing to show" for a non-admin edge case.
+        setPendingDelegations([]);
+      }
+    }
+  }, [group?.status, groupId, isAdmin]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loadPendingCycleRequests() is async, setState happens post-await
+    loadPendingCycleRequests();
+  }, [loadPendingCycleRequests]);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -295,6 +322,18 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
             </li>
           </ul>
         </div>
+      )}
+
+      {group.status === "active" && (pendingSwaps.length > 0 || pendingDelegations.length > 0) && (
+        <PendingCycleRequestsCard
+          groupId={groupId}
+          swaps={pendingSwaps}
+          delegations={pendingDelegations}
+          members={members}
+          currentUserId={currentUserId}
+          isAdmin={isAdmin}
+          onChanged={loadPendingCycleRequests}
+        />
       )}
 
       {group.status === "active" && (

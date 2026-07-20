@@ -162,6 +162,11 @@ export const endpoints = {
   // Cycle management — note this lives under /cycles, not /groups.
   delegateCycle: (groupId: string, cycleNumber: number) => `${API_PREFIX}/cycles/${groupId}/cycles/${cycleNumber}/delegate`,
   swapCycle: (groupId: string) => `${API_PREFIX}/cycles/${groupId}/swap`,
+  pendingSwaps: (groupId: string) => `${API_PREFIX}/cycles/${groupId}/swaps/pending`,
+  pendingDelegations: (groupId: string) => `${API_PREFIX}/cycles/${groupId}/delegations/pending`,
+  respondSwap: (groupId: string, swapId: string) => `${API_PREFIX}/cycles/${groupId}/swaps/${swapId}/respond`,
+  approveSwap: (groupId: string, swapId: string) => `${API_PREFIX}/cycles/${groupId}/swaps/${swapId}/approve`,
+  approveDelegation: (groupId: string, delegationId: string) => `${API_PREFIX}/cycles/${groupId}/delegations/${delegationId}/approve`,
   payFromWallet: (groupId: string) => `${API_PREFIX}/groups/${groupId}/pay-from-wallet`,
   generateDirectPayment: (groupId: string) => `${API_PREFIX}/groups/${groupId}/generate-direct-payment`,
   pendingMembers: (groupId: string) => `${API_PREFIX}/groups/${groupId}/members/pending`,
