@@ -53,7 +53,7 @@ function handleUnauthorized() {
   if (isHandlingUnauthorized || typeof window === "undefined") return;
   isHandlingUnauthorized = true;
   clearToken();
-  window.sessionStorage.setItem("ajopay_session_expired", "1");
+  window.sessionStorage.setItem("payajo_session_expired", "1");
   window.location.href = "/login";
 }
 

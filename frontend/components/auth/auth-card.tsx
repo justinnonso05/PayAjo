@@ -21,8 +21,8 @@ export function AuthCard({
 
       <div className="w-full max-w-md">
         <Link href="/" className="mb-8 flex items-center justify-center gap-2">
-          <Image src="/images/logo.png" alt="AjoPay" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
-          <span className="font-display text-lg font-bold text-brand-dark">AjoPay</span>
+          <Image src="/images/logo.png" alt="PayAjo" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+          <span className="font-display text-lg font-bold text-brand-dark">PayAjo</span>
         </Link>
 
         <div className="rounded-card border border-brand-dark/5 bg-white p-8 shadow-[0_20px_60px_rgba(29,49,8,0.08)] sm:p-10">

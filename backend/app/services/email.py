@@ -64,13 +64,13 @@ async def send_otp_email(to_email: str, to_name: str, otp_code: str, reason: str
         otp_code=otp_code,
         expire_minutes=settings.OTP_EXPIRE_MINUTES
     )
-    return await send_email(to_email, to_name, "Your AjoPay verification code", html)
+    return await send_email(to_email, to_name, "Your PayAjo verification code", html)
 
 
 async def send_welcome_email(to_email: str, to_name: str) -> bool:
     template = env.get_template("emails/welcome.html")
     html = template.render(to_name=to_name)
-    return await send_email(to_email, to_name, "Welcome to AjoPay 🎉", html)
+    return await send_email(to_email, to_name, "Welcome to PayAjo 🎉", html)
 
 
 async def send_contribution_confirmed_email(
@@ -107,7 +107,7 @@ async def send_payout_pending_auth_email(
     <p>Hi {to_name},</p>
     <p>A payout of <strong>₦{amount:,.0f}</strong> for <strong>{group_name}</strong> 
        (Cycle {cycle}) is waiting for your authorization.</p>
-    <p>Check your Monnify-registered email for the OTP, then approve it from the AjoPay admin dashboard.</p>
+    <p>Check your Monnify-registered email for the OTP, then approve it from the PayAjo admin dashboard.</p>
     """
     html = template.render()
     html = html.replace("{% block content %}{% endblock %}", content)
@@ -121,7 +121,7 @@ async def send_group_invite_email(
     content = f"""
     <p>Hi {to_name},</p>
     <p><strong>{inviter_name}</strong> has invited you to join the Ajo group <strong>{group_name}</strong>.</p>
-    <p>Open the AjoPay app to review the group details and accept or reject this invitation.</p>
+    <p>Open the PayAjo app to review the group details and accept or reject this invitation.</p>
     """
     html = template.render()
     html = html.replace("{% block content %}{% endblock %}", content)

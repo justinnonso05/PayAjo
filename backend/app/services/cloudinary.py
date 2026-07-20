@@ -13,7 +13,7 @@ cloudinary.config(
     secure=True
 )
 
-async def upload_image_to_cloudinary(file_bytes: bytes, folder: str = "ajopay") -> str:
+async def upload_image_to_cloudinary(file_bytes: bytes, folder: str = "payajo") -> str:
     """
     Uploads an image (as bytes) to Cloudinary and returns the secure URL.
     This runs synchronously within an async wrapper, so it blocks the thread.

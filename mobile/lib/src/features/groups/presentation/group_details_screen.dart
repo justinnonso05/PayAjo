@@ -419,7 +419,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
   void _shareInviteLink() {
     final code = _group?.inviteCode;
     if (code == null) return;
-    Clipboard.setData(ClipboardData(text: 'Join my AjoPay group with code $code'));
+    Clipboard.setData(ClipboardData(text: 'Join my PayAjo group with code $code'));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Invite message copied. Paste it anywhere to share.', style: TextStyle(color: Colors.white)), backgroundColor: AppColors.darkGreen),
     );

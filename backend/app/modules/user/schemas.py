@@ -103,7 +103,7 @@ class WithdrawRequest(BaseModel):
     pin: str
 
 class WalletTransferRequest(BaseModel):
-    """Send money from your wallet to another AjoPay user's wallet."""
+    """Send money from your wallet to another PayAjo user's wallet."""
     recipient_account_number: str
     amount: float
     pin: str

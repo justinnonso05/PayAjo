@@ -65,7 +65,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def health_check():
     return BaseResponse(
         success=True,
-        message="AjoPay Backend is running",
+        message="PayAjo Backend is running",
         data="OK"
     )
 

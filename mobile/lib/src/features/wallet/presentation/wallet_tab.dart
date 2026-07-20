@@ -319,7 +319,7 @@ class _BalanceCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'This is your personal account. Money sent here always goes to your AjoPay wallet, not a specific group.',
+                    'This is your personal account. Money sent here always goes to your PayAjo wallet, not a specific group.',
                     style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 11.5, color: AppColors.textMuted, height: 1.4),
                   ),
                 ),

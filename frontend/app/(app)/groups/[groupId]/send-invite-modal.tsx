@@ -64,7 +64,7 @@ export function SendInviteModal({ groupId, onClose, onSent }: { groupId: string;
 
   return (
     <Modal title="Invite Someone" onClose={onClose}>
-      <p className="text-sm text-brand-dark/55">They&apos;ll see this invite next time they open AjoPay.</p>
+      <p className="text-sm text-brand-dark/55">They&apos;ll see this invite next time they open PayAjo.</p>
 
       <div className="mt-5">
         <label className="mb-1.5 block text-xs font-bold text-brand-dark">Email or Username</label>
@@ -77,7 +77,7 @@ export function SendInviteModal({ groupId, onClose, onSent }: { groupId: string;
         />
       </div>
 
-      {status === "notFound" && <p className="mt-3 text-xs font-semibold text-red-500">No AjoPay user found with that email or username.</p>}
+      {status === "notFound" && <p className="mt-3 text-xs font-semibold text-red-500">No PayAjo user found with that email or username.</p>}
 
       {status === "found" && result && (
         <div className="mt-4 flex items-center gap-3 rounded-2xl bg-brand-pale p-3.5">

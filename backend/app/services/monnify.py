@@ -173,7 +173,7 @@ class MonnifyClient:
                 "paymentDescription": payment_description,
                 "currencyCode": "NGN",
                 "contractCode": self.contract_code,
-                "redirectUrl": "https://ajopay.app/contribute/confirm",
+                "redirectUrl": "https://payajo.app/contribute/confirm",
                 "paymentMethods": ["ACCOUNT_TRANSFER"]
             },
             timeout=30.0,

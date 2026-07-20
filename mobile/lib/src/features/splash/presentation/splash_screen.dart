@@ -158,7 +158,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                 );
               },
               child: Text(
-                'AjoPay',
+                'PayAjo',
                 style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
                   fontSize: 44,

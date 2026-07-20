@@ -20,7 +20,7 @@ export default function JoinOrCreatePage() {
   };
 
   return (
-    <AuthCard title="Join or Create" subtitle="AjoPay is built around saving together. Choose how you'd like to get started.">
+    <AuthCard title="Join or Create" subtitle="PayAjo is built around saving together. Choose how you'd like to get started.">
       <div className="grid grid-cols-2 gap-4">
         {[
           { key: "create" as const, icon: PlusCircle, title: "Create Group", subtitle: "Start a new pool" },

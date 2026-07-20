@@ -14,8 +14,8 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col items-center gap-3 sm:items-start">
           <div className="flex items-center gap-1.5">
-            <Image src="/images/logo.png" alt="AjoPay" width={44} height={44} className="h-10 w-10 rounded-full object-cover sm:h-11 sm:w-11" />
-            <span className="font-display text-xl font-extrabold tracking-tight text-brand-dark sm:text-2xl">AjoPay</span>
+            <Image src="/images/logo.png" alt="PayAjo" width={44} height={44} className="h-10 w-10 rounded-full object-cover sm:h-11 sm:w-11" />
+            <span className="font-display text-xl font-extrabold tracking-tight text-brand-dark sm:text-2xl">PayAjo</span>
           </div>
           <p className="max-w-xs text-center text-sm text-brand-dark/50 sm:text-left">
             The modern way to run your Ajo or Esusu savings group.
@@ -32,7 +32,7 @@ export function Footer() {
       </div>
 
       <p className="mt-10 text-center text-xs text-brand-dark/35">
-        © {new Date().getFullYear()} AjoPay. All rights reserved.
+        © {new Date().getFullYear()} PayAjo. All rights reserved.
       </p>
     </footer>
   );

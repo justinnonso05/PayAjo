@@ -45,15 +45,15 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
     payment_reference = event_data.get("paymentReference", "")
     
     # Path B: Direct to Group
-    if payment_reference.startswith("ajopay-direct_"):
-        # Format: ajopay-direct_{group_id}_{cycle_number}_{user_id}_{timestamp}
+    if payment_reference.startswith("payajo-direct_"):
+        # Format: payajo-direct_{group_id}_{cycle_number}_{user_id}_{timestamp}
         parts = payment_reference.split("_")
         if len(parts) >= 5:
             group_id = parts[1]
             cycle_number = int(parts[2])
             user_id = parts[3]
-    elif payment_reference.startswith("ajopay-direct-"):
-        # Legacy Format: ajopay-direct-{group_id}-{cycle_number}-{user_id}-{timestamp}
+    elif payment_reference.startswith("payajo-direct-"):
+        # Legacy Format: payajo-direct-{group_id}-{cycle_number}-{user_id}-{timestamp}
         # Since UUIDs have hyphens, a standard split breaks.
         # UUIDs have 5 parts separated by 4 hyphens.
         parts = payment_reference.split("-")
@@ -65,11 +65,11 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
             logger.error(f"Failed to parse legacy direct payment reference: {payment_reference}")
             return
     
-    if payment_reference.startswith("ajopay-direct_") or payment_reference.startswith("ajopay-direct-"):
+    if payment_reference.startswith("payajo-direct_") or payment_reference.startswith("payajo-direct-"):
             
             # Calculate Fees (divide by 100 since configs are in percentages e.g. 1.5, 1)
             monnify_fee = min(amount * (settings.MONNIFY_COLLECTION_FEE_PERCENT / 100), settings.MONNIFY_COLLECTION_FEE_CAP)
-            platform_fee = amount * (settings.AJOPAY_PLATFORM_FEE_PERCENT / 100)
+            platform_fee = amount * (settings.PAYAJO_PLATFORM_FEE_PERCENT / 100)
             total_fees = monnify_fee + platform_fee
             net_amount = amount - total_fees
             
@@ -157,7 +157,7 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
                 
                 # Calculate Fees (divide by 100 since configs are in percentages e.g. 1.5, 1)
                 monnify_fee = min(amount * (settings.MONNIFY_COLLECTION_FEE_PERCENT / 100), settings.MONNIFY_COLLECTION_FEE_CAP)
-                platform_fee = amount * (settings.AJOPAY_PLATFORM_FEE_PERCENT / 100)
+                platform_fee = amount * (settings.PAYAJO_PLATFORM_FEE_PERCENT / 100)
                 total_fees = monnify_fee + platform_fee
                 net_amount = amount - total_fees
                 

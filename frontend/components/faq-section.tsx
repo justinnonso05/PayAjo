@@ -6,7 +6,7 @@ import { Reveal } from "./reveal";
 
 const FAQS = [
   {
-    q: "How does AjoPay work?",
+    q: "How does PayAjo work?",
     a: "Create or join a savings group, agree on a contribution amount and frequency, and each round every member contributes into the pool. One member receives the full payout each round, rotating until everyone has been paid.",
   },
   {
@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     q: "What is a Reserved Account?",
-    a: "A dedicated virtual bank account number tied to your personal wallet. Transfer any amount to it from any bank app, and it lands in your AjoPay wallet automatically.",
+    a: "A dedicated virtual bank account number tied to your personal wallet. Transfer any amount to it from any bank app, and it lands in your PayAjo wallet automatically.",
   },
   {
     q: "Can I withdraw anytime?",

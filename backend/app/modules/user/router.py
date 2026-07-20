@@ -136,7 +136,7 @@ async def upload_avatar(
         raise HTTPException(status_code=400, detail="File must be an image")
         
     file_bytes = await file.read()
-    url = await upload_image_to_cloudinary(file_bytes, folder="ajopay/avatars")
+    url = await upload_image_to_cloudinary(file_bytes, folder="payajo/avatars")
     
     current_user.avatar_url = url
     db.add(current_user)
@@ -303,8 +303,8 @@ async def get_transaction_receipt(
         amount=entry.amount,
         status="Successful", # Internal ledger entries are typically successful if they exist, except pending monnify webhooks (we can assume success for internal wallet ones)
         date=entry.created_at,
-        sender_name="AjoPay System" if entry.amount > 0 else f"{current_user.first_name} {current_user.last_name}",
-        recipient_name=f"{current_user.first_name} {current_user.last_name}" if entry.amount > 0 else "AjoPay System",
+        sender_name="PayAjo System" if entry.amount > 0 else f"{current_user.first_name} {current_user.last_name}",
+        recipient_name=f"{current_user.first_name} {current_user.last_name}" if entry.amount > 0 else "PayAjo System",
         narration=entry.narration,
         reference=entry.monnify_transaction_reference or entry.monnify_payment_reference or str(entry.id)
     )
@@ -469,7 +469,7 @@ async def recalculate_risk_score(
 @router.get(
     "/me/wallet/lookup",
     response_model=BaseResponse[UserByAccountResponse],
-    summary="Look up an AjoPay user by their reserved account number",
+    summary="Look up an PayAjo user by their reserved account number",
 )
 async def lookup_by_account(
     account_number: str,
@@ -491,7 +491,7 @@ async def lookup_by_account(
 @router.post(
     "/me/wallet/transfer",
     response_model=BaseResponse[WalletLedgerEntryResponse],
-    summary="Transfer funds to another AjoPay user's wallet",
+    summary="Transfer funds to another PayAjo user's wallet",
 )
 async def wallet_transfer(
     data: WalletTransferRequest,
@@ -499,7 +499,7 @@ async def wallet_transfer(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Send money from your AjoPay wallet to another user's wallet.
+    Send money from your PayAjo wallet to another user's wallet.
     - Look up the recipient first via GET /me/wallet/lookup?account_number=...
     - Requires your Transaction PIN.
     - Both sender and recipient receive in-app notifications and emails.

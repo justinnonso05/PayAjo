@@ -29,7 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     OnboardingStep(
       title: 'Never miss a payout.',
       description:
-          "When it's your turn, AjoPay automatically sends your payout and keeps everyone updated.",
+          "When it's your turn, PayAjo automatically sends your payout and keeps everyone updated.",
       imagePath: 'assets/images/image-removebg-preview (3).png',
     ),
   ];

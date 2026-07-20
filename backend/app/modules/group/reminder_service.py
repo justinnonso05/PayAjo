@@ -173,7 +173,7 @@ async def send_manual_reminder(user: User, group: Group, db: AsyncSession) -> st
         await send_email(
             user.email,
             user.first_name,
-            f"AjoPay Reminder: {group.name}",
+            f"PayAjo Reminder: {group.name}",
             f"<p>{ai_message}</p>"
         )
         

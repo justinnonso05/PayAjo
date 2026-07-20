@@ -27,7 +27,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 )
 async def signup(data: SignupRequest, db: AsyncSession = Depends(get_db)):
     """
-    Register a new AjoPay user.
+    Register a new PayAjo user.
     - Creates user record in DB.
     - Calls Monnify to generate a Personal Reserved Account (Personal Wallet).
     - Sends welcome email via Brevo.

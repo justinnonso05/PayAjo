@@ -49,7 +49,7 @@ async def upload_chat_image(
         raise HTTPException(status_code=400, detail="File must be an image")
         
     file_bytes = await file.read()
-    url = await upload_image_to_cloudinary(file_bytes, folder=f"ajopay/chat/{group_id}")
+    url = await upload_image_to_cloudinary(file_bytes, folder=f"payajo/chat/{group_id}")
     
     chat_msg = ChatMessage(
         group_id=group_id,

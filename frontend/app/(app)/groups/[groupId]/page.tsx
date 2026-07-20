@@ -140,7 +140,7 @@ export default function GroupDetailsPage({ params }: { params: Promise<{ groupId
 
   const shareInviteLink = () => {
     if (!group.invite_code) return;
-    navigator.clipboard.writeText(`Join my AjoPay group with code ${group.invite_code}`);
+    navigator.clipboard.writeText(`Join my PayAjo group with code ${group.invite_code}`);
     showToast("Invite message copied. Paste it anywhere to share.");
   };
 

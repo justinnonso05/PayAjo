@@ -48,7 +48,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       _firstNameController.text = 'Johan';
       _lastNameController.text = 'Mandela';
       _usernameController.text = 'johanmandela';
-      _emailController.text = 'testuser@ajopay.com';
+      _emailController.text = 'testuser@payajo.com';
       _phoneController.text = '+2348012345678';
       _passwordController.text = 'Password123';
       _agreeToTerms = true;
@@ -178,7 +178,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Join AjoPay',
+                              'Join PayAjo',
                               style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,

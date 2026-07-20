@@ -445,13 +445,13 @@ async def generate_direct_payment_service(user: User, group_id: str, db: AsyncSe
     import time
     from app.services.monnify import monnify_client
     
-    # Format required by webhook: ajopay-direct_{group_id}_{cycle_number}_{user_id}_{timestamp}
-    ref = f"ajopay-direct_{group.id}_{group.current_cycle_number}_{user.id}_{int(time.time())}"
+    # Format required by webhook: payajo-direct_{group_id}_{cycle_number}_{user_id}_{timestamp}
+    ref = f"payajo-direct_{group.id}_{group.current_cycle_number}_{user.id}_{int(time.time())}"
     
     # Calculate Gross Amount so Net equals contribution_amount
     from app.core.config import settings
     monnify_pct = settings.MONNIFY_COLLECTION_FEE_PERCENT / 100.0
-    ajo_pct = settings.AJOPAY_PLATFORM_FEE_PERCENT / 100.0
+    ajo_pct = settings.PAYAJO_PLATFORM_FEE_PERCENT / 100.0
     
     # Try uncapped first
     gross_amount = float(group.contribution_amount) / (1.0 - (monnify_pct + ajo_pct))
@@ -470,7 +470,7 @@ async def generate_direct_payment_service(user: User, group_id: str, db: AsyncSe
             customer_name=f"{user.first_name} {user.last_name}",
             customer_email=user.email,
             payment_reference=ref,
-            payment_description=f"AjoPay contribution - Group {group.name} cycle {group.current_cycle_number}"
+            payment_description=f"PayAjo contribution - Group {group.name} cycle {group.current_cycle_number}"
         )
         transaction_ref = init_res.get("transactionReference")
         checkout_url = init_res.get("checkoutUrl")

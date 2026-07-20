@@ -10,7 +10,7 @@ import '../../../../core/widgets/pin_entry_sheet.dart';
 import '../../data/wallet_models.dart';
 import '../../data/wallet_repository.dart';
 
-/// Send money to another AjoPay user by their reserved account number.
+/// Send money to another PayAjo user by their reserved account number.
 /// Pops with `true` on success, or null if dismissed.
 class TransferSheet extends ConsumerStatefulWidget {
   final double balance;
@@ -149,7 +149,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
             ),
             const SizedBox(height: 4),
             Text(
-              'Send money to another AjoPay user instantly.',
+              'Send money to another PayAjo user instantly.',
               style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 20),
@@ -184,7 +184,7 @@ class _TransferSheetState extends ConsumerState<TransferSheet> {
             const SizedBox(height: 12),
             if (_status == _LookupStatus.notFound)
               Text(
-                'No AjoPay account found with that number.',
+                'No PayAjo account found with that number.',
                 style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
               ),
             if (_status == _LookupStatus.found && _recipient != null)

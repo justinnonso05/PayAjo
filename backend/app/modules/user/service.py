@@ -26,14 +26,14 @@ async def mock_kyc_and_create_wallet(user: User, bvn: str, db: AsyncSession) -> 
         )
         
     full_name = f"{user.first_name} {user.last_name}"
-    account_reference = f"ajopay-wallet-{user.id}"
+    account_reference = f"payajo-wallet-{user.id}"
     preferred_bank_code = settings.MONNIFY_DEFAULT_PREFERRED_BANK
     preferred_banks = [preferred_bank_code] if preferred_bank_code else None
     
     try:
         monnify_response = await monnify_client.create_reserved_account(
             account_reference=account_reference,
-            account_name=f"AjoPay - {user.first_name}",
+            account_name=f"PayAjo - {user.first_name}",
             customer_email=user.email,
             customer_name=full_name,
             bvn=bvn,
@@ -192,12 +192,12 @@ async def withdraw_from_wallet(user: User, amount: float, pin: str, db: AsyncSes
         
     # 4. Initiate Monnify Transfer
     import time
-    reference = f"ajopay-wd-{user.id}-{int(time.time())}"
+    reference = f"payajo-wd-{user.id}-{int(time.time())}"
     try:
         monnify_response = await monnify_client.initiate_transfer(
             reference=reference,
             amount=amount,
-            narration=f"AjoPay Withdrawal for {user.first_name}",
+            narration=f"PayAjo Withdrawal for {user.first_name}",
             destination_bank_code=user.payout_bank_code,
             destination_account_number=user.payout_bank_account_number,
             destination_account_name=user.payout_account_name,
@@ -242,7 +242,7 @@ async def lookup_user_by_account_number(account_number: str, db: AsyncSession) -
     )
     user = result.scalar_one_or_none()
     if not user:
-        raise HTTPException(status_code=404, detail="No AjoPay user found with that account number")
+        raise HTTPException(status_code=404, detail="No PayAjo user found with that account number")
     return user
 
 
@@ -255,7 +255,7 @@ async def transfer_wallet_to_wallet(
     db: AsyncSession,
 ) -> WalletLedgerEntry:
     """
-    Transfer funds from the sender's AjoPay wallet to another user's AjoPay wallet.
+    Transfer funds from the sender's PayAjo wallet to another user's PayAjo wallet.
     Internal ledger operation — no Monnify call needed.
     Requires PIN verification.
     """

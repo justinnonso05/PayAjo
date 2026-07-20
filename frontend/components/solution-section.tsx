@@ -19,7 +19,7 @@ export function SolutionSection() {
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-accent">The solution</p>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
-            Meet AjoPay.
+            Meet PayAjo.
           </h2>
           <p className="mt-4 max-w-md text-base leading-relaxed text-brand-dark/60">
             Every group gets a dedicated account, every member gets a wallet, and every contribution is tracked

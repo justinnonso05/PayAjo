@@ -39,8 +39,8 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-brand-dark/5 bg-white px-5 py-6 lg:flex">
       <Link href="/home" className="flex items-center gap-2 px-2">
-        <Image src="/images/logo.png" alt="AjoPay" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
-        <span className="font-display text-lg font-bold text-brand-dark">AjoPay</span>
+        <Image src="/images/logo.png" alt="PayAjo" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+        <span className="font-display text-lg font-bold text-brand-dark">PayAjo</span>
       </Link>
 
       <nav className="mt-10 flex flex-col gap-1">

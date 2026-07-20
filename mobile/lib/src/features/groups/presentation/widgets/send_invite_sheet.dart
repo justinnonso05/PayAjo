@@ -110,7 +110,7 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
           ),
           const SizedBox(height: 4),
           Text(
-            "They'll see this invite next time they open AjoPay.",
+            "They'll see this invite next time they open PayAjo.",
             style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 20),
@@ -139,7 +139,7 @@ class _SendInviteSheetState extends ConsumerState<SendInviteSheet> {
           const SizedBox(height: 16),
           if (_status == _SearchStatus.notFound)
             Text(
-              'No AjoPay user found with that email or username.',
+              'No PayAjo user found with that email or username.',
               style: TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 12.5, color: AppColors.danger, fontWeight: FontWeight.w600),
             ),
           if (_status == _SearchStatus.found && _result != null) _UserPreviewCard(result: _result!),

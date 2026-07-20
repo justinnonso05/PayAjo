@@ -9,7 +9,7 @@ class _FaqItem {
 
 const _kFaqs = [
   _FaqItem(
-    'How does AjoPay work?',
+    'How does PayAjo work?',
     "Create or join a savings group, agree on a contribution amount and frequency, and each round every member contributes into the pool. One member receives the full payout each round, rotating until everyone has been paid.",
   ),
   _FaqItem(
@@ -18,7 +18,7 @@ const _kFaqs = [
   ),
   _FaqItem(
     'What is a Reserved Account?',
-    "A dedicated virtual bank account number tied to your personal wallet. Transfer any amount to it from any bank app, and it lands in your AjoPay wallet automatically.",
+    "A dedicated virtual bank account number tied to your personal wallet. Transfer any amount to it from any bank app, and it lands in your PayAjo wallet automatically.",
   ),
   _FaqItem(
     'Can I withdraw anytime?',

@@ -226,7 +226,7 @@ class _JoinOrCreateScreenState extends State<JoinOrCreateScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'AjoPay is built around saving together. Choose how you would like to get started.',
+                        'PayAjo is built around saving together. Choose how you would like to get started.',
                         style: TextStyle(fontFamily: 'PlusJakartaSans', 
                           fontSize: 15,
                           color: Colors.grey[500],

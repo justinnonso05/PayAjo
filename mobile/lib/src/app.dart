@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     final baseDarkTextTheme = ThemeData.dark().textTheme.apply(fontFamily: 'PlusJakartaSans');
 
     return MaterialApp.router(
-      title: 'AjoPay',
+      title: 'PayAjo',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

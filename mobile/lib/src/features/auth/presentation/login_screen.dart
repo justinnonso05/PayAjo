@@ -123,7 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   // Safe to delete this method (and its call site) once backend auth is wired up.
   void _fillDummyData() {
     setState(() {
-      _emailController.text = 'testuser@ajopay.com';
+      _emailController.text = 'testuser@payajo.com';
       _passwordController.text = 'Password123';
       _rememberMe = true;
     });
@@ -157,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Welcome to AjoPay',
+                              'Welcome to PayAjo',
                               style: TextStyle(fontFamily: 'SpaceGrotesk', 
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,

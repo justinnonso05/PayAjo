@@ -8,7 +8,7 @@ export function PhoneMockup({ className }: { className?: string }) {
         <div className="relative h-[580px] w-full overflow-hidden rounded-[34px] sm:h-[640px]">
           <Image
             src="/images/simulator.png"
-            alt="AjoPay app — Home screen"
+            alt="PayAjo app — Home screen"
             fill
             sizes="(min-width: 640px) 320px, 280px"
             className="object-cover object-top"

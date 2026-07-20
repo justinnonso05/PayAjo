@@ -34,8 +34,8 @@ export function Navbar() {
         }`}
       >
         <Link href="#" className="flex items-center gap-1.5">
-          <Image src="/images/logo.png" alt="AjoPay" width={44} height={44} className="h-10 w-10 rounded-full object-cover sm:h-11 sm:w-11" priority />
-          <span className="font-display text-xl font-extrabold tracking-tight text-brand-dark sm:text-2xl">AjoPay</span>
+          <Image src="/images/logo.png" alt="PayAjo" width={44} height={44} className="h-10 w-10 rounded-full object-cover sm:h-11 sm:w-11" priority />
+          <span className="font-display text-xl font-extrabold tracking-tight text-brand-dark sm:text-2xl">PayAjo</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

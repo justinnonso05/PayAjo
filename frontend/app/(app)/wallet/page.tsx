@@ -153,7 +153,7 @@ export default function WalletPage() {
           )}
           <div className="mt-4 flex items-start gap-2">
             <Info size={14} className="mt-0.5 shrink-0 text-brand-dark/40" />
-            <p className="text-xs leading-relaxed text-brand-dark/50">This is your personal account. Money sent here always goes to your AjoPay wallet, not a specific group.</p>
+            <p className="text-xs leading-relaxed text-brand-dark/50">This is your personal account. Money sent here always goes to your PayAjo wallet, not a specific group.</p>
           </div>
           <div className="mt-2.5 flex items-start gap-2">
             <Info size={14} className="mt-0.5 shrink-0 text-brand-dark/40" />
@@ -388,7 +388,7 @@ function TransferFlow({ balance, onClose, onSuccess }: { balance: number; onClos
 
   return (
     <Modal title="Transfer" onClose={onClose}>
-      <p className="text-sm text-brand-dark/55">Send money to another AjoPay user instantly.</p>
+      <p className="text-sm text-brand-dark/55">Send money to another PayAjo user instantly.</p>
       <label className="mb-1.5 mt-4 block text-xs font-bold text-brand-dark">Recipient Account Number</label>
       <div className="relative">
         <input
@@ -407,7 +407,7 @@ function TransferFlow({ balance, onClose, onSuccess }: { balance: number; onClos
         {lookupStatus === "found" && <CheckCircle2 size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-accent" />}
       </div>
 
-      {lookupStatus === "notFound" && <p className="mt-2 text-xs font-semibold text-red-500">No AjoPay account found with that number.</p>}
+      {lookupStatus === "notFound" && <p className="mt-2 text-xs font-semibold text-red-500">No PayAjo account found with that number.</p>}
 
       {lookupStatus === "found" && recipient && (
         <div className="mt-3 flex items-center gap-2.5 rounded-2xl bg-brand-pale p-3.5">

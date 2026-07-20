@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Ajopay</string>
+	<string>Payajo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ajopay</string>
+	<string>payajo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,8 +46,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>AjoPay needs access to your photos so you can set a profile picture.</string>
+	<string>PayAjo needs access to your photos so you can set a profile picture.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>AjoPay needs access to your camera so you can take a profile picture.</string>
+	<string>PayAjo needs access to your camera so you can take a profile picture.</string>
 </dict>
 </plist>

@@ -25,8 +25,8 @@ export default function LoginPage() {
   useEffect(() => {
     const cachedEmail = getLastEmail();
     if (cachedEmail) setValue("email", cachedEmail);
-    if (window.sessionStorage.getItem("ajopay_session_expired")) {
-      window.sessionStorage.removeItem("ajopay_session_expired");
+    if (window.sessionStorage.getItem("payajo_session_expired")) {
+      window.sessionStorage.removeItem("payajo_session_expired");
       // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage, not a render-loop
       setSessionExpired(true);
     }
@@ -60,10 +60,10 @@ export default function LoginPage() {
   return (
     <AuthCard
       title="Welcome back"
-      subtitle="Sign in to your AjoPay account."
+      subtitle="Sign in to your PayAjo account."
       footer={
         <>
-          New to AjoPay?{" "}
+          New to PayAjo?{" "}
           <Link href="/signup" className="font-bold text-brand-dark hover:text-brand-accent">
             Create an account
           </Link>

@@ -1,6 +1,6 @@
-const TOKEN_KEY = "ajopay_access_token";
-const TOKEN_TYPE_KEY = "ajopay_token_type";
-const LAST_EMAIL_KEY = "ajopay_last_email";
+const TOKEN_KEY = "payajo_access_token";
+const TOKEN_TYPE_KEY = "payajo_token_type";
+const LAST_EMAIL_KEY = "payajo_last_email";
 
 // localStorage is the web equivalent of the mobile app's secure storage —
 // it's not encrypted at rest like flutter_secure_storage, which is an

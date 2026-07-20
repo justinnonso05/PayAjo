@@ -2,13 +2,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import model_validator
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "AjoPay Backend"
+    PROJECT_NAME: str = "PayAjo Backend"
     
     # Other settings
     GEMINI_API_KEY: str = ""
     
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost/ajopay"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost/payajo"
     
     # Security
     SECRET_KEY: str = "super-secret-key-change-me"
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     # Email — Brevo (Sendinblue)
     BREVO_API_KEY: str = ""
     EMAIL_FROM_ADDRESS: str = "noreply@justinch.dev"
-    EMAIL_FROM_NAME: str = "AjoPay"
+    EMAIL_FROM_NAME: str = "PayAjo"
     EMAIL_DOMAIN: str = "justinch.dev"  # Base domain for email sending
 
     # OTP settings
@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     MONNIFY_PAYOUT_FEE_TIER_2: float = 20.0 # >= 10,000
     MONNIFY_PAYOUT_FEE_TIER_3: float = 40.0 # >= 50,000
     
-    AJOPAY_PLATFORM_FEE_PERCENT: float = 1.0 # 1%
+    PAYAJO_PLATFORM_FEE_PERCENT: float = 1.0 # 1%
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 

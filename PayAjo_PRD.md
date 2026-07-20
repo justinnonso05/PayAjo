@@ -1,4 +1,4 @@
-# AjoPay — Product Requirements Document (v2)
+# PayAjo — Product Requirements Document (v2)
 
 **Hackathon:** API Conference Lagos 2026 Developer Challenge — Monnify
 **Submission deadline:** 12:00 PM WAT, July 21, 2026
@@ -23,11 +23,11 @@ Rotating savings groups (Ajo/Esusu) are one of the most widely used informal fin
 2. **Reconciliation failure** — "I sent it" disputes because contributions aren't traceable to a person.
 3. **Coordination failure** — no visibility into who's late, who's next, or whether the group has enough to pay out this cycle.
 
-AjoPay digitizes the mechanics of Ajo — dedicated accounts, automatic reconciliation, automatic payout on rotation, and a shared space to coordinate — without asking members to change *how* the ajo works. It looks and feels like the ajo they already run; it just can't be run away with.
+PayAjo digitizes the mechanics of Ajo — dedicated accounts, automatic reconciliation, automatic payout on rotation, and a shared space to coordinate — without asking members to change *how* the ajo works. It looks and feels like the ajo they already run; it just can't be run away with.
 
 ## 2. Vision & Positioning
 
-AjoPay is a **rotation engine with real money behind it**: every user has a wallet funded through their own dedicated virtual account, every group has its own dedicated virtual account as the collection point, every contribution is reconciled automatically, and every payout — including who actually receives it, if a member delegates or swaps — is handled deliberately, with a PIN-gated confirmation step standing in for the trust a human treasurer used to provide.
+PayAjo is a **rotation engine with real money behind it**: every user has a wallet funded through their own dedicated virtual account, every group has its own dedicated virtual account as the collection point, every contribution is reconciled automatically, and every payout — including who actually receives it, if a member delegates or swaps — is handled deliberately, with a PIN-gated confirmation step standing in for the trust a human treasurer used to provide.
 
 ## 3. Goals (Hackathon Scope)
 
@@ -44,7 +44,7 @@ AjoPay is a **rotation engine with real money behind it**: every user has a wall
 
 - Real BVN/NIN verification (Monnify only exposes this on **live**, not sandbox). We mock it, visibly labeled as mocked.
 - Direct Debit / mandate-based auto-contribution — noted as a post-hackathon roadmap item.
-- A real pooled-funds banking license or regulatory structure. The wallet model in §8 assumes all reserved accounts settle into AjoPay's own Monnify sub-account structure, and that moving money between a user's wallet and a group's wallet is an internal ledger entry rather than a new bank-to-bank transfer. This is a reasonable hackathon simplification but is explicitly flagged in §19 as something that would need real regulatory and settlement-partner sign-off before handling real money at scale.
+- A real pooled-funds banking license or regulatory structure. The wallet model in §8 assumes all reserved accounts settle into PayAjo's own Monnify sub-account structure, and that moving money between a user's wallet and a group's wallet is an internal ledger entry rather than a new bank-to-bank transfer. This is a reasonable hackathon simplification but is explicitly flagged in §19 as something that would need real regulatory and settlement-partner sign-off before handling real money at scale.
 - Multi-currency, cross-border groups.
 - Native iOS/Android written twice — one cross-platform mobile codebase.
 
@@ -60,7 +60,7 @@ AjoPay is a **rotation engine with real money behind it**: every user has a wall
 
 | Term | Meaning |
 |---|---|
-| **User Wallet** | A user's personal ledger balance inside AjoPay, funded via their own dedicated virtual account |
+| **User Wallet** | A user's personal ledger balance inside PayAjo, funded via their own dedicated virtual account |
 | **User Virtual Account** | A Monnify Reserved Account, one per user (platform-wide, not per group), used to top up their wallet |
 | **Group Virtual Account** *(superseded — see §8.1, §8.5)* | Earlier versions gave each group its own Monnify Reserved Account for this purpose; that hit Monnify's `R42` BVN-uniqueness limit and was dropped. A group has no persistent Monnify account of its own — direct-to-group payment instead uses a **Dynamic Virtual Account**, below |
 | **Dynamic Virtual Account** | A **one-time**, transaction-scoped Monnify virtual account (via Initialize Transaction + Pay with Bank Transfer), generated fresh per direct-to-group payment. Not tied to a BVN and not persistent, so it never hits `R42` — this is what makes Path B (§8.5) possible without Monnify raising any limit |
@@ -97,13 +97,13 @@ AjoPay is a **rotation engine with real money behind it**: every user has a wall
 ### 7.3 Funding & Contribution
 See §8 for full mechanics — two independent paths, both landing in the same `GroupLedgerEntry` ledger:
 
-- **Path A (wallet, the flexible default):** a member tops up their personal wallet by transferring to their own Reserved Account, then explicitly pays into the group from their wallet (PIN required). This internal wallet→group movement is instant and Monnify-call-free, since both balances already live inside AjoPay's own ledger.
+- **Path A (wallet, the flexible default):** a member tops up their personal wallet by transferring to their own Reserved Account, then explicitly pays into the group from their wallet (PIN required). This internal wallet→group movement is instant and Monnify-call-free, since both balances already live inside PayAjo's own ledger.
 - **Path B (direct-to-group, one-off convenience):** a member who wants to pay a specific cycle right now, without pre-funding their wallet, generates a one-time **Dynamic Virtual Account** scoped to that exact payment (§8.5) and pays it directly from any bank app — the wallet is never touched.
 
 > **Updated from earlier drafts:** direct-to-group payment was previously marked stretch/blocked, on the assumption it would need the group to have its own persistent Reserved Account, which does hit Monnify's `R42` BVN limit (§8.1). Dynamic Virtual Accounts sidestep this entirely, since they're transaction-scoped rather than BVN-bound. Path B is therefore back in scope without Monnify needing to raise any limit — see §8.5 for the full mechanism.
 
 ### 7.4 Automatic Payout Engine
-On the scheduled payout day (per §9's cadence config), if quorum is met, AjoPay resolves the assigned member for this cycle (accounting for any approved delegation/swap — §10), and disburses the pooled amount via Monnify Disbursement to the correct recipient's registered bank account.
+On the scheduled payout day (per §9's cadence config), if quorum is met, PayAjo resolves the assigned member for this cycle (accounting for any approved delegation/swap — §10), and disburses the pooled amount via Monnify Disbursement to the correct recipient's registered bank account.
 
 ### 7.5 Delegate & Swap
 - **Delegate:** the member assigned to receive this cycle's payout can redirect it to a different member, PIN-confirmed, subject to the group's approval setting.
@@ -137,9 +137,9 @@ Since a group isn't a real person, it has no KYC identity of its own to reserve 
 ### 8.2 Path A — Funding & contribution flow (wallet), in detail
 
 1. User transfers money (from any bank) into their own personal Reserved Account.
-2. Monnify webhook fires on that reserved account → AjoPay credits the user's **wallet ledger balance** by that amount. This money is now sitting inside AjoPay's pooled Monnify settlement balance, tagged in our own database as "belonging" to that user.
+2. Monnify webhook fires on that reserved account → PayAjo credits the user's **wallet ledger balance** by that amount. This money is now sitting inside PayAjo's pooled Monnify settlement balance, tagged in our own database as "belonging" to that user.
 3. When the user wants to contribute to a group, they tap "Pay from wallet," enter their amount and their **Transaction PIN**.
-4. AjoPay performs an **internal ledger transfer**: debit the user's wallet balance, credit the group's pool balance. **No Monnify API call is needed for this step** — the underlying money never has to move between banks, because it already lives inside AjoPay's own settlement balance; only the bookkeeping changes. This is what makes wallet-to-group payments instant and fee-free.
+4. PayAjo performs an **internal ledger transfer**: debit the user's wallet balance, credit the group's pool balance. **No Monnify API call is needed for this step** — the underlying money never has to move between banks, because it already lives inside PayAjo's own settlement balance; only the bookkeeping changes. This is what makes wallet-to-group payments instant and fee-free.
 5. A `Contribution` record is created, attributed to that user, for that cycle.
 
 This is the flexible **default** contribution path — every member funds their own wallet, then pays into whichever group(s) they belong to from that single wallet, on their own schedule. A member in three groups still only ever has one reserved account and one wallet balance to manage. It is not, however, the *only* path — see §8.5 for Path B, the direct-to-group alternative.
@@ -149,7 +149,7 @@ This is the flexible **default** contribution path — every member funds their 
 |---|---|---|
 | Top up personal wallet (external → own reserved account) | No | Inbound only, nothing to authorize |
 | Generate a Dynamic Virtual Account for a direct-to-group payment (Path B) | No | Same reasoning as wallet top-up — it's a request for an inbound payment destination, not an outbound movement of funds |
-| Pay group **from wallet** (internal ledger transfer) | **Yes** | Money is leaving the user's control inside AjoPay |
+| Pay group **from wallet** (internal ledger transfer) | **Yes** | Money is leaving the user's control inside PayAjo |
 | Delegate payout to another member | **Yes** | Redirects real money to a different recipient |
 | Accept/confirm a swap | **Yes** (both parties) | Changes who receives money in future cycles |
 | Withdraw wallet balance to own bank account | **Yes** | Outbound disbursement, plus Monnify OTP on top (§13.3) |
@@ -167,9 +167,9 @@ The full picture, combining both paths:
 1. **Onboarding (once per user, ever):** the first time a user joins any group, they get exactly one persistent **Reserved Account** (§7.1). Joining more groups later never creates another one — `R42` would block it anyway, and there's no need to try.
 2. **Path A — Wallet (§8.2, the flexible default):** money sent to that Reserved Account is picked up by webhook and credited to the user's wallet balance. It sits there, group-agnostic, until the user allocates some of it to a specific group's current cycle — an internal transfer, no Monnify call, written as a `GroupLedgerEntry` (`type: contribution_wallet`).
 3. **Path B — Direct-to-group (this section):** if a member wants to pay a group right now without pre-funding their wallet:
-   - AjoPay calls Monnify's **Initialize Transaction** (`POST /api/v1/merchant/transactions/init-transaction`), with `paymentReference` encoding `{user_id, group_id, cycle_number}` (e.g. `ajopay-direct-{group_id}-{cycle}-{user_id}-{timestamp}`) so the payment is self-describing from the moment it's created.
-   - AjoPay then calls **Pay with Bank Transfer** (`POST /api/v1/merchant/bank-transfer/init-payment`) with that `transactionReference`, which returns a **one-time Dynamic Virtual Account** number/bank for the member to pay into. This account is valid for **2400 seconds (40 minutes), fixed** — the UI must show a visible countdown or a "generate a new one" action once it lapses.
-   - The member pays that account directly from any bank app. Monnify's webhook for that transaction reference arrives; AjoPay decodes `paymentReference` and writes a `GroupLedgerEntry` (`type: contribution_direct`) straight onto that group/cycle, with the `monnify_transaction_reference` retained for audit.
+   - PayAjo calls Monnify's **Initialize Transaction** (`POST /api/v1/merchant/transactions/init-transaction`), with `paymentReference` encoding `{user_id, group_id, cycle_number}` (e.g. `payajo-direct-{group_id}-{cycle}-{user_id}-{timestamp}`) so the payment is self-describing from the moment it's created.
+   - PayAjo then calls **Pay with Bank Transfer** (`POST /api/v1/merchant/bank-transfer/init-payment`) with that `transactionReference`, which returns a **one-time Dynamic Virtual Account** number/bank for the member to pay into. This account is valid for **2400 seconds (40 minutes), fixed** — the UI must show a visible countdown or a "generate a new one" action once it lapses.
+   - The member pays that account directly from any bank app. Monnify's webhook for that transaction reference arrives; PayAjo decodes `paymentReference` and writes a `GroupLedgerEntry` (`type: contribution_direct`) straight onto that group/cycle, with the `monnify_transaction_reference` retained for audit.
    - **The member's wallet is untouched** — correctly, since this money never routed through it.
 4. **Payout (unaffected by either path):** still a Monnify Single Transfer from the merchant's settlement account to the beneficiary's payout bank account, OTP-authorized (§13.3) — completely separate machinery from either contribution path.
 
@@ -283,7 +283,7 @@ Badges: **Low risk** (70–100), **Medium** (40–69), **High** (0–39). Delega
 | Dynamic Virtual Account creation | Initialize Transaction (`/api/v1/merchant/transactions/init-transaction`) | ✅ Works | Path B, step 1 — creates a one-time payment intent, `paymentReference` encodes `{user, group, cycle}` |
 | Dynamic Virtual Account details | Pay with Bank Transfer (`/api/v1/merchant/bank-transfer/init-payment`) | ✅ Works | Path B, step 2 — returns the one-time account number/bank the member pays into; valid 2400s (40 min), fixed |
 
-> Note the important shift from v2: **internal wallet→group transfers (Path A) never call Monnify at all** — only real money entering (wallet top-up, or a Path B direct payment) or leaving (final payouts) AjoPay's settlement balance touches the Monnify API. Groups still have no *persistent reserved* account of their own (v4, §8.1); direct-to-group payment instead uses the transaction-scoped Dynamic Virtual Account flow (§8.5, v5), which was never subject to the `R42` limit in the first place.
+> Note the important shift from v2: **internal wallet→group transfers (Path A) never call Monnify at all** — only real money entering (wallet top-up, or a Path B direct payment) or leaving (final payouts) PayAjo's settlement balance touches the Monnify API. Groups still have no *persistent reserved* account of their own (v4, §8.1); direct-to-group payment instead uses the transaction-scoped Dynamic Virtual Account flow (§8.5, v5), which was never subject to the `R42` limit in the first place.
 
 ### 13.2 Webhook handling
 Unchanged from v1: signature verification, idempotency via `processed_webhook_events` keyed on `transactionReference`, always return `200` immediately.
@@ -409,7 +409,7 @@ Setup for all three examples: **"Umbrella Traders" group**, 5 members (Ada, Bola
 
 1. **Monday:** Cycle 1 opens. `CycleAssignment` created: `assigned_member_id = Ada`, `actual_recipient_id = Ada`, `status = pending`.
 2. **Tuesday:** Bola tops up her personal wallet with ₦15,000 — transfers to her own Reserved Account, webhook fires, `WalletLedgerEntry(type=topup, amount=+15000)` created, wallet balance now ₦15,000.
-3. **Tuesday, later:** Bola opens the group, taps "Pay from wallet," enters ₦10,000 and her PIN. AjoPay debits her wallet (`WalletLedgerEntry(type=pay_group, amount=-10000)`), credits the group pool (`GroupLedgerEntry(type=contribution_wallet, amount=+10000, member_id=Bola)`). No Monnify call. Chat: *"Bola contributed ₦10,000 (1/5 collected)."*
+3. **Tuesday, later:** Bola opens the group, taps "Pay from wallet," enters ₦10,000 and her PIN. PayAjo debits her wallet (`WalletLedgerEntry(type=pay_group, amount=-10000)`), credits the group pool (`GroupLedgerEntry(type=contribution_wallet, amount=+10000, member_id=Bola)`). No Monnify call. Chat: *"Bola contributed ₦10,000 (1/5 collected)."*
 4. **Wednesday:** Chidi, Dayo, and Efe each top up their own personal wallets (each transferring ₦10,000+ to their own Reserved Account), then each taps "Pay from wallet" with their PIN to contribute ₦10,000 to the group pool — same mechanic as Bola's, just three more members going through it. Chat updates after each: *"4/5 collected."*
 5. **Thursday:** Ada tops up and pays her own ₦10,000 the same way. Group pool now at target — *"5/5 collected, quorum met."*
 6. **Friday (payout day):** Scheduler tick runs, sees quorum met, resolves `actual_recipient_id = Ada` (no delegation/swap on record), initiates Monnify Single Transfer of ₦50,000 to Ada's registered bank account.
@@ -534,7 +534,7 @@ Same group, now at **cycle 3** (Chidi assigned) and looking ahead to **cycle 5**
 
 | Risk | Mitigation |
 |---|---|
-| Ledger drift between AjoPay's internal balances and actual Monnify settlement balance | Append-only ledger design (§8.4, §15) makes balances always recomputable and auditable; add a scheduled job that periodically diffs ledger sums against Monnify's real transaction history |
+| Ledger drift between PayAjo's internal balances and actual Monnify settlement balance | Append-only ledger design (§8.4, §15) makes balances always recomputable and auditable; add a scheduled job that periodically diffs ledger sums against Monnify's real transaction history |
 | Swap/delegation abuse (e.g. pressuring a member into delegating) | Every request and resolution is posted publicly to group chat, not hidden — visibility is the main defense; admin approval is on by default for both |
 | PIN brute-forcing | Rate limiting + lockout on repeated failures |
 | MFA waiver not granted before demo | Same as v1 — OTP-approval is designed as a first-class UX, not a failure state |
@@ -581,14 +581,14 @@ Same group, now at **cycle 3** (Chidi assigned) and looking ahead to **cycle 5**
 ### 24.5 Sample lifecycle: joining via invite code
 
 1. Efe wants to join "Umbrella Traders." Ada (the group's admin) shares the invite code `UMB-7F3K` with her over WhatsApp.
-2. Efe is new to AjoPay — during signup, on the "Have a group code?" step, she enters `UMB-7F3K`.
+2. Efe is new to PayAjo — during signup, on the "Have a group code?" step, she enters `UMB-7F3K`.
 3. Backend validates: code is active, group isn't at capacity. Efe's account is created, and a `Membership(group=Umbrella Traders, user=Efe, is_admin=false)` is created in the same flow.
 4. Efe lands directly in the group's chat, sees the system message *"Efe joined the group,"* and immediately sees the current cycle status.
 5. Later, Efe is invited to a second, unrelated group ("Market Women's Circle") the same way, using that group's own code. Her group switcher now shows both groups; her wallet balance is shared across both.
 
 ### 24.6 Sample lifecycle: joining via direct invite
 
-1. Chidi is already a registered AjoPay user — in fact, he's the **admin** of his own group, "Bike Riders Ajo." He is not yet in "Umbrella Traders."
+1. Chidi is already a registered PayAjo user — in fact, he's the **admin** of his own group, "Bike Riders Ajo." He is not yet in "Umbrella Traders."
 2. Ada wants Chidi in "Umbrella Traders" specifically (not just anyone with a code), so from her admin dashboard she searches `chidi@example.com` — an exact match returns his profile.
 3. Ada taps "Send Invite." A `GroupInvite(group=Umbrella Traders, invited_user=Chidi, invited_by=Ada, status=pending)` is created; Chidi gets an email and an in-app badge.
 4. Chidi opens the invite, sees which group and who invited him, and taps **Accept**.
@@ -602,19 +602,19 @@ The actual problem, named precisely
 In rotating savings groups, the person who collects early in the rotation has the most to gain and the least at stake — they've paid in maybe one round, received the full pool, and now have every incentive to vanish rather than keep contributing for everyone else's turns. This is a well-known failure mode of ROSCAs generally, not just Nigerian ajo — and it's the one thing a human treasurer's social pressure was actually doing that your app needs to replace with something structural.
 Risk score alone doesn't solve it — by definition, a brand-new member has no history yet, so the score can't warn you about someone who's never defaulted before.
 The real fix: locked collateral, not just trust
-Here's the mechanism that actually works, and it's only possible because of the wallet architecture we already built: since a member's money sits inside AjoPay's own settlement balance the moment they top up their wallet, AjoPay has direct custodial control over locked funds — it doesn't need the member's cooperation or PIN to seize collateral if they default. That's the whole unlock.
+Here's the mechanism that actually works, and it's only possible because of the wallet architecture we already built: since a member's money sits inside PayAjo's own settlement balance the moment they top up their wallet, PayAjo has direct custodial control over locked funds — it doesn't need the member's cooperation or PIN to seize collateral if they default. That's the whole unlock.
 Concretely:
 
 Before a member can be assigned a rotation position, they must lock a security deposit in their wallet (e.g. equal to one contribution round).
 This deposit is frozen — not spendable, not withdrawable — until they've completed every remaining contribution owed after their own payout.
-If a cycle passes and they haven't paid, AjoPay automatically pulls the shortfall from their locked deposit into the group pool. No PIN needed, no cooperation required — this is the whole point of it being locked collateral rather than a promise.
+If a cycle passes and they haven't paid, PayAjo automatically pulls the shortfall from their locked deposit into the group pool. No PIN needed, no cooperation required — this is the whole point of it being locked collateral rather than a promise.
 If they never come back at all, the rest of the group is still made whole (fully, if the deposit covers their full remaining obligation) — the "run away" scenario becomes a non-event instead of a catastrophe.
 
 What BVN is actually for (your direct question)
 You're right that just collecting it and storing it does nothing by itself. Its real value is as a persistent identity key, not a one-time checkbox:
 
 A phone number or email can be thrown away and recreated in five minutes. A BVN can't — it's tied to one real person's entire banking life.
-That means a default can be recorded against the BVN, not against the AjoPay account — so if someone defaults in Group A, deletes their account, and tries to sign up fresh to join Group B, the same BVN can flag them before they're ever assigned an early rotation slot again.
+That means a default can be recorded against the BVN, not against the PayAjo account — so if someone defaults in Group A, deletes their account, and tries to sign up fresh to join Group B, the same BVN can flag them before they're ever assigned an early rotation slot again.
 In a live (non-sandbox) version, this could eventually hook into Nigeria's existing BVN-linked bank fraud/watchlist infrastructure — meaning a serial defaulter's problem stops being "just this app" and starts threatening their standing with real banks. That's a genuine deterrent, not just a database flag. Worth being honest with judges that this last part is roadmap, not built — sandbox can't verify real BVNs anyway (§13.4) — but the architecture is designed to support it the moment live keys exist.
 
 
