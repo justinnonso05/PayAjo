@@ -115,9 +115,12 @@ async function requestList(path: string, headers?: HeadersInit): Promise<unknown
 }
 
 /** For file uploads (multipart/form-data) — the browser sets its own Content-Type with boundary, so it must not be overridden. */
-async function requestMultipart(path: string, file: File, headers?: HeadersInit): Promise<Envelope> {
+async function requestMultipart(path: string, file: File, headers?: HeadersInit, fields?: Record<string, string>): Promise<Envelope> {
   const form = new FormData();
   form.append("file", file);
+  for (const [key, value] of Object.entries(fields ?? {})) {
+    if (value) form.append(key, value);
+  }
   let response: Response;
   try {
     response = await fetch(url(path), { method: "POST", body: form, headers });
@@ -133,7 +136,7 @@ export const api = {
     request(path, { method: "POST", body: JSON.stringify(body ?? {}), headers }),
   patch: (path: string, body?: unknown, headers?: HeadersInit) =>
     request(path, { method: "PATCH", body: JSON.stringify(body ?? {}), headers }),
-  postFile: (path: string, file: File, headers?: HeadersInit) => requestMultipart(path, file, headers),
+  postFile: (path: string, file: File, headers?: HeadersInit, fields?: Record<string, string>) => requestMultipart(path, file, headers, fields),
   getList: (path: string, headers?: HeadersInit) => requestList(path, headers),
 };
 
@@ -182,6 +185,7 @@ export const endpoints = {
   respondInvite: (inviteId: string, accept: boolean) => `${API_PREFIX}/groups/invites/${inviteId}/respond?accept=${accept}`,
   chatHistory: (groupId: string, limit = 50, offset = 0) => `${API_PREFIX}/groups/${groupId}/chat?limit=${limit}&offset=${offset}`,
   chatWebSocket: (groupId: string, token: string) => `${API_PREFIX}/groups/${groupId}/ws?token=${token}`,
+  chatImage: (groupId: string) => `${API_PREFIX}/groups/${groupId}/chat/image`,
 
   // Wallet
   walletTransactions: `${API_PREFIX}/users/me/wallet/transactions`,

@@ -30,6 +30,17 @@ body {
   color: var(--foreground);
 }
 
+button,
+a,
+select,
+summary,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  cursor: pointer;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -71,6 +71,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: _GreetingHeader(
                 name: profileState.profile?.firstName,
+                avatarUrl: profileState.profile?.avatarUrl,
                 onAvatarTap: () => ref.read(selectedTabIndexProvider.notifier).state = 3,
               ),
             ),
@@ -170,12 +171,15 @@ class _PageDots extends StatelessWidget {
 
 class _GreetingHeader extends StatelessWidget {
   final String? name;
+  final String? avatarUrl;
   final VoidCallback onAvatarTap;
 
-  const _GreetingHeader({this.name, required this.onAvatarTap});
+  const _GreetingHeader({this.name, this.avatarUrl, required this.onAvatarTap});
 
   @override
   Widget build(BuildContext context) {
+    final hasAvatar = avatarUrl != null && avatarUrl!.trim().isNotEmpty;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -198,13 +202,19 @@ class _GreetingHeader extends StatelessWidget {
           child: Container(
             width: 46,
             height: 46,
-            decoration: const BoxDecoration(color: AppColors.paleGreen, shape: BoxShape.circle),
-            child: Center(
-              child: Text(
-                (name?.isNotEmpty == true ? name![0] : '?').toUpperCase(),
-                style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
-              ),
+            decoration: BoxDecoration(
+              color: AppColors.paleGreen,
+              shape: BoxShape.circle,
+              image: hasAvatar ? DecorationImage(image: NetworkImage(avatarUrl!), fit: BoxFit.cover) : null,
             ),
+            child: !hasAvatar
+                ? Center(
+                    child: Text(
+                      (name?.isNotEmpty == true ? name![0] : '?').toUpperCase(),
+                      style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.accentGreen),
+                    ),
+                  )
+                : null,
           ),
         ),
       ],

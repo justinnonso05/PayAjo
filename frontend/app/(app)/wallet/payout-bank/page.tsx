@@ -3,6 +3,7 @@
 import { Building2, CheckCircle2, ChevronDown, Pencil, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BackButton } from "@/components/app/back-button";
 import { SuccessModal } from "@/components/app/success-modal";
 import { api, ApiError, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
@@ -127,7 +128,8 @@ export default function PayoutBankPage() {
   if (stage === "summary" && profile) {
     return (
       <div className="mx-auto max-w-md px-6 py-12 sm:py-16">
-        <h1 className="font-display text-2xl font-bold text-brand-dark">Payout Bank</h1>
+        <BackButton />
+        <h1 className="mt-3 font-display text-2xl font-bold text-brand-dark">Payout Bank</h1>
         <p className="mt-2 text-sm text-brand-dark/55">Withdrawals go straight here. Tap Edit to change it.</p>
 
         <div className="mt-6 flex items-center gap-3.5 rounded-card border border-brand-dark/10 bg-white p-4.5 shadow-sm">
@@ -201,12 +203,14 @@ export default function PayoutBankPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-12 sm:py-16">
-      {profile?.payout_bank_account_number && (
+      {profile?.payout_bank_account_number ? (
         <button type="button" onClick={() => setStage("summary")} className="mb-4 text-sm font-bold text-brand-dark/50 hover:text-brand-dark">
           ← Cancel
         </button>
+      ) : (
+        <BackButton />
       )}
-      <h1 className="font-display text-2xl font-bold text-brand-dark">Where should withdrawals go?</h1>
+      <h1 className="mt-3 font-display text-2xl font-bold text-brand-dark">Where should withdrawals go?</h1>
       <p className="mt-2 text-sm text-brand-dark/55">Set this once. Every withdrawal after this goes straight to this account, no need to re-enter it.</p>
 
       <div className="mt-8 space-y-5">

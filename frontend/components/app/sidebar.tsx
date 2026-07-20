@@ -1,9 +1,10 @@
 "use client";
 
-import { Bell, Home, LogOut, User, Wallet } from "lucide-react";
+import { Bell, Check, Copy, Home, LogOut, User, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { clearToken } from "@/lib/auth";
 import { useHasUnreadNotifications } from "@/lib/hooks/use-has-unread-notifications";
 import type { Profile } from "@/lib/types";
@@ -19,10 +20,20 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
   const pathname = usePathname();
   const router = useRouter();
   const hasUnread = useHasUnreadNotifications();
+  const [copiedUsername, setCopiedUsername] = useState(false);
 
   const handleLogout = () => {
     clearToken();
     router.push("/");
+  };
+
+  const handleCopyUsername = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!profile?.username) return;
+    navigator.clipboard.writeText(profile.username);
+    setCopiedUsername(true);
+    setTimeout(() => setCopiedUsername(false), 2000);
   };
 
   return (
@@ -55,17 +66,39 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
 
       <div className="mt-auto flex flex-col gap-3">
         {profile && (
-          <div className="flex items-center gap-3 rounded-xl bg-soft-gray px-3 py-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand font-display text-sm font-bold text-brand-dark">
-              {profile.first_name?.[0]?.toUpperCase() ?? "?"}
-            </span>
-            <div className="min-w-0">
+          <Link
+            href="/profile"
+            className="flex items-center gap-3 rounded-xl bg-soft-gray px-3 py-3 transition-colors hover:bg-black/5"
+          >
+            {profile.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element -- remote user uploaded avatar URL
+              <img
+                src={profile.avatar_url}
+                alt={`${profile.first_name} ${profile.last_name}`}
+                className="h-9 w-9 shrink-0 rounded-full object-cover"
+              />
+            ) : (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand font-display text-sm font-bold text-brand-dark">
+                {profile.first_name?.[0]?.toUpperCase() ?? "?"}
+              </span>
+            )}
+            <div className="min-w-0 flex-1">
               <p className="truncate text-xs font-bold text-brand-dark">
                 {profile.first_name} {profile.last_name}
               </p>
-              <p className="truncate text-[11px] text-brand-dark/50">@{profile.username}</p>
+              <div className="flex items-center gap-1.5">
+                <p className="truncate text-[11px] text-brand-dark/50">@{profile.username}</p>
+                <button
+                  type="button"
+                  onClick={handleCopyUsername}
+                  title="Copy username"
+                  className="rounded p-0.5 text-brand-dark/40 transition-colors hover:bg-black/10 hover:text-brand-dark"
+                >
+                  {copiedUsername ? <Check size={12} className="text-brand-accent" /> : <Copy size={12} />}
+                </button>
+              </div>
             </div>
-          </div>
+          </Link>
         )}
         <button
           type="button"

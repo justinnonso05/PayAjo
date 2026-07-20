@@ -211,6 +211,7 @@ export type ChatMessage = {
   group_id: string;
   sender_id: string;
   message: string;
+  image_url?: string | null;
   is_system: boolean;
   is_edited: boolean;
   is_deleted: boolean;

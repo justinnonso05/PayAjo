@@ -2,6 +2,7 @@
 
 import { Edit2, Image as ImageIcon, Info, Send, Trash2, Users, X } from "lucide-react";
 import { use, useEffect, useRef, useState } from "react";
+import { BackButton } from "@/components/app/back-button";
 import { api, ApiError, endpoints, wsUrl } from "@/lib/api";
 import { authHeaders, getToken } from "@/lib/auth";
 import { formatTime } from "@/lib/format";
@@ -20,9 +21,12 @@ export default function GroupChatPage({ params }: { params: Promise<{ groupId: s
   const [draft, setDraft] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [actionsFor, setActionsFor] = useState<ChatMessage | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     requestAnimationFrame(() => {
@@ -126,6 +130,25 @@ export default function GroupChatPage({ params }: { params: Promise<{ groupId: s
     setDraft("");
   };
 
+  const handleImageSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setIsUploadingImage(true);
+    setImageError(null);
+    try {
+      // The backend broadcasts the resulting message over the WebSocket to
+      // every connected client, including the sender — same "wait for the
+      // echo" pattern as text messages, so this just needs to succeed.
+      await api.postFile(endpoints.chatImage(groupId), file, authHeaders(), draft.trim() ? { message: draft.trim() } : undefined);
+      setDraft("");
+    } catch (err) {
+      setImageError(err instanceof ApiError ? err.message : "Could not send that image. Please try again.");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   const confirmDelete = (message: ChatMessage) => {
     setActionsFor(null);
     if (!confirm('Delete this message? This replaces it with "This message was deleted" for everyone in the group.')) return;
@@ -135,6 +158,7 @@ export default function GroupChatPage({ params }: { params: Promise<{ groupId: s
   return (
     <div className="mx-auto flex h-[calc(100vh-6rem)] max-w-2xl flex-col px-6 py-6 sm:h-screen sm:py-8 lg:h-screen">
       <div className="flex items-center gap-2.5 border-b border-brand-dark/5 pb-4">
+        <BackButton />
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-pale">
           <Users size={16} className="text-brand-accent" />
         </span>
@@ -178,7 +202,11 @@ export default function GroupChatPage({ params }: { params: Promise<{ groupId: s
                   }`}
                 >
                   {!isMe && <p className="mb-0.5 text-xs font-bold text-brand-accent">{senderName ? `${senderName.first_name} ${senderName.last_name}`.trim() : "Member"}</p>}
-                  <p className={`text-sm ${message.is_deleted ? "italic text-brand-dark/40" : "text-brand-dark"}`}>{message.message}</p>
+                  {message.image_url && !message.is_deleted && (
+                    // eslint-disable-next-line @next/next/no-img-element -- remote Cloudinary URL, not a static/local asset
+                    <img src={message.image_url} alt="" className="mb-1.5 max-h-64 w-full rounded-xl object-cover" />
+                  )}
+                  {message.message && <p className={`text-sm ${message.is_deleted ? "italic text-brand-dark/40" : "text-brand-dark"}`}>{message.message}</p>}
                   <div className="mt-1 flex items-center gap-1.5">
                     <span className="text-[10px] text-brand-dark/40">{formatTime(message.created_at)}</span>
                     {message.is_edited && !message.is_deleted && <span className="text-[10px] italic text-brand-dark/40">· edited</span>}
@@ -200,10 +228,22 @@ export default function GroupChatPage({ params }: { params: Promise<{ groupId: s
         </div>
       )}
 
+      {imageError && <p className="mt-2 text-xs font-semibold text-red-500">{imageError}</p>}
+
       <div className="mt-3 flex items-center gap-2">
-        <button type="button" onClick={() => alert("Image sharing coming soon")} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-brand-dark/40 hover:bg-white">
-          <ImageIcon size={18} />
+        <button
+          type="button"
+          onClick={() => imageInputRef.current?.click()}
+          disabled={isUploadingImage}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-brand-dark/40 hover:bg-white disabled:opacity-50"
+        >
+          {isUploadingImage ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-dark/30 border-t-brand-dark" />
+          ) : (
+            <ImageIcon size={18} />
+          )}
         </button>
+        <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelected} />
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
