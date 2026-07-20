@@ -97,7 +97,7 @@ export default function ProfilePage() {
             </button>
             {profile.kyc_status && <p className="text-xs font-bold text-brand-accent">BVN Verified</p>}
 
-            <div className="mt-4 space-y-2 border-t border-brand-dark/5 pt-4 text-left">
+            <div className="mx-auto mt-4 max-w-xs space-y-2 border-t border-brand-dark/5 pt-4 text-left">
               <InfoRow icon={Mail} text={profile.email || "—"} />
               <InfoRow icon={Phone} text={profile.phone || "Not set"} />
               <InfoRow icon={Calendar} text={profile.created_at ? `Member since ${formatShortDate(profile.created_at)}` : "Member since —"} />

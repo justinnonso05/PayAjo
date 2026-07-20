@@ -87,7 +87,7 @@ export default function HomePage() {
             <div
               ref={carouselRef}
               onScroll={handleCarouselScroll}
-              className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-1 [scrollbar-width:none] sm:-mx-10 sm:px-10 [&::-webkit-scrollbar]:hidden"
+              className="-mx-6 -mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pt-2 pb-1 [scrollbar-width:none] sm:-mx-10 sm:px-10 [&::-webkit-scrollbar]:hidden"
             >
               {summaries.map((summary, i) => (
                 <div key={summary.group.id} className="w-[85%] shrink-0 snap-center sm:w-[380px]">
