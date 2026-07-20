@@ -4,6 +4,7 @@ import { CheckCircle2, Copy, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import { use, useEffect, useRef, useState } from "react";
+import { BackButton } from "@/components/app/back-button";
 import { api, endpoints } from "@/lib/api";
 import { authHeaders } from "@/lib/auth";
 import { formatAmount } from "@/lib/format";
@@ -109,7 +110,8 @@ export default function DirectPaymentPage({ params }: { params: Promise<{ groupI
 
   return (
     <div className="mx-auto max-w-md px-6 py-8 sm:py-10">
-      <h1 className="font-display text-xl font-bold text-brand-dark">Pay by Bank Transfer</h1>
+      <BackButton />
+      <h1 className="mt-3 font-display text-xl font-bold text-brand-dark">Pay by Bank Transfer</h1>
 
       <div className={`mt-6 rounded-2xl py-3.5 text-center text-sm font-bold ${expired ? "bg-red-50 text-red-500" : "bg-brand-pale text-brand-accent"}`}>
         {expired ? "This account has expired" : `Expires in ${minutes}:${seconds}`}
