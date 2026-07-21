@@ -24,20 +24,20 @@ export function ProblemSection() {
       <StaggerGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {PROBLEMS.map(({ icon: Icon, title, desc }) => (
           <StaggerItem key={title}>
-            <div className="group relative h-full cursor-pointer overflow-hidden rounded-card border border-brand-dark/5 bg-soft-gray p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-dark/10 hover:shadow-[0_20px_40px_rgba(29,49,8,0.15)]">
+            <div className="group relative h-full cursor-pointer overflow-hidden rounded-card border border-brand-dark/5 bg-soft-gray p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-dark/10 hover:shadow-[0_20px_40px_rgba(29,49,8,0.15)] active:-translate-y-1 active:border-brand-dark/10 active:shadow-[0_20px_40px_rgba(29,49,8,0.15)]">
               {/* Diagonal color wipe: scales in from the bottom-left corner on hover. */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-0 origin-bottom-left scale-0 rounded-card bg-gradient-to-br from-brand-dark to-[#2a4611] transition-transform duration-300 ease-out group-hover:scale-[2.5]"
+                className="pointer-events-none absolute inset-0 origin-bottom-left scale-0 rounded-card bg-gradient-to-br from-brand-dark to-[#2a4611] transition-transform duration-300 ease-out group-hover:scale-[2.5] group-active:scale-[2.5]"
               />
               <div className="relative">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm transition-colors duration-300 group-hover:bg-white/15">
-                  <Icon size={20} className="text-brand-dark/60 transition-colors duration-300 group-hover:text-white" />
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm transition-colors duration-300 group-hover:bg-white/15 group-active:bg-white/15">
+                  <Icon size={20} className="text-brand-dark/60 transition-colors duration-300 group-hover:text-white group-active:text-white" />
                 </div>
-                <h3 className="mt-5 font-display text-base font-bold text-brand-dark transition-colors duration-300 group-hover:text-white">
+                <h3 className="mt-5 font-display text-base font-bold text-brand-dark transition-colors duration-300 group-hover:text-white group-active:text-white">
                   {title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-brand-dark/55 transition-colors duration-300 group-hover:text-white/70">
+                <p className="mt-2 text-sm leading-relaxed text-brand-dark/55 transition-colors duration-300 group-hover:text-white/70 group-active:text-white/70">
                   {desc}
                 </p>
               </div>

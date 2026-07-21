@@ -2,13 +2,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EnvConfig {
-  static const String defaultBaseUrl = 'https://ajopay.fastapicloud.dev';
+  static const String defaultBaseUrl = 'https://payajo.fastapicloud.dev';
 
   /// Returns the configured Base URL.
   /// Precedence:
   /// 1. `.env` file key `BASE_URL` (loaded via flutter_dotenv)
   /// 2. `--dart-define=BASE_URL=...` compile-time flag
-  /// 3. Default fallback: `https://ajopay.fastapicloud.dev`
+  /// 3. Default fallback: `https://payajo.fastapicloud.dev`
   static String get baseUrl {
     try {
       final envUrl = dotenv.env['BASE_URL'];

@@ -3,7 +3,7 @@ import { clearToken } from "./auth";
 const API_PREFIX = "/api/v1";
 
 function baseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://ajopay.fastapicloud.dev";
+  return process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://payajo.fastapicloud.dev";
 }
 
 function url(path: string) {

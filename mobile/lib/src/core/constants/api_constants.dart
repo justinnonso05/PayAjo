@@ -4,7 +4,7 @@ class ApiConstants {
   static String get baseUrl => EnvConfig.baseUrl;
 
   /// The backend versions all routes under this prefix, e.g.
-  /// https://ajopay.fastapicloud.dev/api/v1/auth/signup
+  /// https://payajo.fastapicloud.dev/api/v1/auth/signup
   static const String apiPrefix = '/api/v1';
 
   // Auth endpoints
