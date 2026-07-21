@@ -14,11 +14,15 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+// VERCEL_URL is a unique per-deployment hostname that changes on every push
+// (and can sit behind Vercel's preview-auth wall) — VERCEL_PROJECT_PRODUCTION_URL
+// is the stable production domain, which is what social-media link crawlers
+// actually need to be able to reach.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ? process.env.NEXT_PUBLIC_SITE_URL
-  : process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "https://ajopayy.vercel.app";
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "https://payajo.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
