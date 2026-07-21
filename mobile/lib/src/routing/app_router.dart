@@ -15,6 +15,9 @@ import '../features/auth/presentation/reset_pin/otp_verification_screen.dart';
 import '../features/auth/presentation/reset_pin/reset_new_pin_screen.dart';
 import '../features/auth/presentation/reset_pin/reset_confirm_pin_screen.dart';
 import '../features/auth/presentation/reset_pin/pin_reset_success_screen.dart';
+import '../features/auth/presentation/forgot_password/request_password_reset_screen.dart';
+import '../features/auth/presentation/forgot_password/reset_password_screen.dart';
+import '../features/auth/presentation/forgot_password/password_reset_success_screen.dart';
 import '../features/groups/presentation/group_details_screen.dart';
 import '../features/groups/presentation/group_chat_screen.dart';
 import '../features/groups/presentation/contribution_screen.dart';
@@ -43,6 +46,9 @@ enum AppRoute {
   resetNewPin,
   resetConfirmPin,
   pinResetSuccess,
+  requestPasswordReset,
+  resetPassword,
+  passwordResetSuccess,
   groupDetails,
   groupChat,
   contribution,
@@ -176,6 +182,21 @@ final goRouter = GoRouter(
       path: '/pin-reset/success',
       name: AppRoute.pinResetSuccess.name,
       pageBuilder: (context, state) => _fadePage(state, const PinResetSuccessScreen()),
+    ),
+    GoRoute(
+      path: '/password-reset/request',
+      name: AppRoute.requestPasswordReset.name,
+      builder: (context, state) => const RequestPasswordResetScreen(),
+    ),
+    GoRoute(
+      path: '/password-reset/reset',
+      name: AppRoute.resetPassword.name,
+      builder: (context, state) => ResetPasswordScreen(email: state.extra as String),
+    ),
+    GoRoute(
+      path: '/password-reset/success',
+      name: AppRoute.passwordResetSuccess.name,
+      pageBuilder: (context, state) => _fadePage(state, const PasswordResetSuccessScreen()),
     ),
     GoRoute(
       path: '/group-details',

@@ -31,6 +31,10 @@ export function Footer() {
         </nav>
       </div>
 
+      <p className="mx-auto mt-16 select-none text-center font-display text-[18vw] font-extrabold leading-none tracking-tight text-brand-dark/5 sm:text-[14vw] lg:text-[160px]">
+        PayAjo
+      </p>
+
       <p className="mt-10 text-center text-xs text-brand-dark/35">
         © {new Date().getFullYear()} PayAjo. All rights reserved.
       </p>

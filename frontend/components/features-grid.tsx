@@ -25,12 +25,23 @@ export function FeaturesGrid() {
       <StaggerGroup className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {FEATURES.map(({ icon: Icon, title, desc }) => (
           <StaggerItem key={title}>
-            <div className="group h-full rounded-card border border-brand-dark/5 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(29,49,8,0.1)]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-pale transition-colors duration-300 group-hover:bg-brand">
-                <Icon size={20} className="text-brand-accent" />
+            <div className="group relative h-full cursor-pointer overflow-hidden rounded-card border border-brand-dark/5 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(29,49,8,0.15)] active:-translate-y-1 active:shadow-[0_20px_40px_rgba(29,49,8,0.15)]">
+              {/* Diagonal color wipe: scales in from the bottom-left corner on hover. */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 origin-bottom-left scale-0 rounded-card bg-gradient-to-br from-brand-dark to-[#2a4611] transition-transform duration-300 ease-out group-hover:scale-[2.5] group-active:scale-[2.5]"
+              />
+              <div className="relative">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-pale transition-colors duration-300 group-hover:bg-white/15 group-active:bg-white/15">
+                  <Icon size={20} className="text-brand-accent transition-colors duration-300 group-hover:text-brand group-active:text-brand" />
+                </div>
+                <h3 className="mt-5 font-display text-sm font-bold text-brand-dark transition-colors duration-300 group-hover:text-white group-active:text-white">
+                  {title}
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-brand-dark/55 transition-colors duration-300 group-hover:text-white/70 group-active:text-white/70">
+                  {desc}
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-sm font-bold text-brand-dark">{title}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-brand-dark/55">{desc}</p>
             </div>
           </StaggerItem>
         ))}

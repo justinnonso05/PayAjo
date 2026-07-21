@@ -1453,6 +1453,78 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Request a password reset OTP (sends to registered email)",
+        "description": "Step 1 of password reset. Sends a 6-digit OTP to the user's registered email.",
+        "operationId": "forgot_password_api_v1_auth_forgot_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ForgotPasswordRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Reset password using OTP from email",
+        "description": "Step 2 of password reset. Verifies the OTP then sets the new password.\nOTP expires after 10 minutes and can only be used once.",
+        "operationId": "reset_password_api_v1_auth_reset_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ResetPasswordRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_NoneType_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/webhooks/monnify": {
       "post": {
         "tags": ["Webhooks"],
@@ -2499,6 +2571,14 @@
         ],
         "title": "DelegationRequestResponse"
       },
+      "ForgotPasswordRequest": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" }
+        },
+        "type": "object",
+        "required": ["email"],
+        "title": "ForgotPasswordRequest"
+      },
       "GroupCreate": {
         "properties": {
           "name": { "type": "string", "title": "Name" },
@@ -2999,6 +3079,16 @@
         "type": "object",
         "required": ["pin"],
         "title": "PayFromWalletRequest"
+      },
+      "ResetPasswordRequest": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "otp_code": { "type": "string", "title": "Otp Code" },
+          "new_password": { "type": "string", "title": "New Password" }
+        },
+        "type": "object",
+        "required": ["email", "otp_code", "new_password"],
+        "title": "ResetPasswordRequest"
       },
       "ResetPinRequest": {
         "properties": {

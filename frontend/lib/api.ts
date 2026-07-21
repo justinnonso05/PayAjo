@@ -3,7 +3,7 @@ import { clearToken } from "./auth";
 const API_PREFIX = "/api/v1";
 
 function baseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://ajopay.fastapicloud.dev";
+  return process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://payajo.fastapicloud.dev";
 }
 
 function url(path: string) {
@@ -147,6 +147,8 @@ export const endpoints = {
   setupPin: `${API_PREFIX}/auth/setup-pin`,
   requestPinReset: `${API_PREFIX}/auth/request-pin-reset`,
   resetPin: `${API_PREFIX}/auth/reset-pin`,
+  forgotPassword: `${API_PREFIX}/auth/forgot-password`,
+  resetPassword: `${API_PREFIX}/auth/reset-password`,
 
   // User
   me: `${API_PREFIX}/users/me`,

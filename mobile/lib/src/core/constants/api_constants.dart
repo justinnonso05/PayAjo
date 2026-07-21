@@ -4,7 +4,7 @@ class ApiConstants {
   static String get baseUrl => EnvConfig.baseUrl;
 
   /// The backend versions all routes under this prefix, e.g.
-  /// https://ajopay.fastapicloud.dev/api/v1/auth/signup
+  /// https://payajo.fastapicloud.dev/api/v1/auth/signup
   static const String apiPrefix = '/api/v1';
 
   // Auth endpoints
@@ -14,6 +14,8 @@ class ApiConstants {
   static String get setupPin => '$apiPrefix/auth/setup-pin';
   static String get requestPinReset => '$apiPrefix/auth/request-pin-reset';
   static String get resetPin => '$apiPrefix/auth/reset-pin';
+  static String get forgotPassword => '$apiPrefix/auth/forgot-password';
+  static String get resetPassword => '$apiPrefix/auth/reset-password';
 
   // Group endpoints
   static String get groups => '$apiPrefix/groups/';

@@ -299,7 +299,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () => context.pushNamed(AppRoute.requestPasswordReset.name),
                               child: Text(
                                 'Forgot Password?',
                                 style: TextStyle(fontFamily: 'PlusJakartaSans', 
