@@ -29,7 +29,7 @@ class _MyInvitesScreenState extends ConsumerState<MyInvitesScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(accept ? 'Joined ${item.groupName}!' : 'Invite declined'),
+          content: Text(accept ? 'Joined ${item.groupName}!' : 'Invite declined', style: const TextStyle(color: Colors.white)),
           backgroundColor: AppColors.darkGreen,
         ),
       );

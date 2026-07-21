@@ -99,7 +99,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (!_agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please agree to the Terms & Conditions to continue.'),
+          content: Text('Please agree to the Terms & Conditions to continue.', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF1D3108),
         ),
       );
@@ -126,7 +126,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.message),
+          content: Text(e.message, style: const TextStyle(color: Colors.white)),
           backgroundColor: const Color(0xFF1D3108),
         ),
       );

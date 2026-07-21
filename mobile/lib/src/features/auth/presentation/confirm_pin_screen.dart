@@ -41,7 +41,7 @@ class _ConfirmPinScreenState extends ConsumerState<ConfirmPinScreen> {
       setState(() => _shakeTick++);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("PINs don't match. Try again."),
+          content: Text("PINs don't match. Try again.", style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF1D3108),
         ),
       );

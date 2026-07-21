@@ -52,7 +52,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('BVN verified successfully!'),
+          content: Text('BVN verified successfully!', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xFF1D3108),
         ),
       );
@@ -62,7 +62,7 @@ class _BvnVerificationScreenState extends ConsumerState<BvnVerificationScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.message),
+          content: Text(e.message, style: const TextStyle(color: Colors.white)),
           backgroundColor: const Color(0xFF1D3108),
         ),
       );

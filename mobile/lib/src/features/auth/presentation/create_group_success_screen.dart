@@ -66,7 +66,7 @@ class _CreateGroupSuccessScreenState extends ConsumerState<CreateGroupSuccessScr
     Clipboard.setData(ClipboardData(text: widget.data.inviteCode));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Invite code ${widget.data.inviteCode} copied to clipboard'),
+        content: Text('Invite code ${widget.data.inviteCode} copied to clipboard', style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF1D3108),
       ),
     );
