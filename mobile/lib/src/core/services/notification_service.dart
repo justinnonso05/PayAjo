@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../constants/api_constants.dart';
 import '../network/api_client.dart';
 import '../storage/secure_storage_service.dart';
@@ -11,18 +12,28 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   debugPrint("Handling background FCM message: ${message.messageId}");
 }
 
+const _kAndroidChannel = AndroidNotificationChannel(
+  'payajo_default',
+  'General notifications',
+  description: 'Group activity, reminders, and account updates.',
+  importance: Importance.high,
+);
+
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
   NotificationService._internal();
 
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
   String? _currentToken;
 
   String? get currentToken => _currentToken;
 
   /// Initializes FCM listeners, requests permissions, and fetches the token.
   Future<void> initialize() async {
+    await _initLocalNotifications();
+
     // Request permission (iOS + Android 13+)
     final settings = await _messaging.requestPermission(
       alert: true,
@@ -35,7 +46,7 @@ class NotificationService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
-      
+
       // Set background handler
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
@@ -54,9 +65,12 @@ class NotificationService {
         syncTokenWithBackend(newToken);
       });
 
-      // Handle foreground notifications
+      // FCM only auto-shows a system notification when the app is
+      // backgrounded/closed — in the foreground it just delivers the data
+      // silently, so we have to display it ourselves to match that behavior.
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         debugPrint('Foreground FCM notification: ${message.notification?.title}');
+        _showLocalNotification(message);
       });
 
       // Handle notification open/tap when app is in background
@@ -64,6 +78,37 @@ class NotificationService {
         debugPrint('FCM notification opened app: ${message.data}');
       });
     }
+  }
+
+  Future<void> _initLocalNotifications() async {
+    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const iosInit = DarwinInitializationSettings();
+    await _localNotifications.initialize(
+      const InitializationSettings(android: androidInit, iOS: iosInit),
+    );
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(_kAndroidChannel);
+  }
+
+  void _showLocalNotification(RemoteMessage message) {
+    final notification = message.notification;
+    if (notification == null) return;
+    _localNotifications.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _kAndroidChannel.id,
+          _kAndroidChannel.name,
+          channelDescription: _kAndroidChannel.description,
+          importance: Importance.high,
+          priority: Priority.high,
+        ),
+        iOS: const DarwinNotificationDetails(),
+      ),
+    );
   }
 
   /// Sends the current FCM token to the backend API.

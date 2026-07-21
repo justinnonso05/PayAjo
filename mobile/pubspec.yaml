@@ -47,6 +47,7 @@ dependencies:
   printing: ^5.13.4
   firebase_core: ^4.12.1
   firebase_messaging: ^16.4.3
+  flutter_local_notifications: ^19.4.2
 
 
 dev_dependencies:
