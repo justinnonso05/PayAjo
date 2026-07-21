@@ -64,17 +64,14 @@ async def mock_kyc_and_create_wallet(user: User, bvn: str, db: AsyncSession) -> 
         db.add(user)
         
         # Add Notification and Email
-        from app.modules.notification.models import Notification
+        from app.modules.notification.service import create_and_dispatch_notification
         from app.services.email import send_kyc_completed_email
         import asyncio
         
-        notif = Notification(
-            user_id=user.id,
+        await create_and_dispatch_notification(db=db, user_id=user.id,
             title="KYC Completed",
             message="Your Personal Reserved Account is ready to receive funds.",
-            type="kyc_completed"
-        )
-        db.add(notif)
+            type="kyc_completed")
         
         await db.commit()
         await db.refresh(user)
@@ -261,7 +258,7 @@ async def transfer_wallet_to_wallet(
     """
     import asyncio
     from sqlalchemy import select
-    from app.modules.notification.models import Notification
+    from app.modules.notification.service import create_and_dispatch_notification
     from app.services.email import send_email
 
     # 1. Verify PIN
@@ -325,8 +322,7 @@ async def transfer_wallet_to_wallet(
     db.add(recv_entry)
 
     # 7. Notifications
-    sender_notif = Notification(
-        user_id=sender.id,
+    await create_and_dispatch_notification(db=db, user_id=sender.id,
         title="Transfer Sent",
         message=f"You sent ₦{amount:,.2f} to {recipient.first_name} {recipient.last_name}.",
         type="wallet_transfer",
@@ -335,9 +331,7 @@ async def transfer_wallet_to_wallet(
         user_id=recipient.id,
         title="Transfer Received",
         message=f"You received ₦{amount:,.2f} from {sender.first_name} {sender.last_name}.",
-        type="wallet_transfer",
-    )
-    db.add(sender_notif)
+        type="wallet_transfer",)
     db.add(recipient_notif)
 
     await db.commit()

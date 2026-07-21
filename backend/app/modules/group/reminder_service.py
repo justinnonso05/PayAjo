@@ -8,7 +8,7 @@ from app.modules.transaction.models import GroupLedgerEntry
 from app.common.enums import GroupStatus, GroupLedgerEntryType, MembershipStatus
 from app.services.ai import generate_reminder_copy
 from app.services.email import send_email
-from app.modules.notification.models import Notification
+from app.modules.notification.service import create_and_dispatch_notification
 from app.modules.chat.models import ChatMessage
 import logging
 
@@ -161,13 +161,10 @@ async def send_manual_reminder(user: User, group: Group, db: AsyncSession) -> st
         await db.flush()
         
         # 3. Notification
-        notif = Notification(
-            user_id=user.id,
+        await create_and_dispatch_notification(db=db, user_id=user.id,
             title="Ajo Contribution Reminder",
             message=ai_message,
-            type="payment_reminder"
-        )
-        db.add(notif)
+            type="payment_reminder")
         
         # 4. Email
         await send_email(

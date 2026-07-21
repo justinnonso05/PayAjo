@@ -6,8 +6,12 @@ from app.common.schemas import BaseResponse
 from contextlib import asynccontextmanager
 from app.core.scheduler import start_scheduler, stop_scheduler
 
+import asyncio
+from app.core import events
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    events.global_loop = asyncio.get_running_loop()
     start_scheduler()
     yield
     stop_scheduler()

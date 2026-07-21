@@ -3,6 +3,7 @@ from sqlalchemy import event, select
 from app.modules.notification.models import Notification
 from app.modules.user.models import User
 from app.services.push import send_push_notification
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import AsyncSessionLocal
 import logging
 
@@ -26,28 +27,27 @@ async def _send_notification_push_async(user_id: str, title: str, message: str, 
     except Exception as e:
         logger.error(f"Error resolving FCM token for user {user_id}: {e}")
 
-@event.listens_for(Notification, 'after_insert')
-def receive_after_insert(mapper, connection, target: Notification):
+async def create_and_dispatch_notification(db: AsyncSession, user_id: str, title: str, message: str, type: str, action_id: str = None) -> Notification:
     """
-    Listens for any new Notification being inserted into the database.
-    It synchronously catches the event and spins up a background async task 
-    to send the Firebase push notification so the API isn't blocked.
+    Creates a notification in the database and explicitly dispatches a background task
+    to send the Firebase push notification on the main asyncio event loop.
     """
+    notif = Notification(
+        user_id=user_id,
+        title=title,
+        message=message,
+        type=type,
+        action_id=action_id
+    )
+    db.add(notif)
+    # Note: The caller is still responsible for calling db.commit()!
+    
+    # Schedule the push notification explicitly
     try:
         loop = asyncio.get_running_loop()
+        logger.info(f"Explicitly scheduling push notification for user {user_id} (type: {type})")
+        loop.create_task(_send_notification_push_async(user_id, title, message, type, action_id))
     except RuntimeError:
-        # Not running in an async event loop (e.g., synchronous tests or scripts)
-        return
-    
-    # Schedule the background task
-    loop.create_task(
-        _send_notification_push_async(
-            target.user_id, 
-            target.title, 
-            target.message, 
-            target.type, 
-            target.action_id
-        )
-    )
-
-logger.info("Notification push listener registered.")
+        logger.error("No running event loop found to schedule push notification.")
+        
+    return notif

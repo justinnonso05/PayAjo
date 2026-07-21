@@ -107,14 +107,14 @@ async def evaluate_and_process_auto_debits(db: AsyncSession, group: Group):
             group.pool_balance = float(group.pool_balance) + amount
             db.add(group)
             
-            # Add notification
-            notif = Notification(
+            from app.modules.notification.service import create_and_dispatch_notification
+            await create_and_dispatch_notification(
+                db=db,
                 user_id=user.id,
-                title="Auto-Debit Successful",
-                message=f"₦{amount:,.2f} was automatically deducted from your wallet for {group.name} cycle {group.current_cycle_number}.",
-                type="contribution_successful"
+                title="Contribution Received (Auto-Debit)",
+                message=f"Your auto-debit contribution of ₦{amount:,.2f} for cycle {group.current_cycle_number} was successful.",
+                type="group_contribution"
             )
-            db.add(notif)
             
             # Chat message
             await post_system_message(db, group.id, f"{user.first_name} automatically contributed ₦{amount:,.2f} for cycle {group.current_cycle_number} via Auto-Debit!")

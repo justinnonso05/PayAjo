@@ -10,7 +10,7 @@ from app.modules.membership.models import Membership, GroupInvite
 from app.modules.group.schemas import GroupCreate, GroupUpdate, GroupStartRequest
 from app.common.enums import GroupStatus, MembershipStatus, KYCStatus, GroupInviteStatus, WalletLedgerEntryType, GroupLedgerEntryType
 from app.modules.transaction.models import WalletLedgerEntry, GroupLedgerEntry
-from app.modules.notification.models import Notification
+from app.modules.notification.service import create_and_dispatch_notification
 from app.core.pin_limiter import check_pin_rate_limit, record_pin_failure, record_pin_success
 import uuid
 
@@ -292,8 +292,7 @@ async def send_targeted_invite_service(admin_user: User, group_id: str, email_or
     if db_invite:
         db.delete(db_invite)
     
-    notif = Notification(user_id=target_user.id, title="Group Invite", message=f"You have been invited to join {group.name}.", type="group_invite")
-    db.add(notif)
+    await create_and_dispatch_notification(db=db, user_id=target_user.id, title="Group Invite", message=f"You have been invited to join {group.name}.", type="group_invite")
     
     await db.commit()
     await db.refresh(invite)
@@ -389,17 +388,14 @@ async def pay_group_from_wallet_service(user: User, group_id: str, pin: str, db:
     await db.refresh(group)
     
     # Notifications and Messages
-    from app.modules.notification.models import Notification
+    from app.modules.notification.service import create_and_dispatch_notification
     from app.services.email import send_contribution_confirmed_email
     import asyncio
     
-    notif = Notification(
-        user_id=user.id,
+    await create_and_dispatch_notification(db=db, user_id=user.id,
         title="Contribution Received",
         message=f"Your contribution of ₦{amount:,.2f} for cycle {group.current_cycle_number} was successful.",
-        type="group_contribution"
-    )
-    db.add(notif)
+        type="group_contribution")
     await db.commit()
     
     await post_system_message(db, group_id, f"{user.first_name} contributed ₦{amount:,.2f} for cycle {group.current_cycle_number}.")

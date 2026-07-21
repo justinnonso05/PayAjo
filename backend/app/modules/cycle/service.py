@@ -8,7 +8,7 @@ from app.modules.transaction.models import WalletLedgerEntry, GroupLedgerEntry
 from app.common.enums import WalletLedgerEntryType, GroupLedgerEntryType, MembershipStatus, GroupStatus
 from app.modules.cycle.models import CycleAssignment, DelegationRequest, SwapRequest
 from app.modules.chat.service import post_system_message
-from app.modules.notification.models import Notification
+from app.modules.notification.service import create_and_dispatch_notification
 from app.modules.user.models import User
 
 logger = logging.getLogger(__name__)
@@ -168,22 +168,16 @@ async def evaluate_payout_for_group(db: AsyncSession, group: Group):
     db.add(assignment)
     
     # 6. Notify
-    recipient_notif = Notification(
-        user_id=actual_recipient_id,
+    await create_and_dispatch_notification(db=db, user_id=actual_recipient_id,
         title="Payout Received",
         message=f"You have received NGN {payout_amount} payout from {group.name} for cycle {current_cycle}.",
-        type="payout_received"
-    )
-    db.add(recipient_notif)
+        type="payout_received")
     
     if actual_recipient_id != group.admin_user_id:
-        admin_notif = Notification(
-            user_id=group.admin_user_id,
+        await create_and_dispatch_notification(db=db, user_id=group.admin_user_id,
             title="Cycle Paid Out",
             message=f"Cycle {current_cycle} payout of NGN {payout_amount} was sent to user wallet.",
-            type="payout_processed"
-        )
-        db.add(admin_notif)
+            type="payout_processed")
         
     await post_system_message(db, group.id, f"A payout of ₦{payout_amount:,.2f} was successfully sent for cycle {current_cycle}!")
         

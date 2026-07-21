@@ -174,7 +174,8 @@ class _UserPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isHighRisk = result.riskScore >= 50;
+    // In the backend, a higher score is better (0-39 High Risk, 40-69 Medium, 70-100 Low Risk)
+    final isHighRisk = result.riskScore < 40;
 
     return Container(
       width: double.infinity,

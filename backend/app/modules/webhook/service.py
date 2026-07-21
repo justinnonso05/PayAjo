@@ -70,7 +70,7 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
             # Calculate Fees (divide by 100 since configs are in percentages e.g. 1.5, 1)
             monnify_fee = min(amount * (settings.MONNIFY_COLLECTION_FEE_PERCENT / 100), settings.MONNIFY_COLLECTION_FEE_CAP)
             platform_fee = amount * (settings.PAYAJO_PLATFORM_FEE_PERCENT / 100)
-            total_fees = monnify_fee + platform_fee
+            total_fees = min(monnify_fee + platform_fee, settings.MAX_TOTAL_FEE_CAP)
             net_amount = amount - total_fees
             
             # Record platform fee for direct contribution
@@ -107,16 +107,13 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
             user_res = await db.execute(select(User).where(User.id == user_id))
             user = user_res.scalar_one_or_none()
             if user and group:
-                from app.modules.notification.models import Notification
+                from app.modules.notification.service import create_and_dispatch_notification
                 from app.services.email import send_contribution_confirmed_email
                 
-                notif = Notification(
-                    user_id=user.id,
+                await create_and_dispatch_notification(db=db, user_id=user.id,
                     title="Contribution Received",
                     message=f"Your direct contribution of ₦{net_amount:,.2f} for cycle {cycle_number} was successful.",
-                    type="group_contribution"
-                )
-                db.add(notif)
+                    type="group_contribution")
                 
                 import asyncio
                 asyncio.create_task(send_contribution_confirmed_email(user.email, user.first_name, amount, group.name, cycle_number))
@@ -158,7 +155,7 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
                 # Calculate Fees (divide by 100 since configs are in percentages e.g. 1.5, 1)
                 monnify_fee = min(amount * (settings.MONNIFY_COLLECTION_FEE_PERCENT / 100), settings.MONNIFY_COLLECTION_FEE_CAP)
                 platform_fee = amount * (settings.PAYAJO_PLATFORM_FEE_PERCENT / 100)
-                total_fees = monnify_fee + platform_fee
+                total_fees = min(monnify_fee + platform_fee, settings.MAX_TOTAL_FEE_CAP)
                 net_amount = amount - total_fees
                 
                 # Deduct fees
@@ -176,17 +173,14 @@ async def process_monnify_webhook(payload: dict, db: AsyncSession):
                 db.add(user)
                 
                 # Notifications
-                from app.modules.notification.models import Notification
+                from app.modules.notification.service import create_and_dispatch_notification
                 from app.services.email import send_wallet_funded_email
                 import asyncio
                 
-                notif = Notification(
-                    user_id=user.id,
+                await create_and_dispatch_notification(db=db, user_id=user.id,
                     title="Wallet Funded",
                     message=f"Your wallet was topped up with ₦{net_amount:,.2f} (after ₦{total_fees:,.2f} fees).",
-                    type="wallet_topup"
-                )
-                db.add(notif)
+                    type="wallet_topup")
                 
                 asyncio.create_task(send_wallet_funded_email(user.email, user.first_name, net_amount))
         else:

@@ -62,13 +62,14 @@ async def register_user(data: SignupRequest, db: AsyncSession) -> dict:
     await db.flush()
 
     # 4. Welcome notification
-    welcome_notif = Notification(
+    from app.modules.notification.service import create_and_dispatch_notification
+    await create_and_dispatch_notification(
+        db=db,
         user_id=new_user.id,
         title="Welcome to PayAjo",
         message="Thank you for signing up. Enjoy our services!",
         type="system"
     )
-    db.add(welcome_notif)
 
     await db.commit()
     await db.refresh(new_user)

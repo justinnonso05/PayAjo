@@ -54,6 +54,7 @@ class Settings(BaseSettings):
     MONNIFY_PAYOUT_FEE_TIER_3: float = 40.0 # >= 50,000
     
     PAYAJO_PLATFORM_FEE_PERCENT: float = 1.0 # 1%
+    MAX_TOTAL_FEE_CAP: float = 2500.0 # Total fees (Monnify + Platform) will never exceed this
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, extra="ignore")
 
