@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     description:
       "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities.",
     images: ["/images/image 17.png"],
+  },
   icons: {
     icon: "/images/logo.png",
     shortcut: "/images/logo.png",
