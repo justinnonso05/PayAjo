@@ -58,6 +58,10 @@ class SetPayoutBankRequest(BaseModel):
     otp_code: str
 
 
+class FCMTokenRequest(BaseModel):
+    fcm_token: str
+
+
 class MockKycRequest(BaseModel):
     """
     Request payload for the mock KYC and wallet creation step.

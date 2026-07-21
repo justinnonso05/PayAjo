@@ -7,6 +7,7 @@ from app.modules.user.models import User
 from app.common.schemas import BaseResponse
 from app.modules.notification.models import Notification
 from .schemas import NotificationResponse, MarkReadRequest
+import app.modules.notification.service  # This registers the event listener
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 

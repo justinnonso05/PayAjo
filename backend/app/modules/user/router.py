@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.core.security import get_current_user
 from app.common.schemas import BaseResponse
 from app.modules.user.models import User
-from .schemas import UserResponse, SetPayoutBankRequest, MockKycRequest, UserSearchResponse, UserUpdate
+from .schemas import UserResponse, SetPayoutBankRequest, MockKycRequest, UserSearchResponse, UserUpdate, FCMTokenRequest
 from .service import request_bank_change_otp, set_payout_bank, get_banks_list, mock_kyc_and_create_wallet
 from sqlalchemy import select
 
@@ -85,6 +85,24 @@ async def get_me(current_user: User = Depends(get_current_user)):
         message="Profile fetched successfully",
         data=UserResponse.from_orm_with_pin(current_user)
     )
+
+@router.post(
+    "/me/fcm-token",
+    response_model=BaseResponse[None],
+    summary="Register or update Firebase Cloud Messaging token",
+)
+async def update_fcm_token(
+    data: FCMTokenRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Registers the device's FCM token for push notifications.
+    """
+    current_user.fcm_token = data.fcm_token
+    db.add(current_user)
+    await db.commit()
+    return BaseResponse(success=True, message="FCM token registered", data=None)
 
 from fastapi import UploadFile, File
 from app.services.cloudinary import upload_image_to_cloudinary

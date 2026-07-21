@@ -17,6 +17,7 @@ class User(Base, UUIDMixin, TimestampMixin):
 
     # Security
     pin_hash: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    fcm_token: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
 
     # KYC status
     kyc_status: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
