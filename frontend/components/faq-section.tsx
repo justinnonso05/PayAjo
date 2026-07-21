@@ -14,6 +14,14 @@ const FAQS = [
     a: "Yes. Contributions and wallet balances sit in bank-partnered virtual accounts, every member is BVN-verified before joining a group, and every payment is confirmed with your transaction PIN.",
   },
   {
+    q: "What if I need money earlier than my scheduled payout turn?",
+    a: "You can send a Cycle Swap request to swap turns with another willing member in your group. Once approved by the member and admin, your payout positions are swapped seamlessly.",
+  },
+  {
+    q: "What happens if a member forgets to contribute on time?",
+    a: "Members can enable Auto-Debit so contributions are automatically paid from their wallet before the deadline. Admins can also trigger instant push reminders to anyone who owes.",
+  },
+  {
     q: "What is a Reserved Account?",
     a: "A dedicated virtual bank account number tied to your personal wallet. Transfer any amount to it from any bank app, and it lands in your PayAjo wallet automatically.",
   },
@@ -27,7 +35,11 @@ const FAQS = [
   },
   {
     q: "How do payouts work?",
-    a: "Each round's contributions are pooled together. The member whose turn it is — set when the group starts, either randomized or in a manual order — receives the full pool as a payout straight to their bank account.",
+    a: "Each round's contributions are pooled together. The member whose turn it is — set when the group starts, either randomized or in a manual order — receives the full pool as an automated payout straight to their bank account.",
+  },
+  {
+    q: "Are there any hidden fees or charges?",
+    a: "No hidden fees. Creating groups, joining groups, and receiving payouts are completely free.",
   },
   {
     q: "Can I join multiple groups?",

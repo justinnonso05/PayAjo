@@ -1,15 +1,17 @@
-import { ArrowLeftRight, Bell, Clock, Hash, MessageCircle, Send, User, Wallet } from "lucide-react";
+import { ArrowLeftRight, Bell, Clock, Hash, MessageCircle, Repeat, Send, User, Wallet, Zap } from "lucide-react";
 import { Reveal, StaggerGroup, StaggerItem } from "./reveal";
 
 const FEATURES = [
-  { icon: Wallet, title: "Personal Wallet", desc: "Deposit once. Pay contributions instantly." },
-  { icon: MessageCircle, title: "Group Chat", desc: "Communicate with members, right inside the app." },
-  { icon: Bell, title: "Smart Reminders", desc: "Never miss a contribution deadline again." },
-  { icon: User, title: "BVN Verification", desc: "Only verified members can join a group." },
-  { icon: Clock, title: "Transaction History", desc: "Every payment is recorded, timestamped, and visible." },
-  { icon: Hash, title: "Invite Code", desc: "Join groups instantly with a simple code." },
-  { icon: ArrowLeftRight, title: "Cycle Swapping", desc: "Trade payout turns effortlessly. Request to swap cycles with another member." },
-  { icon: Send, title: "Payout Delegation", desc: "Send your payout to someone else directly to another member's wallet." },
+  { icon: Wallet, title: "Personal Wallet", desc: "Deposit once. Pay contributions seamlessly across all your savings groups." },
+  { icon: MessageCircle, title: "Group Chat", desc: "Built-in chat with image sharing to stay connected with group members." },
+  { icon: Bell, title: "Smart Reminders", desc: "Timely push alerts so you never miss a contribution deadline." },
+  { icon: User, title: "BVN Verification", desc: "Identity verification so you only save with people you can trust." },
+  { icon: Clock, title: "Transaction History", desc: "Every payment is recorded, timestamped, and visible to all members." },
+  { icon: Hash, title: "Invite Code", desc: "Join private or public savings groups instantly with a simple code." },
+  { icon: ArrowLeftRight, title: "Cycle Swapping", desc: "Trade payout turns effortlessly with another member when life happens." },
+  { icon: Send, title: "Payout Delegation", desc: "Send your payout directly to a friend or family member's wallet." },
+  { icon: Zap, title: "Automated Payouts", desc: "Instant bank disbursement as soon as a round completes — zero manual chasing." },
+  { icon: Repeat, title: "Auto-Debit", desc: "Enable automatic wallet debiting before deadlines so no member defaults." },
 ];
 
 export function FeaturesGrid() {
