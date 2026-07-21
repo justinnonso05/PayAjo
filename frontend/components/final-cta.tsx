@@ -20,7 +20,8 @@ export function FinalCta() {
             Create Free Account
           </Link>
           <a
-            href="#"
+            href="/downloads/PayAjo.apk"
+            download="PayAjo.apk"
             className="rounded-full border border-white/20 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
           >
             Download App

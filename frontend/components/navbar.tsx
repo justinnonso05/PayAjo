@@ -55,7 +55,8 @@ export function Navbar() {
             Sign In
           </Link>
           <a
-            href="#final-cta"
+            href="/downloads/PayAjo.apk"
+            download="PayAjo.apk"
             className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-brand-dark shadow-[0_4px_16px_rgba(172,236,135,0.35)] transition-transform hover:scale-105 active:scale-95"
           >
             <Download size={16} />
@@ -98,7 +99,8 @@ export function Navbar() {
                   Sign In
                 </Link>
                 <a
-                  href="#final-cta"
+                  href="/downloads/PayAjo.apk"
+                  download="PayAjo.apk"
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 text-center text-sm font-bold text-brand-dark"
                 >
