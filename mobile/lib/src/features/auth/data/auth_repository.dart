@@ -10,6 +10,7 @@ class RegisterRequest {
   final String lastName;
   final String password;
   final String phone;
+  final String? fcmToken;
 
   const RegisterRequest({
     required this.email,
@@ -18,6 +19,7 @@ class RegisterRequest {
     required this.lastName,
     required this.password,
     required this.phone,
+    this.fcmToken,
   });
 
   Map<String, dynamic> toJson() => {
@@ -27,6 +29,7 @@ class RegisterRequest {
         'last_name': lastName,
         'password': password,
         'phone': phone,
+        if (fcmToken != null && fcmToken!.isNotEmpty) 'fcm_token': fcmToken,
       };
 }
 
@@ -49,10 +52,14 @@ class AuthRepository {
 
   /// Logs in an existing user and persists the returned access token to
   /// secure storage. Throws [ApiException] on failure.
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({required String email, required String password, String? fcmToken}) async {
     final response = await _apiClient.post(
       ApiConstants.login,
-      body: {'email': email, 'password': password},
+      body: {
+        'email': email,
+        'password': password,
+        if (fcmToken != null && fcmToken.isNotEmpty) 'fcm_token': fcmToken,
+      },
     );
     await _saveToken(response);
   }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/storage/secure_storage_service.dart';
 import '../../groups/data/group_invites_controller.dart';
 import '../../home/data/home_controller.dart';
@@ -80,6 +81,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await ref.read(authRepositoryProvider).login(
             email: _emailController.text.trim(),
             password: _passwordController.text,
+            fcmToken: NotificationService().currentToken,
           );
 
       final profile = await ref.read(userRepositoryProvider).getMe();

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../routing/app_router.dart';
 import '../data/auth_repository.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/services/notification_service.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -117,6 +118,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               lastName: _lastNameController.text.trim(),
               password: _passwordController.text,
               phone: _phoneController.text.trim(),
+              // Passed at signup so the welcome push notification has a
+              // token to send to immediately, instead of racing the
+              // post-login token-sync call that happens moments later.
+              fcmToken: NotificationService().currentToken,
             ),
           );
 
