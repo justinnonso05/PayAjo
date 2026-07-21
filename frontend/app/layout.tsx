@@ -14,8 +14,14 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "https://ajopayy.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://payajo.vercel.app"),
+  metadataBase: new URL(siteUrl),
   title: "PayAjo — Save Together. Grow Together.",
   description:
     "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities. No more chasing payments, missing records, or disappearing treasurers.",
@@ -23,7 +29,7 @@ export const metadata: Metadata = {
     title: "PayAjo — Save Together. Grow Together.",
     description:
       "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities. No more chasing payments, missing records, or disappearing treasurers.",
-    url: "https://payajo.vercel.app",
+    url: siteUrl,
     siteName: "PayAjo",
     images: [
       {
