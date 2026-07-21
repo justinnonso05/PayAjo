@@ -8,6 +8,9 @@ from app.core.scheduler import start_scheduler, stop_scheduler
 
 import asyncio
 from app.core import events
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
