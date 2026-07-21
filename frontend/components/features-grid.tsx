@@ -1,15 +1,15 @@
-import { Bell, Clock, Hash, MessageCircle, ShieldCheck, User, Vault, Wallet } from "lucide-react";
+import { ArrowLeftRight, Bell, Clock, Hash, MessageCircle, Send, User, Wallet } from "lucide-react";
 import { Reveal, StaggerGroup, StaggerItem } from "./reveal";
 
 const FEATURES = [
-  { icon: Vault, title: "Reserved Virtual Accounts", desc: "Every savings group gets its own dedicated account." },
   { icon: Wallet, title: "Personal Wallet", desc: "Deposit once. Pay contributions instantly." },
   { icon: MessageCircle, title: "Group Chat", desc: "Communicate with members, right inside the app." },
   { icon: Bell, title: "Smart Reminders", desc: "Never miss a contribution deadline again." },
   { icon: User, title: "BVN Verification", desc: "Only verified members can join a group." },
   { icon: Clock, title: "Transaction History", desc: "Every payment is recorded, timestamped, and visible." },
   { icon: Hash, title: "Invite Code", desc: "Join groups instantly with a simple code." },
-  { icon: ShieldCheck, title: "Notifications", desc: "Stay informed on every contribution and payout." },
+  { icon: ArrowLeftRight, title: "Cycle Swapping", desc: "Trade payout turns effortlessly. Request to swap cycles with another member." },
+  { icon: Send, title: "Payout Delegation", desc: "Send your payout to someone else directly to another member's wallet." },
 ];
 
 export function FeaturesGrid() {
