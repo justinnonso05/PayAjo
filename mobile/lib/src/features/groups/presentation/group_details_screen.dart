@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,6 +45,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
   bool _isLoadingPendingCycle = false;
   bool _isBusy = false;
   String? _error;
+  Timer? _pollTimer;
 
   bool get _isCurrentUserAdmin {
     final currentUserId = ref.read(currentUserProvider)?.id;
@@ -53,6 +56,40 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
   void initState() {
     super.initState();
     _load();
+    // Keeps payment status / rotation order current (who's paid, whose turn
+    // is next) without the user needing to leave and re-enter the screen —
+    // updates the data silently, without flashing the loading skeletons.
+    _pollTimer = Timer.periodic(const Duration(seconds: 20), (_) {
+      if (mounted && WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+        _silentRefresh();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _silentRefresh() async {
+    try {
+      final repo = ref.read(groupRepositoryProvider);
+      final results = await Future.wait([
+        repo.getGroup(widget.groupId),
+        repo.getMembers(widget.groupId),
+        repo.getRotations(widget.groupId),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        _group = results[0] as GroupResponse;
+        _members = results[1] as List<GroupMember>;
+        _rotations = results[2] as List<GroupRotationEntry>;
+      });
+    } catch (_) {
+      // A background poll failing is not worth surfacing — the next tick
+      // (or a manual re-entry into the screen) will just try again.
+    }
   }
 
   Future<void> _load() async {

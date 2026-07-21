@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/utils/polling.dart';
 import '../../groups/data/group_models.dart';
 import '../../groups/data/group_repository.dart';
 
@@ -35,6 +36,7 @@ class HomeController extends Notifier<HomeState> {
   @override
   HomeState build() {
     Future.microtask(refresh);
+    startPolling(ref, const Duration(seconds: 30), refresh);
     return const HomeState(isLoading: true);
   }
 

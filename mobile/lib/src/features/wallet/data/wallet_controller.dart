@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/utils/polling.dart';
 import 'wallet_models.dart';
 import 'wallet_repository.dart';
 
@@ -23,6 +24,7 @@ class WalletTransactionsController extends Notifier<WalletTransactionsState> {
   @override
   WalletTransactionsState build() {
     Future.microtask(refresh);
+    startPolling(ref, const Duration(seconds: 25), refresh);
     return const WalletTransactionsState(isLoading: true);
   }
 

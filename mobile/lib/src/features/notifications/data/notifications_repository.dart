@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/storage/secure_storage_service.dart';
+import '../../../core/utils/polling.dart';
 import 'notification_model.dart';
 
 class NotificationsRepository {
@@ -61,6 +62,9 @@ class NotificationsController extends Notifier<NotificationsState> {
   @override
   NotificationsState build() {
     Future.microtask(refresh);
+    // Keeps the bottom-nav unread dot current even while the user is sitting
+    // on another tab, since MainShell watches hasUnreadNotificationsProvider.
+    startPolling(ref, const Duration(seconds: 30), refresh);
     return const NotificationsState(isLoading: true);
   }
 

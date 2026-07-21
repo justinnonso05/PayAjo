@@ -29,6 +29,25 @@ const _kFieldDecoration = InputDecoration(
 /// common Python/ISO convention: Monday = 0 ... Sunday = 6.
 const _kWeekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+const _kMonthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+String _ordinal(int day) {
+  if (day >= 11 && day <= 13) return '${day}th';
+  switch (day % 10) {
+    case 1:
+      return '${day}st';
+    case 2:
+      return '${day}nd';
+    case 3:
+      return '${day}rd';
+    default:
+      return '${day}th';
+  }
+}
+
 class CreateGroupSheet extends ConsumerStatefulWidget {
   const CreateGroupSheet({super.key});
 
@@ -64,6 +83,33 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
       initialTime: _payoutTime ?? const TimeOfDay(hour: 9, minute: 0),
     );
     if (picked != null) setState(() => _payoutTime = picked);
+  }
+
+  /// Uses a real calendar instead of a raw 1–31 stepper, so a month with
+  /// fewer days (February, or any 30-day month) simply doesn't offer days
+  /// that don't exist — no separate validation needed.
+  Future<void> _pickPayoutDate() async {
+    final now = DateTime.now();
+    // For monthly frequency only the day matters (it repeats every month),
+    // but the picker still needs a real date to open on — clamp defensively
+    // so a stale day left over from a previous month's selection (e.g. 31)
+    // never produces an invalid DateTime for a shorter reference month.
+    final referenceMonth = _frequency == CycleFrequency.yearly ? _payoutMonth : now.month;
+    final daysInReferenceMonth = DateTime(now.year, referenceMonth + 1, 0).day;
+    final safeDay = _payoutDayOfMonth.clamp(1, daysInReferenceMonth);
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(now.year, referenceMonth, safeDay),
+      firstDate: DateTime(now.year - 1),
+      lastDate: DateTime(now.year + 5),
+      helpText: _frequency == CycleFrequency.yearly ? 'Select payout date' : 'Select payout day',
+    );
+    if (picked == null) return;
+    setState(() {
+      _payoutDayOfMonth = picked.day;
+      if (_frequency == CycleFrequency.yearly) _payoutMonth = picked.month;
+    });
   }
 
   /// The backend's `payout_time` field expects "HH:MM:SSZ".
@@ -241,24 +287,30 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               ],
 
               if (_frequency == CycleFrequency.monthly || _frequency == CycleFrequency.yearly) ...[
-                if (_frequency == CycleFrequency.yearly) ...[
-                  _label('Payout Month'),
-                  const SizedBox(height: 8),
-                  _StepperField(
-                    value: _payoutMonth,
-                    min: 1,
-                    max: 12,
-                    onChanged: (v) => setState(() => _payoutMonth = v),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-                _label('Payout Day of Month'),
+                _label(_frequency == CycleFrequency.yearly ? 'Payout Date' : 'Payout Day of Month'),
                 const SizedBox(height: 8),
-                _StepperField(
-                  value: _payoutDayOfMonth,
-                  min: 1,
-                  max: 28,
-                  onChanged: (v) => setState(() => _payoutDayOfMonth = v),
+                GestureDetector(
+                  onTap: _pickPayoutDate,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _frequency == CycleFrequency.yearly
+                              ? '${_ordinal(_payoutDayOfMonth)} of ${_kMonthNames[_payoutMonth - 1]}'
+                              : '${_ordinal(_payoutDayOfMonth)} of every month',
+                          style: const TextStyle(fontFamily: 'PlusJakartaSans', fontSize: 14, color: Color(0xFF1D3108), fontWeight: FontWeight.bold),
+                        ),
+                        const Icon(Icons.calendar_today_rounded, color: Color(0xFF9CA3AF), size: 20),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
               ],
@@ -381,46 +433,5 @@ class _ChoiceChipOption extends StatelessWidget {
       ),
     );
     return compact ? chip : Expanded(child: chip);
-  }
-}
-
-class _StepperField extends StatelessWidget {
-  final int value;
-  final int min;
-  final int max;
-  final ValueChanged<int> onChanged;
-
-  const _StepperField({
-    required this.value,
-    required this.min,
-    required this.max,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1.2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: value > min ? () => onChanged(value - 1) : null,
-            icon: const Icon(Icons.remove, color: Color(0xFF1D3108)),
-          ),
-          Text(
-            '$value',
-            style: TextStyle(fontFamily: 'SpaceGrotesk', fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF1D3108)),
-          ),
-          IconButton(
-            onPressed: value < max ? () => onChanged(value + 1) : null,
-            icon: const Icon(Icons.add, color: Color(0xFF1D3108)),
-          ),
-        ],
-      ),
-    );
   }
 }

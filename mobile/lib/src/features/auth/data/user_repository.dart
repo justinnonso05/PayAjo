@@ -4,6 +4,7 @@ import '../../../core/constants/api_constants.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/storage/secure_storage_service.dart';
+import '../../../core/utils/polling.dart';
 import 'user_profile.dart';
 
 /// Caches the last-fetched profile so other screens (Home, PIN setup)
@@ -156,9 +157,14 @@ class UserProfileState {
 /// profile (wallet balance, reserved account, KYC/PIN flags). Home, Wallet
 /// and Profile tabs all watch this instead of each calling /users/me.
 class UserProfileController extends Notifier<UserProfileState> {
+  bool _hasSyncedFcmToken = false;
+
   @override
   UserProfileState build() {
     Future.microtask(refresh);
+    // Wallet balance is the thing users most want to see update without a
+    // manual pull-to-refresh (e.g. right after a bank transfer lands).
+    startPolling(ref, const Duration(seconds: 20), refresh);
     return const UserProfileState(isLoading: true);
   }
 
@@ -168,7 +174,11 @@ class UserProfileController extends Notifier<UserProfileState> {
       final profile = await ref.read(userRepositoryProvider).getMe();
       ref.read(currentUserProvider.notifier).state = profile;
       state = UserProfileState(profile: profile, isLoading: false);
-      NotificationService().syncTokenWithBackend(null);
+      // Only needs to happen once per session, not on every poll tick.
+      if (!_hasSyncedFcmToken) {
+        _hasSyncedFcmToken = true;
+        NotificationService().syncTokenWithBackend(null);
+      }
     } on ApiException catch (e) {
       state = state.copyWith(isLoading: false, error: e.message);
     }
