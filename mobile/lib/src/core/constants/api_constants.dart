@@ -14,6 +14,8 @@ class ApiConstants {
   static String get setupPin => '$apiPrefix/auth/setup-pin';
   static String get requestPinReset => '$apiPrefix/auth/request-pin-reset';
   static String get resetPin => '$apiPrefix/auth/reset-pin';
+  static String get forgotPassword => '$apiPrefix/auth/forgot-password';
+  static String get resetPassword => '$apiPrefix/auth/reset-password';
 
   // Group endpoints
   static String get groups => '$apiPrefix/groups/';

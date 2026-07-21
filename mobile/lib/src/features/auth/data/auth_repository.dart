@@ -81,6 +81,24 @@ class AuthRepository {
     );
   }
 
+  /// Sends a password-reset OTP to the given email. Unlike PIN reset, this
+  /// is called by a signed-out user, so it carries no auth headers.
+  Future<void> requestPasswordReset({required String email}) async {
+    await _apiClient.post(ApiConstants.forgotPassword, body: {'email': email});
+  }
+
+  /// Resets the account password using the OTP emailed to the user.
+  Future<void> resetPasswordWithOtp({
+    required String email,
+    required String otpCode,
+    required String newPassword,
+  }) async {
+    await _apiClient.post(
+      ApiConstants.resetPassword,
+      body: {'email': email, 'otp_code': otpCode, 'new_password': newPassword},
+    );
+  }
+
   Future<void> _saveToken(Map<String, dynamic> response) async {
     final data = response['data'];
     if (data is! Map<String, dynamic>) {

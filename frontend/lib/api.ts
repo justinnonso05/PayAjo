@@ -147,6 +147,8 @@ export const endpoints = {
   setupPin: `${API_PREFIX}/auth/setup-pin`,
   requestPinReset: `${API_PREFIX}/auth/request-pin-reset`,
   resetPin: `${API_PREFIX}/auth/reset-pin`,
+  forgotPassword: `${API_PREFIX}/auth/forgot-password`,
+  resetPassword: `${API_PREFIX}/auth/reset-password`,
 
   // User
   me: `${API_PREFIX}/users/me`,

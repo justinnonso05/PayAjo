@@ -15,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [passwordReset, setPasswordReset] = useState(false);
   const {
     register,
     handleSubmit,
@@ -29,6 +30,10 @@ export default function LoginPage() {
       window.sessionStorage.removeItem("payajo_session_expired");
       // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage, not a render-loop
       setSessionExpired(true);
+    }
+    if (new URLSearchParams(window.location.search).get("reset") === "1") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from the URL, not a render-loop
+      setPasswordReset(true);
     }
   }, [setValue]);
 
@@ -74,8 +79,16 @@ export default function LoginPage() {
         {sessionExpired && (
           <p className="rounded-xl bg-amber-50 px-3.5 py-2.5 text-xs font-semibold text-amber-700">Your session expired. Please log in again.</p>
         )}
+        {passwordReset && (
+          <p className="rounded-xl bg-brand-pale px-3.5 py-2.5 text-xs font-semibold text-brand-accent">Your password was reset. Sign in with your new password.</p>
+        )}
         <TextField label="Email" type="email" placeholder="amara@email.com" {...register("email")} error={errors.email} />
-        <TextField label="Password" type="password" placeholder="••••••••" {...register("password")} error={errors.password} />
+        <div>
+          <TextField label="Password" type="password" placeholder="••••••••" {...register("password")} error={errors.password} />
+          <Link href="/forgot-password" className="mt-1.5 block text-right text-xs font-bold text-brand-accent hover:text-brand-dark">
+            Forgot password?
+          </Link>
+        </div>
 
         {serverError && <p className="text-sm font-semibold text-red-500">{serverError}</p>}
 
