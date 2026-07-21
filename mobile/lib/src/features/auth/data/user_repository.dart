@@ -161,10 +161,10 @@ class UserProfileController extends Notifier<UserProfileState> {
 
   @override
   UserProfileState build() {
-    Future.microtask(refresh);
-    // Wallet balance is the thing users most want to see update without a
-    // manual pull-to-refresh (e.g. right after a bank transfer lands).
-    startPolling(ref, const Duration(seconds: 20), refresh);
+    Future.microtask(() {
+      refresh();
+      startPolling(ref, const Duration(seconds: 20), refresh);
+    });
     return const UserProfileState(isLoading: true);
   }
 
