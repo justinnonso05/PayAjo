@@ -56,6 +56,14 @@ export default function JoinOrCreatePage() {
       >
         Continue
       </button>
+
+      <button
+        type="button"
+        onClick={() => router.push("/home")}
+        className="mt-3.5 w-full text-center text-xs font-bold text-brand-dark/50 hover:text-brand-dark transition-colors"
+      >
+        Skip for now
+      </button>
     </AuthCard>
   );
 }

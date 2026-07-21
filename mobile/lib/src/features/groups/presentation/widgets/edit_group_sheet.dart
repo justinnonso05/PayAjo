@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/approval_switch_row.dart';
 import '../../data/group_models.dart';
 import '../../data/group_repository.dart';
 
@@ -51,6 +52,8 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
   late final TextEditingController _memberCapController;
   TimeOfDay? _payoutTime;
   bool _isSubmitting = false;
+  late bool _requiresApprovalForSwap;
+  late bool _requiresApprovalForDelegate;
 
   /// Once a group is active, the backend locks anything that would break
   /// the math or scheduling for members already mid-rotation — contribution
@@ -64,6 +67,8 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
     _nameController = TextEditingController(text: widget.group.name);
     _amountController = TextEditingController(text: widget.group.contributionAmount.toStringAsFixed(0));
     _memberCapController = TextEditingController(text: widget.group.memberCap?.toString() ?? '');
+    _requiresApprovalForSwap = widget.group.requiresApprovalForSwap;
+    _requiresApprovalForDelegate = widget.group.requiresApprovalForDelegate;
   }
 
   Future<void> _pickPayoutTime() async {
@@ -114,6 +119,8 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
               // leaving it null here means the existing value is preserved.
               memberCap: memberCapText.isEmpty ? null : int.tryParse(memberCapText),
               payoutTime: _isFinancialsLocked ? null : _formatPayoutTime(_payoutTime),
+              requiresApprovalForSwap: _requiresApprovalForSwap,
+              requiresApprovalForDelegate: _requiresApprovalForDelegate,
             ),
           );
       if (!mounted) return;
@@ -215,6 +222,22 @@ class _EditGroupSheetState extends ConsumerState<EditGroupSheet> {
             _label('Maximum Members (optional)'),
             const SizedBox(height: 8),
             TextField(controller: _memberCapController, keyboardType: TextInputType.number, style: _kFieldTextStyle, decoration: _kFieldDecoration),
+            const SizedBox(height: 20),
+            _label('Cycle Requests'),
+            const SizedBox(height: 8),
+            ApprovalSwitchRow(
+              title: 'Require approval for swaps',
+              subtitle: "You'll need to approve members swapping their payout order.",
+              value: _requiresApprovalForSwap,
+              onChanged: (v) => setState(() => _requiresApprovalForSwap = v),
+            ),
+            const SizedBox(height: 10),
+            ApprovalSwitchRow(
+              title: 'Require approval for delegations',
+              subtitle: "You'll need to approve a member delegating their payout to someone else.",
+              value: _requiresApprovalForDelegate,
+              onChanged: (v) => setState(() => _requiresApprovalForDelegate = v),
+            ),
             const SizedBox(height: 28),
             SizedBox(
               width: double.infinity,

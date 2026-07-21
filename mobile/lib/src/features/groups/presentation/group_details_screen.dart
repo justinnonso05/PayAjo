@@ -531,7 +531,11 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             ? const Padding(padding: EdgeInsets.all(24), child: SkeletonCard(height: 400))
             : _error != null
                 ? Center(child: Text(_error!, style: TextStyle(fontFamily: 'PlusJakartaSans', color: AppColors.textSecondary)))
-                : _buildContent(),
+                : RefreshIndicator(
+                    onRefresh: _load,
+                    color: AppColors.accentGreen,
+                    child: _buildContent(),
+                  ),
       ),
     );
   }
@@ -549,6 +553,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
     final hasPaid = currentMember?.hasPaidCurrentCycle ?? hasPaidCurrentRound(group, ref.watch(walletTransactionsControllerProvider).items);
 
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
       children: [
         Row(

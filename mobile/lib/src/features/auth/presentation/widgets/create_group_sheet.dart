@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/utils/currency_formatter.dart';
+import '../../../../core/widgets/approval_switch_row.dart';
 import '../../../../routing/app_router.dart';
 import '../../../groups/data/group_models.dart';
 import '../../../groups/data/group_repository.dart';
@@ -68,6 +69,8 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
   TimeOfDay? _payoutTime;
   bool _isSubmitting = false;
   String? _payoutDayError;
+  bool _requiresApprovalForSwap = true;
+  bool _requiresApprovalForDelegate = true;
 
   @override
   void dispose() {
@@ -157,6 +160,8 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
               payoutMonth: _frequency == CycleFrequency.yearly ? _payoutMonth : null,
               memberCap: memberCapText.isEmpty ? null : int.tryParse(memberCapText),
               payoutTime: _formatPayoutTime(_payoutTime),
+              requiresApprovalForSwap: _requiresApprovalForSwap,
+              requiresApprovalForDelegate: _requiresApprovalForDelegate,
             ),
           );
 
@@ -354,6 +359,23 @@ class _CreateGroupSheetState extends ConsumerState<CreateGroupSheet> {
                   hintText: '10',
                   hintStyle: const TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
                 ),
+              ),
+              const SizedBox(height: 20),
+
+              _label('Cycle Requests'),
+              const SizedBox(height: 8),
+              ApprovalSwitchRow(
+                title: 'Require approval for swaps',
+                subtitle: "You'll need to approve members swapping their payout order.",
+                value: _requiresApprovalForSwap,
+                onChanged: (v) => setState(() => _requiresApprovalForSwap = v),
+              ),
+              const SizedBox(height: 10),
+              ApprovalSwitchRow(
+                title: 'Require approval for delegations',
+                subtitle: "You'll need to approve a member delegating their payout to someone else.",
+                value: _requiresApprovalForDelegate,
+                onChanged: (v) => setState(() => _requiresApprovalForDelegate = v),
               ),
               const SizedBox(height: 32),
 

@@ -77,6 +77,8 @@ class GroupCreateRequest {
   final int? payoutMonth;
   final int? memberCap;
   final String? payoutTime;
+  final bool requiresApprovalForSwap;
+  final bool requiresApprovalForDelegate;
 
   const GroupCreateRequest({
     required this.name,
@@ -88,6 +90,8 @@ class GroupCreateRequest {
     this.payoutMonth,
     this.memberCap,
     this.payoutTime,
+    this.requiresApprovalForSwap = true,
+    this.requiresApprovalForDelegate = true,
   });
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +104,8 @@ class GroupCreateRequest {
         if (payoutMonth != null) 'payout_month': payoutMonth,
         if (memberCap != null) 'member_cap': memberCap,
         if (payoutTime != null) 'payout_time': payoutTime,
+        'requires_approval_for_swap': requiresApprovalForSwap,
+        'requires_approval_for_delegate': requiresApprovalForDelegate,
       };
 }
 
@@ -122,6 +128,8 @@ class GroupResponse {
   final DateTime? startedAt;
   final DateTime? nextPayoutDate;
   final DateTime? updatedAt;
+  final bool requiresApprovalForSwap;
+  final bool requiresApprovalForDelegate;
 
   const GroupResponse({
     required this.id,
@@ -142,6 +150,8 @@ class GroupResponse {
     required this.startedAt,
     required this.nextPayoutDate,
     required this.updatedAt,
+    this.requiresApprovalForSwap = true,
+    this.requiresApprovalForDelegate = true,
   });
 
   factory GroupResponse.fromJson(Map<String, dynamic> json) {
@@ -164,6 +174,8 @@ class GroupResponse {
       startedAt: DateTime.tryParse(json['started_at']?.toString() ?? ''),
       nextPayoutDate: DateTime.tryParse(json['next_payout_date']?.toString() ?? ''),
       updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? ''),
+      requiresApprovalForSwap: json['requires_approval_for_swap'] != false,
+      requiresApprovalForDelegate: json['requires_approval_for_delegate'] != false,
     );
   }
 
@@ -431,6 +443,8 @@ class GroupUpdateRequest {
   final int? payoutMonth;
   final int? memberCap;
   final String? payoutTime;
+  final bool? requiresApprovalForSwap;
+  final bool? requiresApprovalForDelegate;
 
   const GroupUpdateRequest({
     this.name,
@@ -442,6 +456,8 @@ class GroupUpdateRequest {
     this.payoutMonth,
     this.memberCap,
     this.payoutTime,
+    this.requiresApprovalForSwap,
+    this.requiresApprovalForDelegate,
   });
 
   Map<String, dynamic> toJson() => {
@@ -454,6 +470,8 @@ class GroupUpdateRequest {
         if (payoutMonth != null) 'payout_month': payoutMonth,
         if (payoutTime != null) 'payout_time': payoutTime,
         if (memberCap != null) 'member_cap': memberCap,
+        if (requiresApprovalForSwap != null) 'requires_approval_for_swap': requiresApprovalForSwap,
+        if (requiresApprovalForDelegate != null) 'requires_approval_for_delegate': requiresApprovalForDelegate,
       };
 }
 
