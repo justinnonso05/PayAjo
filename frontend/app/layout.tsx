@@ -15,6 +15,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://payajo.vercel.app"),
   title: "PayAjo — Save Together. Grow Together.",
   description:
     "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities. No more chasing payments, missing records, or disappearing treasurers.",
@@ -22,11 +23,11 @@ export const metadata: Metadata = {
     title: "PayAjo — Save Together. Grow Together.",
     description:
       "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities. No more chasing payments, missing records, or disappearing treasurers.",
-    url: "https://payajo.app",
+    url: "https://payajo.vercel.app",
     siteName: "PayAjo",
     images: [
       {
-        url: "/images/image 17.png",
+        url: "/images/og-banner.png",
         width: 1400,
         height: 800,
         alt: "PayAjo — Save Together. Grow Together.",
@@ -40,10 +41,13 @@ export const metadata: Metadata = {
     title: "PayAjo — Save Together. Grow Together.",
     description:
       "A smarter way to run your Ajo or Esusu with friends, family, coworkers, and communities.",
-    images: ["/images/image 17.png"],
+    images: ["/images/og-banner.png"],
   },
   icons: {
-    icon: "/images/logo.png",
+    icon: [
+      { url: "/images/logo.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
     shortcut: "/images/logo.png",
     apple: "/images/logo.png",
   },
